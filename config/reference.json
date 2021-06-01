@@ -1,0 +1,11 @@
+{
+    "host" : "homebrewery.local.naturalcrit.com:8000",
+    "naturalcrit_url" : "local.naturalcrit.com:8010",
+    "secret" : "secret",
+    "google_client_id" : "XXXX.apps.googleusercontent.com",
+    "google_client_secret" : "XXXXXXXXXXXXXXX",
+    "google_api_key" : "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "authentication_token_secret" : "secret",
+    "authentication_token_issuer" : "naturalcrit",
+    "authentication_token_audience" : "naturalcrit" 
+}
