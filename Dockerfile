@@ -2,6 +2,8 @@ FROM node:14.15
 
 ENV NODE_ENV=docker
 
+ENV MONGODB_URI="mongodb://mongodb/naturalcrit"
+
 # Create app directory
 WORKDIR /usr/src/app
 
