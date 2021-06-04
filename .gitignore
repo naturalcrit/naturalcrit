@@ -10,6 +10,7 @@ architecture.json
 /config/*
 !/config/default.json
 !/config/reference.json
+!/config/README.md
 
 node_modules
 storage
