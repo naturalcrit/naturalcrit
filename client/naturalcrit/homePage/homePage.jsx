@@ -15,7 +15,7 @@ const HomePage = React.createClass({
 				tools : [
 					{
 						id : 'homebrew',
-						path : 'http://homebrewery.theglowingfool.com',
+						path : 'http://homebrewery.naturalcrit.com',
 						name : 'The Homebrewery',
 						icon : <HomebrewIcon />,
 						desc : 'Make authentic-looking D&D homebrews using Markdown',
@@ -25,7 +25,7 @@ const HomePage = React.createClass({
 					},
 					{
 						id : 'badges',
-						path : 'http://naturalcrit.theglowingfool.com/badges',
+						path : 'http://naturalcrit.com/badges',
 						name : 'Achivement Badges',
 						icon : <BadgeIcon />,
 						desc : 'Create simple badges to award your players',
@@ -35,7 +35,7 @@ const HomePage = React.createClass({
 					},
 					{
 						id : 'tpk',
-						path : 'http://tpk.theglowingfool.com',
+						path : 'http://tpk.naturalcrit.com',
 						name : 'Total Player Knoller',
 						icon : <TPKIcon />,
 						desc : 'Effortless custom character sheets',
