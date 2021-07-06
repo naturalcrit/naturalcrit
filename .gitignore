@@ -9,6 +9,8 @@ architecture.json
 # Ignore sensitive stuff
 /config/*
 !/config/default.json
+!/config/reference.json
+!/config/README.md
 
 node_modules
 storage
