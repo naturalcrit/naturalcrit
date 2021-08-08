@@ -52,7 +52,9 @@ app.use('/auth', authRoutes);
 
 //Homebrew Redirect
 app.all('/homebrew*', (req, res) => {
-	return res.redirect(302, 'http://homebrewery.naturalcrit.com' + req.url.replace('/homebrew', ''));
+	const tools = config.get("tools");
+	const homebrewPath = (typeof(tools["homebrew"].path) != 'undefined' ? tools['homebrew'].path : 'https://homebrewery.naturalcrit.com');
+	return res.redirect(302, homebrewPath + req.url.replace('/homebrew', ''));
 });
 
 
@@ -71,7 +73,8 @@ app.get('*', (req, res) => {
 			url : req.url,
 			user : req.user,
 			//authToken : authToken,
-			domain : config.get('domain')
+			domain : config.get('domain'),
+			tools : config.get('tools')
 		})
 		.then((page) => res.send(page))
 		.catch((err) => console.log(err));
