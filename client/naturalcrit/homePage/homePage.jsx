@@ -26,7 +26,7 @@ const HomePage = React.createClass({
 					{
 						id : 'badges',
 						path : 'http://naturalcrit.com/badges',
-						name : 'Achivement Badges',
+						name : 'Achievement Badges',
 						icon : <BadgeIcon />,
 						desc : 'Create simple badges to award your players',
 
@@ -43,8 +43,22 @@ const HomePage = React.createClass({
 						show : false,
 						beta : true
 					},
+				],
+				configTools : {}
+			};
+		},
 
-				]
+		getInitialState(){
+			const newTools = _.map(this.props.tools, (tool)=>{
+				if(this.props.configTools[tool.id]){
+					const configTool = this.props.configTools[tool.id];
+					if(typeof(configTool.path) != 'undefined'){ tool.path = configTool.path; };
+					if(typeof(configTool.show) != 'undefined'){ tool.show = configTool.show; };
+				}
+				return tool;
+			});
+			return {
+				tools : newTools
 			};
 		},
 
@@ -61,7 +75,7 @@ const HomePage = React.createClass({
 		},
 
 		renderTools : function(){
-			return _.map(this.props.tools, (tool)=>{
+			return _.map(this.state.tools, (tool)=>{
 				return this.renderTool(tool);
 			});
 		},

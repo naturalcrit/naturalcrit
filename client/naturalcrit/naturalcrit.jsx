@@ -40,10 +40,12 @@ const Naturalcrit = React.createClass({
 					user={this.props.user} />
 			},
 			'*' : () => {
-				return <HomePage />
+				return <HomePage 
+					configTools={this.props.tools} />
 			}
 		});
 	},
+
 	render : function(){
 		return <div className='naturalcrit'>
 			<Router initialUrl={this.props.url}/>

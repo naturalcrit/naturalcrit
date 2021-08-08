@@ -1,5 +1,16 @@
 {
-	"host" : "local.naturalcrit.com:8010",
-	"domain" : ".local.naturalcrit.com",
-	"secret" : "secret"
+	"host" : "localhost:8010",
+	"domain" : ".localhost:8010",
+	"secret" : "secret",
+	"tools" : {
+		"homebrew" : {
+			"show" : true			
+		},
+		"badges" : {
+			"show" : true
+		},
+		"tpk" : {
+			"show" : false
+		}
+	}
 }
