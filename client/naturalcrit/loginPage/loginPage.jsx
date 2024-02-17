@@ -247,17 +247,11 @@ const LoginPage = React.createClass({
     if (!this.props.user.googleId) {
       return <div className='loggedin'>
 				You are logged in as {this.props.user.username}. <a href='' onClick={this.logout}>logout.</a>
-				<br/>
-				<br/>
-				<a href={`https://homebrewery.naturalcrit.com/user/${this.props.user.username}`}>Go back to the Homebrewery</a>				 
 			</div>
     }
 		else {
 			return <div className='loggedin'>
 				You are logged in via Google as {this.props.user.username}. <a href='' onClick={this.logout}>logout.</a>
-				<br/>
-				<br/>
-				<a href={`https://homebrewery.naturalcrit.com/user/${this.props.user.username}`}>Go back to the Homebrewery</a>				 
 			</div>
 		}
 	},
