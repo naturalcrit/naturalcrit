@@ -31,28 +31,33 @@ const SuccessPage = React.createClass({
 		};
 	},
 	componentDidMount: function() {
-	  setTimeout(function(){window.location='/login';}, 1500);
- },
- render : function(){
-	 return <div className='loginPage'>
-		 <div className='logo'>
-			 <NaturalCritIcon />
-			 <span className='name'>
-				 Natural
-				 <span className='crit'>Crit</span>
-			 </span>
-		 </div>
+		const params = new URLSearchParams(window.location.search);
+		const user = params.get('user');
+		this.setState({
+			username : user
+		})
+ 	},
+ 	render : function(){
+		return <div className='loginPage'>
+		 	<div className='logo'>
+			 	<NaturalCritIcon />
+			 	<span className='name'>
+				 	Natural
+				 	<span className='crit'>Crit</span>
+			 	</span>
+		 	</div>
 
-
-		 <div className='content'>
-		 <p>Successfully logged in!</p>
-		 <br />
-		 <br />
-		 <p>Redirecting...</p>
-		 </div>
-
-	 </div>
- }
+		 	<div className='content'>
+		 		<p>Successfully logged in as <strong>{this.state.username}</strong>!</p>
+		 		<br />
+		 		<br />
+		 		<div className="redirection">
+					<a href="/" className="redirectLink"> To the homepage <span className="fa fa-home"></span></a>
+					<a href={`https://homebrewery.naturalcrit.com/user/${this.state.username}`} className="redirectLink"> To The Homebrewery</a>
+				</div>
+			</div>
+	 	</div>
+ 	}
 });
 
 module.exports = SuccessPage;
