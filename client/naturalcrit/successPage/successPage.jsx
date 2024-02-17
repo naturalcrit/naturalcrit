@@ -31,7 +31,7 @@ const SuccessPage = React.createClass({
 		};
 	},
 	componentDidMount: function() {
-	  setTimeout(function(){window.location='/login';}, 1500);
+	  setTimeout(function(){window.location='/';}, 1500);
  },
  render : function(){
 	 return <div className='loginPage'>
