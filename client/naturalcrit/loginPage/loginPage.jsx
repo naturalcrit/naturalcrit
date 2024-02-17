@@ -73,7 +73,7 @@ const LoginPage = React.createClass({
 					processing : false,
 					errors : null,
 					success : true
-				}, this.redirect());
+				}, this.redirect);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -101,7 +101,7 @@ const LoginPage = React.createClass({
 					processing : false,
 					errors : null,
 					success : true
-				}, this.redirect());
+				}, this.redirect);
 			})
 			.catch((err) => {
 				console.log(err);
