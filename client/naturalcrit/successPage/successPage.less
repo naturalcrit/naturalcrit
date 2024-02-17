@@ -8,6 +8,11 @@
 		margin  : 0 auto;
 		padding : 20px;
 		padding-top: 50px;
+
+		strong {
+			font-weight:900;
+		}
+
 		.switchView{
 			width : 100%;
 			&>div{
@@ -118,6 +123,34 @@
 			color         : @red;
 		}
 	}
+	.redirection {
+		display: flex;
+		justify-content: space-between;
+		column-gap:20px;
+
+		.redirectLink {
+			text-decoration: unset;
+			background-color: #01779e;
+			color:white;
+			text-transform: uppercase;
+			padding: 10px 15px;
+			transition: background-color 0.3s;
+
+			&:has(.fa) {
+				display: flex;
+				align-items: center;
+
+				.fa {
+					font-size: 30px;
+				}
+			}
+
+			&:hover {
+				background-color: #d48a00;
+			}
+		}
+	}
+
 	.loggedin{
 		margin-top : 60px;
 		font-size  : 0.8em;
