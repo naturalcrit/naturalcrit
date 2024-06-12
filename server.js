@@ -16,6 +16,7 @@ const app = express();
 app.use(express.static(__dirname + '/build'));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(require('./server/middleware/forcessl.mw.js'));
 
 const config = require('nconf')
 	.argv()
