@@ -70,6 +70,14 @@ AccountSchema.methods.checkPassword = async function(candidatePassword) {
 	return bcrypt.compareSync(candidatePassword, this.password);
 };
 
+AccountSchema.methods.remove = async function() {
+    try {
+        return await this.model('Account').deleteOne({ _id: this._id });
+    } catch (err) {
+        throw { ok: false, msg: 'Failed to remove account', error: err };
+    }
+};
+
 AccountSchema.methods.getJWT = function() {
 	const payload = this.toJSON();
 	payload.issued = new Date();

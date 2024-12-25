@@ -12,9 +12,10 @@ class AccountPage extends React.Component {
 			processing: false,
 			errors: null,
 		};
-		this.handleRename = this.handleRename.bind(this); // Bind handleRename here
-		this.toggleRenameForm = this.toggleRenameForm.bind(this); // Bind the method here
-		this.toggleDeleteForm = this.toggleDeleteForm.bind(this); // Bind the method here
+		this.handleRename = this.handleRename.bind(this);
+		this.toggleRenameForm = this.toggleRenameForm.bind(this);
+		this.toggleDeleteForm = this.toggleDeleteForm.bind(this);
+		this.handleDelete = this.handleDelete.bind(this);
 	}
 
 	toggleRenameForm() {
@@ -59,7 +60,7 @@ class AccountPage extends React.Component {
 			});
 	}
 
-	handleDelete(password) {
+	handleDelete(username, password) {
 		//if (prompt( 'This feature is a work in progres at the moment, and can only be used by developers of the project, please enter the password', 'password') !== 'DeleteFeature')return Promise.reject('User canceled rename');
 		//if (!confirm('Are you sure you want to delete your account?')) return Promise.reject('User canceled delete');
 
