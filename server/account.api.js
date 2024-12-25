@@ -63,21 +63,33 @@ router.get('/user_exists/:username', async (req, res) => {
 });
 
 router.put('/rename', async (req, res) => {
-    try {
-        const { username, newUsername } = req.body;
+	try {
+		const { username, newUsername } = req.body;
+		const user = await AccountModel.getUser(username);
+		if (!user) return res.status(404).json({ error: 'User not found' });
 
-        const user = await AccountModel.getUser(username);
-        if (!user) return res.status(404).json({ error: 'User not found' });
+		user.username = newUsername;
+		await user.save();
 
-        user.username = newUsername;
-        await user.save();
-
-        res.json(true);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+		res.json(true);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json(err);
+	}
 });
 
+router.delete('/delete', async (req, res) => {
+	try {
+		const { username } = req.body;
+		const user = await AccountModel.getUser(username);
+		if (!user) return res.status(404).json({ error: 'User not found' });
+		await user.remove();
+
+		res.json(true);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json(err);
+	}
+});
 
 module.exports = router;

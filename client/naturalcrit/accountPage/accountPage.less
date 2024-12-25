@@ -16,7 +16,37 @@
         }
 
         .authForm {
+            position: relative;
             max-width: 350px;
+
+            &::after {
+                display: block;
+                height: 120%;
+                width: 150%;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                translate: -50% -50%;
+                z-index: -1;
+                writing-mode: vertical-LR;
+                font-family: CodeBold;
+                color: rgba(0, 0, 0, 0.402);
+                padding-top:30px;
+                font-size: 35px;
+                text-orientation: upright;
+                text-align: left;
+            }
+
+            &.rename::after {
+                content: "RENAME";
+                background: rgb(193, 255, 193);
+            }
+
+            &.delete::after {
+                content: "DELETE";
+                background: rgb(255, 193, 193);
+            }
+
         }
     }
 
