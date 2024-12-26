@@ -61,8 +61,7 @@ class AccountPage extends React.Component {
 	}
 
 	handleDelete(username, password) {
-		//if (prompt( 'This feature is a work in progres at the moment, and can only be used by developers of the project, please enter the password', 'password') !== 'DeleteFeature')return Promise.reject('User canceled rename');
-		//if (!confirm('Are you sure you want to delete your account?')) return Promise.reject('User canceled delete');
+		if (!confirm('Are you sure you want to delete your account?')) return Promise.reject('User canceled delete');
 
 		this.setState({
 			processing: true,
