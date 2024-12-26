@@ -157,7 +157,7 @@ const AuthForm = React.createClass({
 		return (
 			<div className={`authForm ${actionType}`}>
 				<label className="field user">
-					{this.props.actionType === 'rename' ? 'new username' : 'username'}
+					{this.props.actionType !== 'login' ? 'new username' : 'username'}
 					<input type="text" onChange={this.handleInputChange('username')} value={username} />
 					{this.props.actionType !== 'login' && this.renderUsernameValidation()}
 				</label>
