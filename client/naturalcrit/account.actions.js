@@ -90,6 +90,33 @@ const AccountActions = {
 			});
 	},
 
+	delete: (username, password) => {
+		console.log('attempting delete');
+		return AccountActions.login(username, password)
+			.then(() => {
+				return new Promise((resolve, reject) => {
+					request
+						.del('/delete')
+						.send({ username })
+						.end((err, res) => {
+							if (err) return reject(err);
+							AccountActions.removeSession();
+							request
+								.del('https://homebrewery.naturalcrit.com/api/user/delete')
+								.withCredentials() //send session cookie manually
+								.send({ username })
+								.end((err, res) => {
+									if (err) return reject(err);
+									return resolve(res.body);
+								});
+						});
+				});
+			})
+			.catch((err) => {
+				return Promise.reject(err);
+			});
+	},
+
 	createSession: (token) => {
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
 		document.cookie = `nc_session=${token}; max-age=${60 * 60 * 24 * 365}; path=/; samesite=lax;domain=${domain}`;

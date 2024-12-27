@@ -62,8 +62,6 @@ const LoginPage = React.createClass({
 				});
 		}
 	},
-	
-
 
 	linkGoogle: function () {
 		if (this.props.user) {
