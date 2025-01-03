@@ -22,10 +22,10 @@ const Naturalcrit = React.createClass({
 	},
 
 	getInitialState: function () {
-		const initialTheme = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') || 'light' : 'light';
-		return { theme: initialTheme };
+		return { theme: 'light' };
 	},
-
+	
+	
 	componentWillMount: function () {
 		global.domain = this.props.domain;
 
@@ -49,6 +49,15 @@ const Naturalcrit = React.createClass({
 				return <HomePage configTools={this.props.tools} user={this.props.user} />;
 			},
 		});
+	},
+
+	componentDidMount: function () {
+		if (typeof localStorage !== 'undefined') {
+			const storedTheme = localStorage.getItem('theme');
+			if (storedTheme) {
+				this.setState({ theme: storedTheme });
+			}
+		}
 	},
 
 	toggleTheme: function () {
