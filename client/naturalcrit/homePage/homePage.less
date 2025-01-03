@@ -1,6 +1,5 @@
 .homePage {
 	height: 100vh;
-	background-color: white;
 
 	.top {
 		.fadeInTop(1s);
@@ -29,7 +28,7 @@
 			vertical-align: top;
 			cursor: pointer;
 			opacity: 0;
-			color: black;
+			color: inherit;
 			text-align: center;
 			text-decoration: none;
 
@@ -67,6 +66,7 @@
 					max-width: 300px;
 					margin: 20px auto;
 					line-height: 1.5em;
+					color:inherit;
 				}
 
 				svg {
@@ -110,7 +110,7 @@
 	}
 }
 
-.addSketch(@length, @color : black) {
+.addSketch(@length, @color : var(--p-clr)) {
 
 	path,
 	line,

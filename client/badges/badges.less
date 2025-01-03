@@ -1,10 +1,36 @@
 @import "shared/naturalcrit/styles/core.less";
 
+main {
+	position: relative;
+	height: 100%;
+}
+
 .badges {
-	width: 800px;
-	margin: auto;
+	--bg-clr: white;
+	--p-clr: black;
+
+	position: relative;
+	height: 100%;
+	background: var(--bg-clr);
+	color: var(--p-clr);
+
+	.mainContent {
+		height: 100%;
+		width: 800px;
+		margin: auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&.theme-dark {
+		--bg-clr: #333;
+		--p-clr: #eee;
+	}
 
 	h1 {
+		margin:0;
 		margin-bottom: 10px;
 		padding-top: 30px;
 		font-family: 'Calluna';
@@ -13,6 +39,10 @@
 		text-align: center;
 	}
 
+	p {
+		color:inherit;
+	}
+	
 	&>p {
 		margin-bottom: 20px;
 		font-size: 0.8em;
@@ -23,20 +53,64 @@
 		display: flex;
 		padding-top: 50px;
 		justify-content: space-around;
-		gap:50px;
-		padding-inline:25px;
+		gap: 50px;
+		padding-inline: 25px;
 	}
 
 	.credit {
-		width:fit-content;
-		margin-inline:auto;
+		width: fit-content;
+		margin-inline: auto;
 		display: block;
 		margin-top: 50px;
 		font-family: 'Calluna';
 		font-size: 0.8em;
 		text-align: center;
 		line-height: 1.2em;
-		color:#282423;
+		color: var(--p-clr);
+		opacity: 80%;
+	}
+}
+
+button {
+	border: none;
+	font-family: 'CodeBold';
+	letter-spacing: 1px;
+	padding: 12px 20px;
+	margin: 10px;
+	background-color: var(--p-clr);
+	color: var(--bg-clr);
+	text-transform: uppercase;
+	text-align: center;
+
+	&:hover {
+		background-color: var(--p-clr);
+		color: var(--bg-clr);
+		filter: contrast(0.7);
+	}
+
+	&:enabled {
+		cursor: pointer;
+	}
+
+	&:disabled {
+		background-color: #444;
+		cursor: not-allowed;
+	}
+
+	&:is(.red, .green, .orange):disabled {
+		filter: saturate(40%);
+	}
+
+	&.red {
+		background-color: @red;
+	}
+
+	&.green {
+		background-color: @green;
+	}
+
+	&.orange {
+		background-color: @orange;
 	}
 }
 
@@ -45,14 +119,14 @@
 	top: 10px;
 	left: 10px;
 	font-size: 2em;
-	color: black;
+	color: var(--p-clr);
 	text-decoration: none;
 
 	svg {
 		height: .9em;
 		margin-right: .2em;
 		cursor: pointer;
-		fill: black;
+		fill: currentColor;
 	}
 
 	.name {
@@ -62,4 +136,10 @@
 			font-family: 'CodeBold';
 		}
 	}
+}
+
+.theme {
+	position: fixed;
+	top: 0;
+	right: 0;
 }
