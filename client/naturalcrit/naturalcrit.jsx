@@ -21,6 +21,11 @@ const Naturalcrit = React.createClass({
 		};
 	},
 
+	getInitialState: function () {
+		const initialTheme = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') || 'light' : 'light';
+		return { theme: initialTheme };
+	},
+
 	componentWillMount: function () {
 		global.domain = this.props.domain;
 
@@ -46,6 +51,14 @@ const Naturalcrit = React.createClass({
 		});
 	},
 
+	toggleTheme: function () {
+		const newTheme = this.state.theme === 'light' ? 'dark' : 'light';
+		if (typeof localStorage !== 'undefined') {
+			localStorage.setItem('theme', newTheme);
+		}
+		this.setState({ theme: newTheme });
+	},
+
 	renderAccount: function () {
 		let accountLink = '';
 		if (this.props.user && this.props.user.username) {
@@ -63,10 +76,19 @@ const Naturalcrit = React.createClass({
 		return <div className="environment">Local</div>; // Local
 	},
 
+	renderThemePicker: function () {
+		return (
+			<button className='theme' onClick={this.toggleTheme}>
+				<i className={`fas ${this.state.theme === 'light' ? 'fa-sun' : 'fa-moon'}`}></i>
+			</button>
+		);
+	},
+
 	render: function () {
 		return (
-			<div className="naturalcrit">
+			<div className={`naturalcrit theme-${this.state.theme}`}>
 				<Router initialUrl={this.props.url} />
+				{this.renderThemePicker()}
 				<div className={`accountButton ${this.props.user ? '' : 'login'}`}>{this.renderAccount()}</div>
 				{this.renderEnviroment()}
 			</div>
