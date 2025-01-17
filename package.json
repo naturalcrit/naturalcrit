@@ -33,7 +33,7 @@
     "less": "^4.2.1",
     "livereload": "^0.9.3",
     "lodash": "^4.17.21",
-    "mongoose": "^8.8.3",
+    "mongoose": "^8.9.5",
     "nconf": "0.8.4",
     "nodemon": "^3.1.7",
     "passport": "0.6.0",
