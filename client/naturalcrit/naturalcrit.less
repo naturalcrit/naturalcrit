@@ -1,14 +1,37 @@
 @import 'naturalcrit/styles/core.less';
 
+main {
+	height: 100vh;
+
+	.naturalcrit {
+		--bg-clr: white;
+		--p-clr: black;
+
+		height: 100vh;
+		background-color: var(--bg-clr);
+		color:var(--p-clr);
+		//set transition
+		transition: all 0.5s ease-in-out;
+
+		&.theme-dark {
+			--bg-clr: #333;
+			--p-clr: #eee;
+		}
+	}
+}
+p {
+	color:inherit;
+}
+
 .logo {
 	font-size: 4em;
-	color: black;
+	color: var(--p-clr);
 	text-decoration: none;
 
 	svg {
 		height: .9em;
 		margin-right: .2em;
-		fill: black;
+		fill: currentColor;
 	}
 
 	.name {
@@ -34,13 +57,15 @@ button {
 	letter-spacing: 1px;
 	padding: 12px 20px;
 	margin: 10px;
-	background-color: black;
-	color: white;
+	background-color: var(--p-clr);
+	color: var(--bg-clr);
 	text-transform: uppercase;
 	text-align: center;
 
 	&:hover {
-		background-color: #222;
+		background-color: var(--p-clr);
+		color: var(--bg-clr);
+		filter:contrast(0.7);
 	}
 
 	&:enabled {
@@ -75,21 +100,27 @@ button {
 	position: fixed;
 	top: 10px;
 	right: 10px;
-	background-color: black;
-	color: white;
+	background-color: var(--p-clr);
+	color: var(--bg-clr);
 	text-transform: uppercase;
 	text-align: center;
 
 	&:hover {
-		background-color: #222;
+		filter:contrast(0.7);
 	}
 
 	a {
 		display: block;
 		padding: 15px 30px;
 		text-decoration: none;
-		color: white;
+		color: currentColor;
 	}
+}
+
+.theme {
+	position: fixed;
+	bottom: 0;
+	right: 0;
 }
 
 .environment {
