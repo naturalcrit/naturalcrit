@@ -2,11 +2,13 @@ const React = require('react');
 const _ = require('lodash');
 const cx = require('classnames');
 
+import createReactClass from 'create-react-class';
+
 const NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
 const AccountActions = require('../account.actions.js');
 //TODO: Almost identidal to "loginPage". Should possibly be merged to reduce redundancy
 
-const LoginPage = React.createClass({
+const LoginPage = createReactClass({
 	getDefaultProps: function () {
 		return {
 			redirect: '',

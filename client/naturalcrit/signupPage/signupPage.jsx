@@ -1,6 +1,8 @@
 var React = require('react');
 
-var SignupPage = React.createClass({
+import createReactClass from 'create-react-class';
+
+var SignupPage = createReactClass({
 	render: function () {
 		return <div className="signupPage">SignupPage Component Ready.</div>;
 	},

@@ -10,7 +10,7 @@
     "start": "node server.js"
   },
   "engines": {
-    "node": ">=6.2.0"
+    "node": ">=18.0.0"
   },
   "author": "stolksdorf",
   "license": "BSD-2-Clause",
@@ -26,6 +26,7 @@
     "chokidar": "^4.0.3",
     "classnames": "^2.2.5",
     "cookie-parser": "^1.4.3",
+    "create-react-class": "^15.7.0",
     "express": "^4.21.2",
     "fs-extra": "^3.0.1",
     "jwt-simple": "^0.5.0",
@@ -41,9 +42,9 @@
     "passport-jwt": "4.0.1",
     "passport-local": "1.0.0",
     "pico-router": "^1.1.1",
-    "react": "^15.4.1",
+    "react": "^16.14.0",
     "react-color": "^2.13.3",
-    "react-dom": "^15.4.1",
+    "react-dom": "^16.14.0",
     "source-map-support": "^0.4.6",
     "superagent": "^2.3.0",
     "uglify-es": "^3.0.14",

@@ -2,13 +2,15 @@ const React = require('react');
 const _ = require('lodash');
 const cx = require('classnames');
 
+import createReactClass from 'create-react-class';
+
 const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
 
 const HomebrewIcon = require('naturalcrit/svg/homebrew.svg.jsx');
 const TPKIcon = require('naturalcrit/svg/tpk.svg.jsx');
 const BadgeIcon = require('naturalcrit/svg/badge.svg.jsx');
 
-const HomePage = React.createClass({
+const HomePage = createReactClass({
 	getDefaultProps: function () {
 		return {
 			tools: [

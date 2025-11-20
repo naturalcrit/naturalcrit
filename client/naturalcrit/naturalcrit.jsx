@@ -1,5 +1,6 @@
 const React = require('react');
 
+import createReactClass from 'create-react-class';
 const CreateRouter = require('pico-router').createRouter;
 
 //Pages
@@ -10,7 +11,7 @@ const SuccessPage = require('./successPage/successPage.jsx');
 const GoogleRedirect = require('./googleRedirect/googleRedirect.jsx');
 
 let Router;
-const Naturalcrit = React.createClass({
+const Naturalcrit = createReactClass({
 	getDefaultProps: function () {
 		return {
 			user: null,

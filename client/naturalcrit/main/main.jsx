@@ -2,10 +2,12 @@ var React = require('react');
 var _ = require('lodash');
 var cx = require('classnames');
 
+import createReactClass from 'create-react-class';
+
 var NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
 var HomebrewIcon = require('naturalcrit/svg/homebrew.svg.jsx');
 
-var Main = React.createClass({
+var Main = createReactClass({
 	getDefaultProps: function () {
 		return {
 			tools: [
