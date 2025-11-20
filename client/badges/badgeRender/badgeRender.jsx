@@ -16,13 +16,13 @@ const BadgeRender = createClass({
 		};
 	},
 	componentDidUpdate(prevProps) {
-    	if (prevProps !== this.props) {
-    	    this.drawBadge(this.props);
-    	}
+		if (prevProps !== this.props) {
+			this.drawBadge(this.props);
+		}
 	},
 
-	shouldComponentUpdate: function (nextProps, nextState) {
-		return false;
+	shouldComponentUpdate(nextProps) {
+		return nextProps !== this.props;
 	},
 
 	componentDidMount: function () {
