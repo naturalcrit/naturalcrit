@@ -1,7 +1,7 @@
 const React = require('react');
 const { useState, useEffect } = require('react');
 
-const { Routes, Route, Navigate, BrowserRouter } = require('react-router-dom');
+const { Routes, Route, Navigate, BrowserRouter, useSearchParams } = require('react-router-dom');
 const { StaticRouter } = require('react-router-dom/server');
 
 // Pages
@@ -30,15 +30,28 @@ const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 	const Router = typeof window === 'undefined' ? StaticRouter : BrowserRouter;
 	const routerProps = typeof window === 'undefined' ? { location: url, context: {} } : {};
 
+	// Small wrapper INSIDE the Router
+	const LoginWrapper = ({ user }) => {
+		const [searchParams] = useSearchParams();
+		const redirect = searchParams.get('redirect') || '/';
+		return <LoginPage redirect={redirect} user={user} />;
+	};
+
 	return (
 		<div className={`naturalcrit theme-${theme}`}>
 			<Router {...routerProps}>
 				<Routes>
 					<Route
 						path="/account"
-						element={user?.username ? <AccountPage user={user} /> : <Navigate to="/login" replace />}
+						element={
+							user?.username ? (
+								<AccountPage user={user} />
+							) : (
+								<Navigate to="/login?redirect=/account" replace />
+							)
+						}
 					/>
-					<Route path="/login" element={<LoginPage user={user} />} />
+					<Route path="/login" element={<LoginWrapper user={user} />} />
 					<Route path="/success" element={<SuccessPage user={user} />} />
 					<Route path="/auth/google/redirect" element={<GoogleRedirect user={user} />} />
 					<Route path="*" element={<HomePage configTools={tools} user={user} />} />
