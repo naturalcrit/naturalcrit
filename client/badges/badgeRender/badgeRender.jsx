@@ -15,8 +15,10 @@ const BadgeRender = createClass({
 			color: '#333',
 		};
 	},
-	componentWillReceiveProps: function (nextProps) {
-		this.drawBadge(nextProps);
+	componentDidUpdate(prevProps) {
+    	if (prevProps !== this.props) {
+    	    this.drawBadge(this.props);
+    	}
 	},
 
 	shouldComponentUpdate: function (nextProps, nextState) {

@@ -25,9 +25,8 @@ const Naturalcrit = createReactClass({
 	getInitialState: function () {
 		return { theme: 'light' };
 	},
-	
-	
-	componentWillMount: function () {
+
+	componentDidMount() {
 		global.domain = this.props.domain;
 
 		Router = CreateRouter({
@@ -88,7 +87,7 @@ const Naturalcrit = createReactClass({
 
 	renderThemePicker: function () {
 		return (
-			<button className='theme' onClick={this.toggleTheme}>
+			<button className="theme" onClick={this.toggleTheme}>
 				<i className={`fas ${this.state.theme === 'light' ? 'fa-sun' : 'fa-moon'}`}></i>
 			</button>
 		);
