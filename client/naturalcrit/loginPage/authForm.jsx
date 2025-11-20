@@ -25,7 +25,7 @@ const AuthForm = React.createClass({
 	},
 
 	componentDidMount: function () {
-        console.log('mounting authform');
+		console.log('mounting authform');
 		window.document.addEventListener('keydown', this.handleKeyDown);
 	},
 
@@ -45,7 +45,7 @@ const AuthForm = React.createClass({
 		};
 	},
 
-    checkUsername: function () {
+	checkUsername: function () {
 		if (this.state.username === '') return;
 
 		this.setState({
@@ -63,14 +63,34 @@ const AuthForm = React.createClass({
 		});
 	}, 1000),
 
+	getUsernameStatus: function () {
+		const { username, checkingUsername, usernameExists } = this.state;
+		const { actionType } = this.props;
+
+		if (!username) return 'empty';
+
+		// ✅ Pattern rule for signup/rename
+		if (actionType === 'signup' || actionType === 'rename') {
+			const pattern = /^[A-Za-z0-9_.-&%$]+$/;
+			if (!pattern.test(username)) {
+				return 'invalidPattern';
+			}
+		}
+
+		if (checkingUsername) return 'checking';
+		if (usernameExists) return 'taken';
+		return 'valid';
+	},
+
 	isValid: function () {
-		const { username, password, usernameExists, processing } = this.state;
+		const { password, processing } = this.state;
 		const { actionType } = this.props;
 
 		if (processing) return false;
-
-		if (actionType === 'login') return username && password;
-		if (actionType === 'signup' || actionType === 'rename') return username && password && !usernameExists;
+		if (actionType === 'login') return this.state.username && password;
+		if (actionType === 'signup' || actionType === 'rename') {
+			return password && this.getUsernameStatus() === 'valid';
+		}
 
 		return false;
 	},
@@ -86,7 +106,7 @@ const AuthForm = React.createClass({
 		onSubmit(username, password, actionType)
 			.then(() => this.setState({ processing: false, errors: null }))
 			.catch((err) => {
-                console.error(err);
+				console.error(err);
 				this.setState({
 					processing: false,
 					errors: err,
@@ -102,13 +122,13 @@ const AuthForm = React.createClass({
 	},
 
 	renderUsernameValidation: function () {
-		const { checkingUsername, usernameExists, username } = this.state;
-		if (!username) return null;
+		const status = this.getUsernameStatus();
+		if (status === 'empty') return null;
 
 		let icon;
-		if (checkingUsername) icon = <i className="fa fa-spinner fa-spin" />;
-		else if (usernameExists) icon = <i className="fa fa-times red" />;
-		else icon = <i className="fa fa-check green" />;
+		if (status === 'checking') icon = <i className="fa fa-spinner fa-spin" />;
+		else if (status === 'taken') icon = <i className="fa fa-times red" />;
+		else if (status === 'valid') icon = <i className="fa fa-check green" />;
 
 		return <div className="control">{icon}</div>;
 	},
