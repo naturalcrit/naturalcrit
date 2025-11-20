@@ -4,7 +4,6 @@ const { useState, useEffect } = require('react');
 const { Routes, Route, Navigate, BrowserRouter, useSearchParams } = require('react-router-dom');
 const { StaticRouter } = require('react-router-dom/server');
 
-// Pages
 const HomePage = require('./homePage/homePage.jsx');
 const AccountPage = require('./accountPage/accountPage.jsx');
 const LoginPage = require('./loginPage/loginPage.jsx');
@@ -26,11 +25,9 @@ const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 		setTheme(newTheme);
 	};
 
-	// Choose Router: StaticRouter for SSR, BrowserRouter for client
 	const Router = typeof window === 'undefined' ? StaticRouter : BrowserRouter;
 	const routerProps = typeof window === 'undefined' ? { location: url, context: {} } : {};
 
-	// Small wrapper INSIDE the Router
 	const LoginWrapper = ({ user }) => {
 		const [searchParams] = useSearchParams();
 		const redirect = searchParams.get('redirect') || '/';
