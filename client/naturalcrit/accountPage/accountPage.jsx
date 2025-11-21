@@ -17,6 +17,7 @@ class AccountPage extends React.Component {
 		this.toggleDeleteForm = this.toggleDeleteForm.bind(this);
 		this.handleDelete = this.handleDelete.bind(this);
 	}
+	
 
 	toggleRenameForm() {
 		this.setState({ showDeleteForm: false, showRenameForm: !this.state.showRenameForm });
