@@ -9,6 +9,7 @@ Promise.resolve()
 	.then(()=>steps.clean())
 	.then(()=>steps.libs(Proj.libs))
 	.then(()=>Promise.all(_.map(Proj.apps, (path, name)=>
+		console.log(name),
 		steps.jsx(name, path, {libs : Proj.libs, shared : Proj.shared})
 			.then((deps)=>steps.less(name, {shared : Proj.shared}, deps))
 	)))
