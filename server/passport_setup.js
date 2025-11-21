@@ -11,7 +11,7 @@ const config = require('nconf')
 	.file('environment', { file: `config/${process.env.NODE_ENV}.json` })
 	.file('defaults', { file: 'config/default.json' });
 
-console.log('did we get google client id? ',config.get('googleClientId'));
+console.log('did we get google client id?: ',config.get('googleClientId'));
 passport.initialize();
 
 passport.serializeUser((user, done) => {
