@@ -47,6 +47,7 @@ passport.use(new JwtStrategy({
 ));
 
 passport.use(
+	console.log(config),
 	new GoogleStrategy({ 		//options for the google strat
 		callbackURL: '/auth/google/redirect',
 		clientID: config.get('googleClientId'),
