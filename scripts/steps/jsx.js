@@ -72,12 +72,17 @@ const makeBundler = function (name, entryPoint, opts = {}) {
 
 				let code = buf.toString();
 				if (isProd) {
-					console.log('Skipping minification for', name);
-					code = buf.toString();
+					try {
+						const minified = uglify.minify(buf.toString());
+						if (minified.error) return reject(minified.error);
+						code = minified.code;
+					} catch (e) {
+						reject(e);
+					}
 				}
-
 				fse.outputFile(path.resolve(`./build`, name, opts.filename), code, (err) => {
 					if (err) return reject(err);
+					console.log('Wrote bundle for', name, 'to', path.resolve(`./build`, name, opts.filename));
 					logEnd();
 					return resolve(jsxDeps);
 				});
