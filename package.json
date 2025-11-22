@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "node scripts/dev.js",
     "build": "node scripts/build.js",
-    "prod": "NODE_ENV=production npm run build",
-    "start": "node server.js",
-    "heroku-postbuild": "npm run build"
+    "prod": "set NODE_ENV=production&& npm run build",
+    "postinstall": "npm run build",
+    "start": "node server.js"
   },
   "engines": {
     "node": "18.0.0"
