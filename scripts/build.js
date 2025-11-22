@@ -5,6 +5,8 @@ const _     = require('lodash');
 const steps = require('./steps');
 const Proj  = require('./project.json');
 
+console.log("build.js started");
+
 Promise.resolve()
 	.then(()=>steps.clean())
 	.then(()=>steps.libs(Proj.libs))
