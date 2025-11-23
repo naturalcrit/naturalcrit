@@ -12,7 +12,6 @@ const assetwatch = (globs, folders) => {
 			return `${folder}/**/${glob}`;
 		}));
 	}, []);
-	console.log('finishing assets.watch.js');
 	return assets(globs, folders)
 		.then(() => {
 			chokidar.watch(allPaths, {ignoreInitial : true})

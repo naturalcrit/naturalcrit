@@ -82,14 +82,12 @@ const makeBundler = function (name, entryPoint, opts = {}) {
 				}
 				fse.outputFile(path.resolve(`./build`, name, opts.filename), code, (err) => {
 					if (err) return reject(err);
-					console.log('Wrote bundle for', name, 'to', path.resolve(`./build`, name, opts.filename));
 					logEnd();
 					return resolve(jsxDeps);
 				});
 			});
 		});
 	};
-	console.log('finishing jsx.js');
 	return {
 		run: run,
 		rawBundler: bundler,

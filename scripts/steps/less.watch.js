@@ -12,7 +12,6 @@ const lesswatch = (name, opts={}) => {
 		return `${sharedDir}/**/*.less`;
 	});
 	watchPaths.push(`${storage.entryDir(name)}/**/*.less`);
-	console.log('finishing less.watch.js');
 	return LessStep(name, opts, storage.deps(name))
 		.then(() => {
 			chokidar.watch(watchPaths, {ignoreInitial : true})

@@ -35,7 +35,6 @@ const jsxwatch = (name, entryPoint, opts)=>{
 	};
 
 	remakeBundler();
-		console.log('finishing jsx.watch.js');
 	return bundler.run()
 		.then((deps) => {
 			storage.deps(name, deps);
