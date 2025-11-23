@@ -1,10 +1,11 @@
-const React = require('react');
-const _ = require('lodash');
-const createClass = require('create-react-class');
-const cx = require('classnames');
-const Color = require('react-color');
+import React from 'react';
 
-const Controls = createClass({
+import _ from 'lodash';
+import createReactClass from 'create-react-class';
+import cx from 'classnames';
+import Color from 'react-color';
+
+const Controls = createReactClass({
 	getDefaultProps: function () {
 		return {
 			data: {
@@ -92,4 +93,4 @@ const Controls = createClass({
 	},
 });
 
-module.exports = Controls;
+export default Controls;

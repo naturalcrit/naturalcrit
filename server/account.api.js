@@ -1,5 +1,7 @@
-const jwt = require('jwt-simple');
-const router = require('express').Router();
+
+import jwt from 'jwt-simple';
+import express from 'express';
+const router = express.Router();
 
 const config = require('nconf')
 	.argv()
@@ -78,6 +80,4 @@ router.put('/rename', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
-
-module.exports = router;
+export default router;

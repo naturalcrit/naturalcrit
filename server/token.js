@@ -33,6 +33,6 @@ const generateAccessToken = (req, res) => {
   return token;
 }
 
-module.exports = {
+export default {
     generateAccessToken: generateAccessToken
 }

@@ -1,8 +1,9 @@
-const express      = require('express');
-const passport     = require('passport');
-const token        = require('./token.js');
-const AccountModel = require('./account.model.js').model; // Assuming this is needed for `login`.
 
+import passport from 'passport';
+import token from './token.js';
+import AccountModel from './account.model.js';
+
+import express from 'express';
 const router = express.Router();
 
 // TODO: MERGE from ACCOUNT.API.JS then probably rename ACCOUNT.API.JS
@@ -61,4 +62,4 @@ router.get('/google/redirect',
 	}
 );
 
-module.exports = router;
+export default router;

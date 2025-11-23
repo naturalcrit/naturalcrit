@@ -1,7 +1,7 @@
-const jwt = require('jwt-simple');
+import jwt from 'jwt-simple';
 
 
-module.exports = (key) => {
+export default (key) => {
 	return {
 
 

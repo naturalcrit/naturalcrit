@@ -1,12 +1,13 @@
-const React = require('react');
-const _ = require('lodash');
-const createClass = require('create-react-class');
+import React from 'react';
 
-const BadgeTemplate = require('./badgeTemplate.js');
+import _ from 'lodash';
+import createReactClass from 'create-react-class';
+
+import BadgeTemplate from './badgeTemplate.js';
 
 const replaceAll = (text, target, str) => text.replace(new RegExp(target, 'g'), str);
 
-const BadgeRender = createClass({
+const BadgeRender = createReactClass({
 	getDefaultProps: function () {
 		return {
 			title: '',
@@ -165,4 +166,4 @@ const BadgeRender = createClass({
 	},
 });
 
-module.exports = BadgeRender;
+export default BadgeRender;

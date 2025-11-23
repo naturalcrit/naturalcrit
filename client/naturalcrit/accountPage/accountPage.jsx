@@ -1,7 +1,7 @@
-const React = require('react');
-const AccountActions = require('../account.actions.js');
-const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
-const AuthForm = require('../loginPage/authForm.jsx'); // Import AuthForm
+import React from 'react';
+import AccountActions from '../account.actions.js';
+import NaturalCritIcon from '../../../shared/naturalcrit/components/naturalcritLogo.jsx';
+import AuthForm from '../loginPage/authForm.jsx';
 
 class AccountPage extends React.Component {
 	constructor(props) {
@@ -90,4 +90,4 @@ class AccountPage extends React.Component {
 	}
 }
 
-module.exports = AccountPage;
+export default AccountPage;
