@@ -67,7 +67,7 @@ async function start() {
 			server: { middlewareMode: true },
 			appType: 'spa',
 		});
-		
+
 		app.get('*', async (req, res, next) => {
 			const url = req.originalUrl;
 			if (
@@ -87,6 +87,7 @@ async function start() {
 					domain: config.get('domain'),
 					environment: [process.env.NODE_ENV, process.env.HEROKU_PR_NUMBER],
 				};
+				console.log('props on server.js: ', props);
 
 				template = await vite.transformIndexHtml(url, template);
 
