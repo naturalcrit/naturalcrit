@@ -21,7 +21,6 @@ import './naturalcrit.less';
 const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 	const [theme, setTheme] = useState('light');
 
-	console.log('user in naturalcrit', user);
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			window.domain = domain;
@@ -44,7 +43,6 @@ const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 		const redirect = searchParams.get('redirect') || '/';
 		return <LoginPage redirect={redirect} user={user} />;
 	};
-	console.log(environment);
 	return (
 		<div className={`naturalcrit theme-${theme}`}>
 			<Router {...routerProps}>
@@ -75,11 +73,8 @@ const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 				{user?.username ? <a href="/account">{user.username}</a> : <a href="/login">Log in</a>}
 			</div>
 
-			{environment[0] === 'production' && environment[1] ? (
-				<div className="environment">PR - {environment[1]}</div>
-			) : environment[0] === 'production' ? null : (
-				<div className="environment">Local</div>
-			)}
+			{process.env.NODE_ENV === 'local' && <div className="environment">Local</div> }
+			{(environment[0] === 'production' && environment[1]) && <div className="environment">PR - {environment[1]}</div>}
 		</div>
 	);
 };
