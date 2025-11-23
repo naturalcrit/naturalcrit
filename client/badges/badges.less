@@ -1,14 +1,18 @@
-@import 'shared/naturalcrit/styles/core.less';
+@import "shared/naturalcrit/styles/core.less";
 
+main {
+	position: relative;
+	height: 100%;
+}
 
-.naturalcrit >.badges {
+.badges {
 	--bg-clr: white;
 	--p-clr: black;
 
 	position: relative;
 	height: 100%;
-	background: var(--bg-clr, white);
-	color: var(--p-clr, black);
+	background: var(--bg-clr);
+	color: var(--p-clr);
 
 	.mainContent {
 		height: 100%;
@@ -26,7 +30,7 @@
 	}
 
 	h1 {
-		margin: 0;
+		margin:0;
 		margin-bottom: 10px;
 		padding-top: 30px;
 		font-family: 'Calluna';
@@ -36,10 +40,10 @@
 	}
 
 	p {
-		color: inherit;
+		color:inherit;
 	}
-
-	& > p {
+	
+	&>p {
 		margin-bottom: 20px;
 		font-size: 0.8em;
 		text-align: center;
@@ -65,77 +69,77 @@
 		color: var(--p-clr);
 		opacity: 80%;
 	}
+}
 
-	button {
-		border: none;
-		font-family: 'CodeBold';
-		letter-spacing: 1px;
-		padding: 12px 20px;
-		margin: 10px;
+button {
+	border: none;
+	font-family: 'CodeBold';
+	letter-spacing: 1px;
+	padding: 12px 20px;
+	margin: 10px;
+	background-color: var(--p-clr);
+	color: var(--bg-clr);
+	text-transform: uppercase;
+	text-align: center;
+
+	&:hover {
 		background-color: var(--p-clr);
 		color: var(--bg-clr);
-		text-transform: uppercase;
-		text-align: center;
-
-		&:hover {
-			background-color: var(--p-clr);
-			color: var(--bg-clr);
-			filter: contrast(0.7);
-		}
-
-		&:enabled {
-			cursor: pointer;
-		}
-
-		&:disabled {
-			background-color: #444;
-			cursor: not-allowed;
-		}
-
-		&:is(.red, .green, .orange):disabled {
-			filter: saturate(40%);
-		}
-
-		&.red {
-			background-color: @red;
-		}
-
-		&.green {
-			background-color: @green;
-		}
-
-		&.orange {
-			background-color: @orange;
-		}
+		filter: contrast(0.7);
 	}
 
-	.logo {
-		position: fixed;
-		top: 10px;
-		left: 10px;
-		font-size: 2em;
-		color: var(--p-clr);
-		text-decoration: none;
-
-		svg {
-			height: 0.9em;
-			margin-right: 0.2em;
-			cursor: pointer;
-			fill: currentColor;
-		}
-
-		.name {
-			font-family: 'CodeLight';
-
-			.crit {
-				font-family: 'CodeBold';
-			}
-		}
+	&:enabled {
+		cursor: pointer;
 	}
 
-	.theme {
-		position: fixed;
-		top: 0;
-		right: 0;
+	&:disabled {
+		background-color: #444;
+		cursor: not-allowed;
 	}
+
+	&:is(.red, .green, .orange):disabled {
+		filter: saturate(40%);
+	}
+
+	&.red {
+		background-color: @red;
+	}
+
+	&.green {
+		background-color: @green;
+	}
+
+	&.orange {
+		background-color: @orange;
+	}
+}
+
+.logo {
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	font-size: 2em;
+	color: var(--p-clr);
+	text-decoration: none;
+
+	svg {
+		height: .9em;
+		margin-right: .2em;
+		cursor: pointer;
+		fill: currentColor;
+	}
+
+	.name {
+		font-family: 'CodeLight';
+
+		.crit {
+			font-family: 'CodeBold';
+		}
+	}
+}
+
+.theme {
+	position: fixed;
+	top: 0;
+	right: 0;
 }

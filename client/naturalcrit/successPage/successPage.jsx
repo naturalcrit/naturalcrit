@@ -1,8 +1,8 @@
-import React from "react";
+const React = require('react');
 
 import createReactClass from 'create-react-class';
 
-import NaturalCritIcon from "../../../shared/naturalcrit/components/naturalcritLogo";
+const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
 
 const RedirectLocation = 'NC-REDIRECT-URL';
 
@@ -54,4 +54,4 @@ const SuccessPage = createReactClass({
 	},
 });
 
-export default SuccessPage;
+module.exports = SuccessPage;
