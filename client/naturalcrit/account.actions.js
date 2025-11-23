@@ -8,7 +8,6 @@ const AccountActions = {
 				.send({ user, pass })
 				.end((err, res) => {
 					if (err) return reject(res.body);
-					console.log('creating session');
 					AccountActions.createSession(res.body);
 					return resolve(res.body);
 				});
@@ -93,7 +92,6 @@ const AccountActions = {
 
 	createSession: (token) => {
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
-		console.log('creatin cookie', `nc_session=${token}; max-age=${60 * 60 * 24 * 365}; path=/; samesite=lax;domain=${domain}`);
 		document.cookie = `nc_session=${token}; max-age=${60 * 60 * 24 * 365}; path=/; samesite=lax;domain=${domain}`;
 	},
 
