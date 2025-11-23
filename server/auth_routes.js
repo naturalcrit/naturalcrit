@@ -14,7 +14,6 @@ function generateUserToken(req, res) {
 	return accessToken;
 }
 
-// Login API
 router.post('/login', async (req, res) => {
 	const { user, pass } = req.body;
 	const jwt = await AccountModel.login(user, pass)
@@ -23,14 +22,11 @@ router.post('/login', async (req, res) => {
 		res.json(jwt);
 });
 
-// Render login page
 router.get('/login', (req, res) => {
-	res.render('login'); // Renders the login page (template view).
+	res.render('login');
 });
 
-// Logout
 router.get('/logout', (req, res) => {
-	// Placeholder for logout functionality. Actual session management should be implemented here.
 	res.send('Logging out');
 });
 

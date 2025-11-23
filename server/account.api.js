@@ -1,7 +1,7 @@
 
 import jwt from 'jwt-simple';
 
-import AccountModel from './account.model.js';
+import Account from './account.model.js';
 
 import express from 'express';
 const router = express.Router();
@@ -13,12 +13,12 @@ const config = nconf
   .file('environment', { file: `config/${process.env.NODE_ENV}.json` })
   .file('defaults', { file: 'config/default.json' });
 
-const Model = AccountModel.model;
-
 router.post('/login', async (req, res) => {
+	console.log(req.body);
 	try {
 		const { user, pass } = req.body;
-		const token = await Model.login(user, pass);
+		const token = await Account.login(user, pass);
+		console.log(token);
 		res.json(token);
 	} catch (err) {
 		res.status(err.status || 500).json(err);
@@ -28,7 +28,7 @@ router.post('/login', async (req, res) => {
 router.post('/signup', async (req, res) => {
 	try {
 		const { user, pass } = req.body;
-		const token = await Model.signup(user, pass);
+		const token = await Account.signup(user, pass);
 		res.json(token);
 	} catch (err) {
 		res.status(err.status || 500).json(err);
@@ -38,7 +38,7 @@ router.post('/signup', async (req, res) => {
 router.post('/link', async (req, res) => {
 	try {
 		const { username, user } = req.body;
-		const localUser = await Model.findOne({ username });
+		const localUser = await Account.findOne({ username });
 		if (!localUser) throw { status: 404, msg: 'User not found' };
 
 		// Add Google details to the user
@@ -60,7 +60,7 @@ router.get('/user_exists/:username', async (req, res) => {
 		const { username } = req.params;
 		if (!username) return res.json(false);
 
-		const user = await Model.getUser(username);
+		const user = await Account.getUser(username);
 		res.json(!!user);
 	} catch (err) {
 		console.error('Error:', err);
@@ -72,7 +72,7 @@ router.put('/rename', async (req, res) => {
     try {
         const { username, newUsername } = req.body;
 
-        const user = await Model.getUser(username);
+        const user = await Account.getUser(username);
         if (!user) return res.status(404).json({ error: 'User not found' });
 
         user.username = newUsername;

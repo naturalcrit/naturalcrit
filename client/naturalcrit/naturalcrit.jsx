@@ -14,11 +14,14 @@ import GoogleRedirect from './googleRedirect/googleRedirect.jsx';
 
 import Badges from '../badges/badges.jsx';
 
+import AccountPage from './accountPage/accountPage.jsx';
+
 import './naturalcrit.less';
 
 const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 	const [theme, setTheme] = useState('light');
 
+	console.log('user in naturalcrit', user);
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			window.domain = domain;

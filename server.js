@@ -62,18 +62,33 @@ async function start() {
 	});
 
 	if (!isProd) {
-
 		const vite = await createServer({
 			root: path.join(__dirname, 'client'),
 			server: { middlewareMode: true },
 			appType: 'spa',
 		});
 
-		app.use(vite.middlewares);
+		// Serve API first
+		// (you already do this above)
 
+		//
+		// ⭐ Your SSR wildcard MUST be BEFORE vite.middlewares
+		// ⭐ AND it must ignore asset requests
+		//
 		app.get('*', async (req, res, next) => {
+			const url = req.originalUrl;
+
+			// Let Vite handle assets & internal requests
+			if (
+				url.startsWith('/@vite') ||
+				url.startsWith('/@react-refresh') ||
+				url.startsWith('/node_modules') ||
+				/\.\w+$/.test(url) // any file with an extension (css/js/png etc.)
+			) {
+				return next();
+			}
+
 			try {
-				const url = req.originalUrl;
 				let template = fs.readFileSync(path.join(__dirname, 'client/index.html'), 'utf-8');
 
 				const props = {
@@ -84,18 +99,20 @@ async function start() {
 
 				template = await vite.transformIndexHtml(url, template);
 
-				// Inject initial props
 				template = template.replace(
 					'</body>',
-					`<script>window.__INITIAL_PROPS__ = ${JSON.stringify(props)};</script></body>`
+					`<script>window.__INITIAL_PROPS__=${JSON.stringify(props)};</script></body>`
 				);
 
-				res.status(200).set({ 'Content-Type': 'text/html' }).send(template);
+				res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
 			} catch (e) {
 				vite.ssrFixStacktrace(e);
 				next(e);
 			}
 		});
+
+		// ⭐ NOW let Vite handle actual assets + dev transforms
+		app.use(vite.middlewares);
 	} else {
 		const buildPath = path.join(__dirname, 'build');
 		const indexHtml = fs.readFileSync(path.join(buildPath, 'index.html'), 'utf-8');
