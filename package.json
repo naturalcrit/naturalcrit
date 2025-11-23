@@ -1,14 +1,14 @@
 {
   "name": "naturalcrit",
   "description": "Top-tier Tools for the discerning DM",
-  "version": "3.0.0",
+  "version": "2.4.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "start": "vite preview",
-    "postinstall": "npm run build"
+    "dev": "node server.js",
+    "build": "node scripts/build.js",
+    "prod": "set NODE_ENV=production&& npm run build",
+    "postinstall": "npm run build",
+    "start": "node server.js"
   },
   "engines": {
     "node": "18.0.0"

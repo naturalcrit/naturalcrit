@@ -18,11 +18,12 @@ export default defineConfig({
 			naturalcrit: path.resolve(__dirname, 'client/naturalcrit'),
 		},
 	},
-	server: {
-		port: 8010,
-	},
 	build: {
 		outDir: path.resolve(__dirname, 'build'),
 		emptyOutDir: true,
 	},
 });
+
+// vite.config.js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
