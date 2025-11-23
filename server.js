@@ -67,9 +67,18 @@ async function start() {
 			server: { middlewareMode: true },
 			appType: 'spa',
 		});
-		
+
+		// Serve API first
+		// (you already do this above)
+
+		//
+		// ⭐ Your SSR wildcard MUST be BEFORE vite.middlewares
+		// ⭐ AND it must ignore asset requests
+		//
 		app.get('*', async (req, res, next) => {
 			const url = req.originalUrl;
+
+			// Let Vite handle assets & internal requests
 			if (
 				url.startsWith('/@vite') ||
 				url.startsWith('/@react-refresh') ||
@@ -102,6 +111,7 @@ async function start() {
 			}
 		});
 
+		// ⭐ NOW let Vite handle actual assets + dev transforms
 		app.use(vite.middlewares);
 	} else {
 		const buildPath = path.join(__dirname, 'build');
