@@ -6,7 +6,9 @@ const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
 
 const RedirectLocation = 'NC-REDIRECT-URL';
 
-const LoginPage = React.createClass({
+import createReactClass from 'create-react-class';
+
+const LoginPage = createReactClass({
 	getDefaultProps: function () {
 		return {
 			redirect: '',

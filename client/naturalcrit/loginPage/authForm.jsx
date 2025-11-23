@@ -3,7 +3,9 @@ const cx = require('classnames');
 const _ = require('lodash');
 const AccountActions = require('../account.actions');
 
-const AuthForm = React.createClass({
+import createReactClass from 'create-react-class';
+
+const AuthForm = createReactClass({
 	getDefaultProps: function () {
 		return {
 			onSubmit: () => Promise.resolve(),

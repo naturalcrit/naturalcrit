@@ -7,7 +7,6 @@ const scanFolder = (globs, folder) => {
 	const minimatch = require('minimatch');
 	const fse = require('fs-extra');
 	const walk = require('klaw');
-
 	return new Promise((resolve, reject) => {
 		let items = [];
 		walk(folder)
