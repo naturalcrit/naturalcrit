@@ -6,8 +6,9 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
-		"postinstall": "npm run build",
-		"start": "node server.js"
+		"preview": "vite preview",
+		"start": "vite preview --host 0.0.0.0 --port $PORT",
+		"postinstall": "npm run build"
 	},
 	"engines": {
 		"node": "18.18.0"
