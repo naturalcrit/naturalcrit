@@ -5,15 +5,10 @@ import { Routes, Route, Navigate, BrowserRouter, useSearchParams } from 'react-r
 import { StaticRouter } from 'react-router-dom/server';
 
 import HomePage from './homePage/homePage.jsx';
-
 import LoginPage from './loginPage/loginPage.jsx';
-
 import SuccessPage from './successPage/successPage.jsx';
-
 import GoogleRedirect from './googleRedirect/googleRedirect.jsx';
-
 import Badges from '../badges/badges.jsx';
-
 import AccountPage from './accountPage/accountPage.jsx';
 
 import './naturalcrit.less';
