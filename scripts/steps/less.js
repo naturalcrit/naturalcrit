@@ -28,7 +28,7 @@ const runStyle = (name, opts={}, deps) => {
 	if(!_.isArray(opts.shared)) throw 'Less step: opts.shared must be an array';
 
 	const less = require('less');
-
+	console.log('finishing less.js');
 	return new Promise((resolve, reject) => {
 		if(!opts.shared && !deps) deps = opts.shared;
 		if(!deps) return reject(log.noDeps(name));

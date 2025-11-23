@@ -17,7 +17,7 @@ const runLibs = (libs=[], opts={}) => {
 	const browserify = require('browserify');
 	const uglify = require('uglify-es');
 	const fse = require('fs-extra');
-
+	console.log('finishing libs.js');
 	return new Promise((resolve, reject) => {
 		const bundle = browserify({ paths: opts.shared })
 			.require(libs)

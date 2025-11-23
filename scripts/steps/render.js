@@ -52,6 +52,7 @@ const render = (name, templateFn, props, fields, opts) => {
 	if(!isProd) require('source-map-support').install();
 	opts = _.defaults(opts, { useStatic : false });
 
+	console.log('finishing render.js');
 	return new Promise((resolve, reject) => {
 		try{
 			const body = getBody(name, props, opts.useStatic); //body has to render first for head tags
