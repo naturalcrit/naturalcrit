@@ -8,7 +8,6 @@ const AccountActions = {
 				.send({ user, pass })
 				.end((err, res) => {
 					if (err) return reject(res.body);
-					console.log('creating session');
 					AccountActions.createSession(res.body);
 					return resolve(res.body);
 				});
