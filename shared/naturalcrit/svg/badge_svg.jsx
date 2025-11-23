@@ -5,7 +5,6 @@ export default function (props) {
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 344.83 341.02"
-			{...props}
 		>
 			<title>Asset 1</title>
 			<g id="Layer_2" data-name="Layer 2">

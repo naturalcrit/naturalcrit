@@ -7,6 +7,8 @@ import AccountActions from "../account.actions";
 
 import createReactClass from 'create-react-class';
 
+import './authForm.less';
+
 const AuthForm = createReactClass({
 	getDefaultProps: function () {
 		return {

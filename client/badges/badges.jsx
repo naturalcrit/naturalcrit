@@ -48,7 +48,6 @@ var Badges = createReactClass({
 		return (
 			<div className={`badges theme-${this.state.theme}`}>
 				<NaturalCritIcon />
-				{this.renderThemePicker()}
 
 				<h1>D&D Achievement Badges</h1>
 				<p>

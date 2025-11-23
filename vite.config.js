@@ -8,7 +8,8 @@ export default defineConfig({
 	css: {
 		preprocessorOptions: {
 			less: {
-				javascriptEnabled: true, // if your LESS uses JS expressions
+				javascriptEnabled: true,
+				additionalData: `@import "./shared/naturalcrit/styles/core.less";`,
 			},
 		},
 	},

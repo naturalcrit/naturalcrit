@@ -3,6 +3,8 @@ import AccountActions from '../account.actions.js';
 import NaturalCritIcon from '../../../shared/naturalcrit/components/naturalcritLogo.jsx';
 import AuthForm from '../loginPage/authForm.jsx';
 
+import './accountPage.less';
+
 class AccountPage extends React.Component {
 	constructor(props) {
 		super(props);

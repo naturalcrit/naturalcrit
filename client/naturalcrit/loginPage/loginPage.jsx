@@ -4,6 +4,8 @@ import AccountActions from '../account.actions.js';
 import AuthForm from './authForm.jsx';
 import NaturalCritIcon from '../../../shared/naturalcrit/components/naturalcritLogo.jsx';
 
+import './loginPage.less';
+
 const RedirectLocation = 'NC-REDIRECT-URL';
 
 const LoginPage = ({ redirect = '', user = null }) => {
