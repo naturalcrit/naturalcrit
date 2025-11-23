@@ -28,6 +28,7 @@ var Main = React.createClass({
 
 					show: false,
 					beta: true,
+					
 				},
 			],
 		};
