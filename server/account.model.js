@@ -1,23 +1,18 @@
-// Import dependencies using ESM syntax
 import mongoose from 'mongoose';
-import _ from 'lodash';
-import nconf from 'nconf';
-import jwt from 'jwt-simple';
-import bcrypt from 'bcrypt';
+import _        from 'lodash';
+import nconf    from 'nconf';
+import jwt      from 'jwt-simple';
+import bcrypt   from 'bcrypt';
 
 const SALT_WORK_FACTOR = 10;
 
-const AccountSchema = new mongoose.Schema(
-	{
+const AccountSchema = mongoose.Schema({
 		username: { type: String, required: true, unique: true },
 		password: { type: String, required: false },
-
 		googleId: String,
 		googleAccessToken: String,
 		googleRefreshToken: String,
-	},
-	{ versionKey: false }
-);
+}, { versionKey: false });
 
 AccountSchema.pre('save', async function (next) {
 	try {
@@ -36,11 +31,9 @@ AccountSchema.pre('save', async function (next) {
 AccountSchema.statics.login = async function (username, pass) {
 	const BadLogin = { ok: false, msg: 'Invalid username and password combination.', status: 401 };
 	const user = await this.getUser(username);
-	console.log('Does user exist?, ', !!user);
 	if (!user) throw BadLogin;
 
 	const isMatch = await user.checkPassword(pass);
-	console.log('Is it a match?, ', !!user);
 	if (!isMatch) throw BadLogin;
 
 	return user.getJWT();
