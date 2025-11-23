@@ -62,4 +62,6 @@ router.get('/google/redirect',
 	}
 );
 
-export default router;
+const authRoutes = router;
+
+export default authRoutes;

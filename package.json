@@ -2,6 +2,7 @@
   "name": "naturalcrit",
   "description": "Top-tier Tools for the discerning DM",
   "version": "2.4.0",
+  "type": "module",
   "scripts": {
     "dev": "node server.js",
     "build": "node scripts/build.js",

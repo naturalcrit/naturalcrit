@@ -81,4 +81,6 @@ AccountSchema.methods.getJWT = function() {
 
 const Account = mongoose.model('Account', AccountSchema);
 
-export { AccountSchema as schema, Account as model };
+const AccountModel = { schema: AccountSchema, model: Account };
+
+export default AccountModel;

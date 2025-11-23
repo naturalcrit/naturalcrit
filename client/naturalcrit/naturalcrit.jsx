@@ -1,10 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
-import './naturalcrit.less';
-import '../../shared/naturalcrit/styles/animations.less';
-
-
 import { Routes, Route, Navigate, BrowserRouter, useSearchParams } from 'react-router-dom';
 import { StaticRouter } from 'react-router-dom/server';
 
@@ -17,6 +13,8 @@ import SuccessPage from './successPage/successPage.jsx';
 import GoogleRedirect from './googleRedirect/googleRedirect.jsx';
 
 import Badges from '../badges/badges.jsx';
+
+import './naturalcrit.less';
 
 const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 	const [theme, setTheme] = useState('light');
@@ -61,7 +59,7 @@ const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 					<Route path="/login" element={<LoginWrapper user={user} />} />
 					<Route path="/success" element={<SuccessPage user={user} />} />
 					<Route path="/auth/google/redirect" element={<GoogleRedirect user={user} />} />
-					<Route path="/badges" element={<Badges/>}/>
+					<Route path="/badges" element={<Badges />} />
 					<Route path="*" element={<HomePage configTools={tools} user={user} />} />
 				</Routes>
 			</Router>

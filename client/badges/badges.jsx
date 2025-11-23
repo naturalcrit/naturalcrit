@@ -1,6 +1,8 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
 
+import './badges.less';
+
 import BadgeRender from './badgeRender/badgeRender.jsx';
 import Controls from './controls/controls.jsx';
 import NaturalCritIcon from '../../shared/naturalcrit/components/naturalcritLogo.jsx';

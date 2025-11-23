@@ -1,9 +1,11 @@
 import React from 'react';
 
+import './controls.less';
+
 import _ from 'lodash';
 import createReactClass from 'create-react-class';
 import cx from 'classnames';
-import Color from 'react-color';
+import { SliderPicker } from 'react-color';
 
 const Controls = createReactClass({
 	getDefaultProps: function () {
@@ -63,7 +65,7 @@ const Controls = createReactClass({
 				</div>
 				<div className="field">
 					<label>Color</label>
-					<Color.SliderPicker
+					<SliderPicker
 						className="value"
 						disableAlpha={true}
 						color={this.props.data.color}

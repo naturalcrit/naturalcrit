@@ -1,15 +1,25 @@
 'use strict';
 
-const path = require('path');
-const fs = require('fs');
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const jwt = require('jwt-simple');
-const mongoose = require('mongoose');
-const nconf = require('nconf');
+import path from 'path';
 
-const authRoutes = require('./server/auth_routes');
+import fs from 'fs';
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import jwt from 'jwt-simple';
+import mongoose from 'mongoose';
+import nconf from 'nconf';
+
+import authRoutes from './server/auth_routes.js';
+
+import accountApiRouter from './server/account.api.js';
+
+import { createServer } from 'vite';
+
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 nconf
 	.argv()
@@ -43,7 +53,8 @@ async function start() {
 		next();
 	});
 
-	app.use(require('./server/account.api.js'));
+	app.use(accountApiRouter);
+
 	app.use('/auth', authRoutes);
 
 	app.all('/homebrew*', (req, res) => {
@@ -51,7 +62,6 @@ async function start() {
 	});
 
 	if (!isProd) {
-		const { createServer } = require('vite');
 
 		const vite = await createServer({
 			root: path.join(__dirname, 'client'),
