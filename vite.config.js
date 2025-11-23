@@ -5,14 +5,6 @@ import path from 'path';
 export default defineConfig({
 	root: path.resolve(__dirname, 'client'),
 	plugins: [react()],
-	server: {
-		port: 8010,
-	},
-	preview: {
-		host: '0.0.0.0',
-		port: process.env.PORT || 4173,
-		allowedHosts: 'all',
-	},
 	css: {
 		preprocessorOptions: {
 			less: {
@@ -25,6 +17,9 @@ export default defineConfig({
 		alias: {
 			naturalcrit: path.resolve(__dirname, 'client/naturalcrit'),
 		},
+	},
+	server: {
+		port: 8010,
 	},
 	build: {
 		outDir: path.resolve(__dirname, 'build'),
