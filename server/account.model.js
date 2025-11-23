@@ -36,11 +36,9 @@ AccountSchema.pre('save', async function (next) {
 AccountSchema.statics.login = async function (username, pass) {
 	const BadLogin = { ok: false, msg: 'Invalid username and password combination.', status: 401 };
 	const user = await this.getUser(username);
-	console.log('Does user exist?, ', !!user);
 	if (!user) throw BadLogin;
 
 	const isMatch = await user.checkPassword(pass);
-	console.log('Is it a match?, ', !!user);
 	if (!isMatch) throw BadLogin;
 
 	return user.getJWT();

@@ -14,11 +14,10 @@ const config = nconf
   .file('defaults', { file: 'config/default.json' });
 
 router.post('/login', async (req, res) => {
-	console.log(req.body);
 	try {
 		const { user, pass } = req.body;
 		const token = await Account.login(user, pass);
-		console.log(token);
+		console.log('log successful');
 		res.json(token);
 	} catch (err) {
 		res.status(err.status || 500).json(err);
