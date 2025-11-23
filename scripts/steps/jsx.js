@@ -89,7 +89,7 @@ const makeBundler = function (name, entryPoint, opts = {}) {
 			});
 		});
 	};
-
+	console.log('jsx.js dnne');
 	return {
 		run: run,
 		rawBundler: bundler,
