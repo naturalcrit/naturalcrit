@@ -93,6 +93,7 @@ const AccountActions = {
 
 	createSession: (token) => {
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
+		console.log('creatin cookie', domain);
 		document.cookie = `nc_session=${token}; max-age=${60 * 60 * 24 * 365}; path=/; samesite=lax;domain=${domain}`;
 	},
 

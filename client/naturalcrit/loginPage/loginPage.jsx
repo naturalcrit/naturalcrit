@@ -34,7 +34,7 @@ const LoginPage = ({ redirect = '', user = null }) => {
 				.then(() => {
 					console.log('Eureka!');
 					setRedirecting(true);
-					redirectTo();
+					//redirectTo();
 				})
 				.catch((err) => {
 					console.log(err);
