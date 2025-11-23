@@ -1,18 +1,24 @@
-const jwt = require('jwt-simple');
-const router = require('express').Router();
 
-const config = require('nconf')
-	.argv()
-	.env({ lowerCase: true })
-	.file('environment', { file: `config/${process.env.NODE_ENV}.json` })
-	.file('defaults', { file: 'config/default.json' });
+import jwt from 'jwt-simple';
 
-const AccountModel = require('./account.model.js').model;
+import Account from './account.model.js';
+
+import express from 'express';
+const router = express.Router();
+import nconf from 'nconf';
+
+const config = nconf
+  .argv()
+  .env({ lowerCase: true }) // Load environment variables
+  .file('environment', { file: `config/${process.env.NODE_ENV}.json` })
+  .file('defaults', { file: 'config/default.json' });
 
 router.post('/login', async (req, res) => {
+	console.log(req.body);
 	try {
 		const { user, pass } = req.body;
-		const token = await AccountModel.login(user, pass);
+		const token = await Account.login(user, pass);
+		console.log(token);
 		res.json(token);
 	} catch (err) {
 		res.status(err.status || 500).json(err);
@@ -22,7 +28,7 @@ router.post('/login', async (req, res) => {
 router.post('/signup', async (req, res) => {
 	try {
 		const { user, pass } = req.body;
-		const token = await AccountModel.signup(user, pass);
+		const token = await Account.signup(user, pass);
 		res.json(token);
 	} catch (err) {
 		res.status(err.status || 500).json(err);
@@ -32,7 +38,7 @@ router.post('/signup', async (req, res) => {
 router.post('/link', async (req, res) => {
 	try {
 		const { username, user } = req.body;
-		const localUser = await AccountModel.findOne({ username });
+		const localUser = await Account.findOne({ username });
 		if (!localUser) throw { status: 404, msg: 'User not found' };
 
 		// Add Google details to the user
@@ -54,7 +60,7 @@ router.get('/user_exists/:username', async (req, res) => {
 		const { username } = req.params;
 		if (!username) return res.json(false);
 
-		const user = await AccountModel.getUser(username);
+		const user = await Account.getUser(username);
 		res.json(!!user);
 	} catch (err) {
 		console.error('Error:', err);
@@ -66,7 +72,7 @@ router.put('/rename', async (req, res) => {
     try {
         const { username, newUsername } = req.body;
 
-        const user = await AccountModel.getUser(username);
+        const user = await Account.getUser(username);
         if (!user) return res.status(404).json({ error: 'User not found' });
 
         user.username = newUsername;
@@ -78,6 +84,4 @@ router.put('/rename', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
-
-module.exports = router;
+export default router;

@@ -1,9 +1,13 @@
-const React = require('react');
-const cx = require('classnames');
-const _ = require('lodash');
-const AccountActions = require('../account.actions');
+
+import React from "react";
+
+import cx from 'classnames';
+import _ from 'lodash';
+import AccountActions from "../account.actions";
 
 import createReactClass from 'create-react-class';
+
+import './authForm.less';
 
 const AuthForm = createReactClass({
 	getDefaultProps: function () {
@@ -183,4 +187,4 @@ const AuthForm = createReactClass({
 	},
 });
 
-module.exports = AuthForm;
+export default AuthForm;

@@ -1,22 +1,33 @@
-const React = require('react');
-const { useState, useEffect } = require('react');
+import React from 'react';
+import { useState, useEffect } from 'react';
 
-const { Routes, Route, Navigate, BrowserRouter, useSearchParams } = require('react-router-dom');
-const { StaticRouter } = require('react-router-dom/server');
+import { Routes, Route, Navigate, BrowserRouter, useSearchParams } from 'react-router-dom';
+import { StaticRouter } from 'react-router-dom/server';
 
-const HomePage = require('./homePage/homePage.jsx');
-const AccountPage = require('./accountPage/accountPage.jsx');
-const LoginPage = require('./loginPage/loginPage.jsx');
-const SuccessPage = require('./successPage/successPage.jsx');
-const GoogleRedirect = require('./googleRedirect/googleRedirect.jsx');
+import HomePage from './homePage/homePage.jsx';
+
+import LoginPage from './loginPage/loginPage.jsx';
+
+import SuccessPage from './successPage/successPage.jsx';
+
+import GoogleRedirect from './googleRedirect/googleRedirect.jsx';
+
+import Badges from '../badges/badges.jsx';
+
+import AccountPage from './accountPage/accountPage.jsx';
+
+import './naturalcrit.less';
 
 const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 	const [theme, setTheme] = useState('light');
 
+	console.log('user in naturalcrit', user);
 	useEffect(() => {
-		global.domain = domain;
-		const storedTheme = localStorage.getItem('theme');
-		if (storedTheme) setTheme(storedTheme);
+		if (typeof window !== 'undefined') {
+			window.domain = domain;
+			const storedTheme = localStorage.getItem('theme');
+			if (storedTheme) setTheme(storedTheme);
+		}
 	}, [domain]);
 
 	const toggleTheme = () => {
@@ -33,7 +44,7 @@ const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 		const redirect = searchParams.get('redirect') || '/';
 		return <LoginPage redirect={redirect} user={user} />;
 	};
-
+	console.log(environment);
 	return (
 		<div className={`naturalcrit theme-${theme}`}>
 			<Router {...routerProps}>
@@ -51,6 +62,7 @@ const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 					<Route path="/login" element={<LoginWrapper user={user} />} />
 					<Route path="/success" element={<SuccessPage user={user} />} />
 					<Route path="/auth/google/redirect" element={<GoogleRedirect user={user} />} />
+					<Route path="/badges" element={<Badges />} />
 					<Route path="*" element={<HomePage configTools={tools} user={user} />} />
 				</Routes>
 			</Router>
@@ -72,4 +84,4 @@ const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 	);
 };
 
-module.exports = Naturalcrit;
+export default Naturalcrit;

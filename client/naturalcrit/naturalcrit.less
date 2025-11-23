@@ -1,26 +1,24 @@
-@import 'naturalcrit/styles/core.less';
+@import '../../shared/naturalcrit/styles/core.less';
 
-main {
+.naturalcrit {
+	--bg-clr: white;
+	--p-clr: black;
+
 	height: 100vh;
+	background-color: var(--bg-clr, white);
+	color: var(--p-clr, black);
+	//set transition
+	transition: all 0.5s ease-in-out;
 
-	.naturalcrit {
-		--bg-clr: white;
-		--p-clr: black;
-
-		height: 100vh;
-		background-color: var(--bg-clr);
-		color:var(--p-clr);
-		//set transition
-		transition: all 0.5s ease-in-out;
-
-		&.theme-dark {
-			--bg-clr: #333;
-			--p-clr: #eee;
-		}
+	&.theme-dark {
+		--bg-clr: #333;
+		--p-clr: #eee;
 	}
 }
+
+
 p {
-	color:inherit;
+	color: inherit;
 }
 
 .logo {
@@ -29,8 +27,8 @@ p {
 	text-decoration: none;
 
 	svg {
-		height: .9em;
-		margin-right: .2em;
+		height: 0.9em;
+		margin-right: 0.2em;
 		fill: currentColor;
 	}
 
@@ -65,7 +63,7 @@ button {
 	&:hover {
 		background-color: var(--p-clr);
 		color: var(--bg-clr);
-		filter:contrast(0.7);
+		filter: contrast(0.7);
 	}
 
 	&:enabled {
@@ -106,7 +104,7 @@ button {
 	text-align: center;
 
 	&:hover {
-		filter:contrast(0.7);
+		filter: contrast(0.7);
 	}
 
 	a {

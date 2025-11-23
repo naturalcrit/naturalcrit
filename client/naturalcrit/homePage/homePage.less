@@ -1,3 +1,5 @@
+@import '../../../shared/naturalcrit/styles/core.less';
+
 .homePage {
 	height: 100vh;
 
@@ -127,6 +129,7 @@
 		//.animateAll(3s);
 	}
 }
+/* prettier-ignore-start */
 
 .sketch(@length, @color : black, @duration : 3s, @easing : @defaultEasing) {
 	.createAnimation(sketch, @duration, @easing);
@@ -173,3 +176,5 @@
 		.sketchKeyFrames();
 	}
 }
+
+/* prettier-ignore-end */

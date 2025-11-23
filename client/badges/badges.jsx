@@ -1,11 +1,13 @@
-const React = require('react');
-const createClass = require('create-react-class');
+import React from 'react';
+import createReactClass from 'create-react-class';
 
-const BadgeRender = require('./badgeRender/badgeRender.jsx');
-const Controls = require('./controls/controls.jsx');
-const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
+import './badges.less';
 
-var Badges = createClass({
+import BadgeRender from './badgeRender/badgeRender.jsx';
+import Controls from './controls/controls.jsx';
+import NaturalCritIcon from '../../shared/naturalcrit/components/naturalcritLogo.jsx';
+
+var Badges = createReactClass({
 	getInitialState: function () {
 		return {
 			title: '',
@@ -46,7 +48,6 @@ var Badges = createClass({
 		return (
 			<div className={`badges theme-${this.state.theme}`}>
 				<NaturalCritIcon />
-				{this.renderThemePicker()}
 
 				<h1>D&D Achievement Badges</h1>
 				<p>
@@ -64,4 +65,4 @@ var Badges = createClass({
 	},
 });
 
-module.exports = Badges;
+export default Badges;

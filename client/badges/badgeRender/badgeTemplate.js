@@ -1,4 +1,4 @@
-module.exports = (color = '#666') => {
+export default (color = '#666') => {
 	function shadeColor2(color, percent) {
 		var f = parseInt(color.slice(1), 16),
 			t = percent < 0 ? 0 : 255,

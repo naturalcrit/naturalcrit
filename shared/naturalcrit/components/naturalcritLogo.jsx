@@ -1,6 +1,6 @@
-var React = require('react');
+import React from "react";
 
-module.exports = function (props) {
+export default function (props) {
 	return (
 		<a className="logo" href="/">
 			<svg version="1.1" x="0px" y="0px" viewBox="0 0 100 100" enableBackground="new 0 0 100 100">
