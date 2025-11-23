@@ -1,3 +1,5 @@
+module.exports = function (vitreum) {
+	return `
 <!DOCTYPE html>
 <html>
 	<head>
@@ -11,9 +13,12 @@
 		<link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png" />
 
 		<title>NaturalCrit - D&D Tools</title>
+		${vitreum.head}
 	</head>
 	<body>
-        <div id="root"></div>
-        <script type="module" src="main.jsx"></script>
+		<main id="reactRoot">${vitreum.body}</main>
 	</body>
+	${vitreum.js}
 </html>
+`;
+};

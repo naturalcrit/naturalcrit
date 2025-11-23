@@ -1,65 +1,77 @@
-import React, { useState, useEffect } from 'react';
-import cx from 'classnames';
-import AccountActions from '../account.actions.js';
-import AuthForm from './authForm.jsx';
-import NaturalCritIcon from '../../../shared/naturalcrit/components/naturalcritLogo.jsx';
-
-import './loginPage.less';
+const React = require('react');
+const cx = require('classnames');
+const AccountActions = require('../account.actions.js');
+const AuthForm = require('./authForm.jsx');
+const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
 
 const RedirectLocation = 'NC-REDIRECT-URL';
 
-const LoginPage = ({ redirect = '', user = null }) => {
-	const [view, setView] = useState('login'); // 'login' or 'signup'
-	const [redirecting, setRedirecting] = useState(false);
-	const [processing, setProcessing] = useState(false);
-	const [errors, setErrors] = useState(null);
+import createReactClass from 'create-react-class';
 
-	useEffect(() => {
-		if (!redirect) {
-			window.sessionStorage.removeItem(RedirectLocation);
-		} else {
-			window.sessionStorage.setItem(RedirectLocation, redirect);
+const LoginPage = createReactClass({
+	getDefaultProps: function () {
+		return {
+			redirect: '',
+			user: null,
+		};
+	},
+	getInitialState: function () {
+		return {
+			view: 'login', // or 'signup'
+			redirecting: false,
+
+		};
+	},
+
+	handleRedirectURL: function () {
+		if (!this.props.redirect) {
+			return window.sessionStorage.removeItem(RedirectLocation);
 		}
-	}, [redirect]);
+		return window.sessionStorage.setItem(RedirectLocation, this.props.redirect);
+	},
 
-	const redirectTo = () => {
-		if (!redirect) return (window.location = '/');
-		setRedirecting(true);
-		window.location = redirect;
-	};
+	redirect: function () {
+		if (!this.props.redirect) return (window.location = '/');
+		this.setState(
+			{
+				redirecting: true,
+			},
+			() => {
+				window.location = this.props.redirect;
+			}
+		);
+	},
 
-	const handleLoginSignup = (username, password, action) => {
-		if (action === 'login') {
+	handleLoginSignup: function (username, password, view) {
+		if (view === 'login') {
 			return AccountActions.login(username, password)
-				.then(() => {
-					console.log('Eureka!');
-					setRedirecting(true);
-					redirectTo();
+				.then((token) => {
+					this.setState({ redirecting: true }, this.redirect);
 				})
 				.catch((err) => {
+					this.setState({})
 					console.log(err);
-					setErrors(err);
 					return Promise.reject(err);
 				});
-		} else if (action === 'signup') {
+		} else if (view === 'signup') {
 			return AccountActions.signup(username, password)
-				.then(() => {
-					setRedirecting(true);
-					redirectTo();
+				.then((token) => {
+					this.setState({ redirecting: true }, this.redirect);
 				})
 				.catch((err) => {
 					console.log(err);
-					setErrors(err);
 					return Promise.reject(err);
 				});
 		}
-	};
+	},
+	
 
-	const linkGoogle = () => {
-		if (user) {
+
+	linkGoogle: function () {
+		if (this.props.user) {
 			if (
 				!confirm(
-					`You are currently logged in as ${user.username}. ` +
+					`You are currently logged in as ${this.props.user.username}. ` +
 						`Do you want to link this user to a Google account? ` +
 						`This will allow you to access the Homebrewery with your ` +
 						`Google account and back up your files to Google Drive.`
@@ -68,19 +80,26 @@ const LoginPage = ({ redirect = '', user = null }) => {
 				return;
 		}
 
-		setProcessing(true);
-		setErrors(null);
+		this.setState({
+			processing: true,
+			errors: null,
+		});
 		window.location.href = '/auth/google';
-	};
+	},
 
-	const renderLoggedIn = () => {
-		if (!user) return null;
+	handleChangeView: function (newView) {
+		this.setState({
+			view: newView,
+		});
+	},
 
-		if (!user.googleId) {
+	renderLoggedIn: function () {
+		if (!this.props.user) return;
+		if (!this.props.user.googleId) {
 			return (
 				<small>
-					You are logged in as {user.username}.{' '}
-					<a href="#" onClick={() => (window.location = '/logout')}>
+					You are logged in as {this.props.user.username}.{' '}
+					<a href="" onClick={this.logout}>
 						logout.
 					</a>
 				</small>
@@ -88,39 +107,46 @@ const LoginPage = ({ redirect = '', user = null }) => {
 		} else {
 			return (
 				<small>
-					You are logged in via Google as {user.username}.{' '}
-					<a href="#" onClick={() => (window.location = '/logout')}>
+					You are logged in via Google as {this.props.user.username}.{' '}
+					<a href="" onClick={this.logout}>
 						logout.
 					</a>
 				</small>
 			);
 		}
-	};
+	},
 
-	return (
-		<div className="loginPage">
-			<NaturalCritIcon />
-			<div className="content">
-				<div className="switchView">
-					<div className={cx('login', { selected: view === 'login' })} onClick={() => setView('login')}>
-						<i className="fa fa-sign-in" /> Login
+	render: function () {
+		return (
+			<div className="loginPage">
+				<NaturalCritIcon />
+				<div className="content">
+					<div className="switchView">
+						<div
+							className={cx('login', { selected: this.state.view === 'login' })}
+							onClick={this.handleChangeView.bind(null, 'login')}>
+							<i className="fa fa-sign-in" /> Login
+						</div>
+
+						<div
+							className={cx('signup', { selected: this.state.view === 'signup' })}
+							onClick={this.handleChangeView.bind(null, 'signup')}>
+							<i className="fa fa-user-plus" /> Signup
+						</div>
 					</div>
-					<div className={cx('signup', { selected: view === 'signup' })} onClick={() => setView('signup')}>
-						<i className="fa fa-user-plus" /> Signup
-					</div>
+					<AuthForm actionType={this.state.view} onSubmit={this.handleLoginSignup} />
+					<div className="divider">⎯⎯ OR ⎯⎯</div>
+					<button className="google" onClick={this.linkGoogle}></button>
 				</div>
-				<AuthForm actionType={view} onSubmit={handleLoginSignup} />
-				<div className="divider">⎯⎯ OR ⎯⎯</div>
-				<button className="google" onClick={linkGoogle}></button>
+
+				<br />
+				<br />
+				<br />
+				<br />
+				{this.renderLoggedIn()}
 			</div>
+		);
+	},
+});
 
-			<br />
-			<br />
-			<br />
-			<br />
-			{renderLoggedIn()}
-		</div>
-	);
-};
-
-export default LoginPage;
+module.exports = LoginPage;

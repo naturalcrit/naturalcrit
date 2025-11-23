@@ -1,4 +1,4 @@
-import request from 'superagent';
+const request = require('superagent');
 
 const AccountActions = {
 	login: (user, pass) => {
@@ -101,4 +101,4 @@ const AccountActions = {
 	},
 };
 
-export default AccountActions;
+module.exports = AccountActions;

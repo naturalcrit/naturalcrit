@@ -1,13 +1,10 @@
-import React from 'react';
+const React = require('react');
+const _ = require('lodash');
+const createClass = require('create-react-class');
+const cx = require('classnames');
+const Color = require('react-color');
 
-import './controls.less';
-
-import _ from 'lodash';
-import createReactClass from 'create-react-class';
-import cx from 'classnames';
-import { SliderPicker } from 'react-color';
-
-const Controls = createReactClass({
+const Controls = createClass({
 	getDefaultProps: function () {
 		return {
 			data: {
@@ -65,7 +62,7 @@ const Controls = createReactClass({
 				</div>
 				<div className="field">
 					<label>Color</label>
-					<SliderPicker
+					<Color.SliderPicker
 						className="value"
 						disableAlpha={true}
 						color={this.props.data.color}
@@ -95,4 +92,4 @@ const Controls = createReactClass({
 	},
 });
 
-export default Controls;
+module.exports = Controls;
