@@ -1,24 +1,11 @@
-
-import jwt from 'jwt-simple';
-
 import Account from './account.model.js';
-
 import express from 'express';
 const router = express.Router();
-import nconf from 'nconf';
-
-const config = nconf
-  .argv()
-  .env({ lowerCase: true }) // Load environment variables
-  .file('environment', { file: `config/${process.env.NODE_ENV}.json` })
-  .file('defaults', { file: 'config/default.json' });
 
 router.post('/login', async (req, res) => {
-	console.log(req.body);
 	try {
 		const { user, pass } = req.body;
 		const token = await Account.login(user, pass);
-		console.log(token);
 		res.json(token);
 	} catch (err) {
 		res.status(err.status || 500).json(err);
@@ -69,19 +56,19 @@ router.get('/user_exists/:username', async (req, res) => {
 });
 
 router.put('/rename', async (req, res) => {
-    try {
-        const { username, newUsername } = req.body;
+	try {
+		const { username, newUsername } = req.body;
 
-        const user = await Account.getUser(username);
-        if (!user) return res.status(404).json({ error: 'User not found' });
+		const user = await Account.getUser(username);
+		if (!user) return res.status(404).json({ error: 'User not found' });
 
-        user.username = newUsername;
-        await user.save();
+		user.username = newUsername;
+		await user.save();
 
-        res.json(true);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+		res.json(true);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: 'Internal Server Error' });
+	}
 });
 export default router;
