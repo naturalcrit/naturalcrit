@@ -1,5 +1,6 @@
 
 import passport from 'passport';
+import './passport_setup.js'
 import token from './token.js';
 import AccountModel from './account.model.js';
 

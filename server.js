@@ -11,6 +11,8 @@ import config from 'nconf';
 import { createServer } from 'vite';
 import { fileURLToPath } from 'url';
 
+import './server/passport_setup.js';
+
 import authRoutes from './server/auth_routes.js';
 import accountApiRouter from './server/account.api.js';
 
