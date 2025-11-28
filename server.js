@@ -58,20 +58,35 @@ async function start() {
 		const vite = await createServer({
 			root: path.join(__dirname, 'client'),
 			server: { middlewareMode: true },
-			appType: 'custom',	// This disables Vite's default HTML serving so our `*` handler works
+			appType: 'spa',
 		});
 
-		app.use(vite.middlewares);								// Let Vite handle static assets + dev transforms
-		app.get('*', async (req, res, next) => {	// Handle any other route with Express
+		// SSR wildcard MUST be BEFORE vite.middlewares
+		// Render Main Page
+		app.get('*', async (req, res, next) => {
 			const url = req.originalUrl;
+
+			// Let Vite handle assets & internal requests
+			if (
+				url.startsWith('/@vite') ||
+				url.startsWith('/@react-refresh') ||
+				url.startsWith('/node_modules') ||
+				/\.\w+$/.test(url) // any file with an extension (css/js/png etc.)
+			) {
+				return next();
+			}
+
 			try {
+				let template = fs.readFileSync(path.join(__dirname, 'client/index.html'), 'utf-8');
+
 				const props = {
 					user: req.user || null,
 					domain: config.get('domain'),
 					environment: [process.env.NODE_ENV, process.env.HEROKU_PR_NUMBER],
 				};
 
-				let template = fs.readFileSync(path.join(__dirname, 'client/index.html'), 'utf-8');
+				console.log('Rendering page with props:', props);
+
 				template = await vite.transformIndexHtml(url, template);
 				template = template.replace(
 					'</body>',
@@ -85,7 +100,8 @@ async function start() {
 			}
 		});
 
-
+		// NOW let Vite handle actual assets + dev transforms
+		app.use(vite.middlewares);
 	}
 	//========-- In Production environment, use Express to serve from build path --========//
 	else {
