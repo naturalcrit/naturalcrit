@@ -1,38 +1,30 @@
 'use strict';
 
 import path from 'path';
-
 import fs from 'fs';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import jwt from 'jwt-simple';
 import mongoose from 'mongoose';
-import nconf from 'nconf';
+import config from 'nconf';
+import { createServer } from 'vite';
+import { fileURLToPath } from 'url';
 
 import authRoutes from './server/auth_routes.js';
-
 import accountApiRouter from './server/account.api.js';
-
-import { createServer } from 'vite';
-
-import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-nconf
+config
 	.argv()
 	.env({ lowerCase: true })
 	.file('environment', { file: `config/${process.env.NODE_ENV}.json` })
 	.file('defaults', { file: 'config/default.json' });
 
-const config = nconf;
-
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/naturalcrit');
-mongoose.connection.on('error', () => {
-	console.log('>>>ERROR: Run Mongodb.exe ya goof!');
-});
+mongoose.connection.on('error', () => { console.log('>>>ERROR: Run Mongodb.exe ya goof!') });
 
 async function start() {
 	const app = express();
@@ -61,44 +53,26 @@ async function start() {
 		return res.redirect(302, 'https://homebrewery.naturalcrit.com' + req.url.replace('/homebrew', ''));
 	});
 
+	//========-- In Dev environment, use Vite's dev server for speed --========//
 	if (!isProd) {
 		const vite = await createServer({
 			root: path.join(__dirname, 'client'),
 			server: { middlewareMode: true },
-			appType: 'spa',
+			appType: 'custom',	// This disables Vite's default HTML serving so our `*` handler works
 		});
 
-		// Serve API first
-		// (you already do this above)
-
-		//
-		// ⭐ Your SSR wildcard MUST be BEFORE vite.middlewares
-		// ⭐ AND it must ignore asset requests
-		//
-		app.get('*', async (req, res, next) => {
+		app.use(vite.middlewares);								// Let Vite handle static assets + dev transforms
+		app.get('*', async (req, res, next) => {	// Handle any other route with Express
 			const url = req.originalUrl;
-
-			// Let Vite handle assets & internal requests
-			if (
-				url.startsWith('/@vite') ||
-				url.startsWith('/@react-refresh') ||
-				url.startsWith('/node_modules') ||
-				/\.\w+$/.test(url) // any file with an extension (css/js/png etc.)
-			) {
-				return next();
-			}
-
 			try {
-				let template = fs.readFileSync(path.join(__dirname, 'client/index.html'), 'utf-8');
-
 				const props = {
 					user: req.user || null,
 					domain: config.get('domain'),
 					environment: [process.env.NODE_ENV, process.env.HEROKU_PR_NUMBER],
 				};
 
+				let template = fs.readFileSync(path.join(__dirname, 'client/index.html'), 'utf-8');
 				template = await vite.transformIndexHtml(url, template);
-
 				template = template.replace(
 					'</body>',
 					`<script>window.__INITIAL_PROPS__=${JSON.stringify(props)};</script></body>`
@@ -111,9 +85,10 @@ async function start() {
 			}
 		});
 
-		// ⭐ NOW let Vite handle actual assets + dev transforms
-		app.use(vite.middlewares);
-	} else {
+
+	}
+	//========-- In Production environment, use Express to serve from build path --========//
+	else {
 		const buildPath = path.join(__dirname, 'build');
 		const indexHtml = fs.readFileSync(path.join(buildPath, 'index.html'), 'utf-8');
 
