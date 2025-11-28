@@ -27,6 +27,7 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
+	// Placeholder for logout functionality. Actual session management should be implemented here.
 	res.send('Logging out');
 });
 
