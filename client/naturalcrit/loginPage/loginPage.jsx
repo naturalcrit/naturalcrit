@@ -32,7 +32,6 @@ const LoginPage = ({ redirect = '', user = null }) => {
 		if (action === 'login') {
 			return AccountActions.login(username, password)
 				.then(() => {
-					console.log('Eureka!');
 					setRedirecting(true);
 					redirectTo();
 				})

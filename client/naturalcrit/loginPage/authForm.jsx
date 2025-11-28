@@ -31,7 +31,6 @@ const AuthForm = createReactClass({
 	},
 
 	componentDidMount: function () {
-        console.log('mounting authform');
 		window.document.addEventListener('keydown', this.handleKeyDown);
 	},
 
