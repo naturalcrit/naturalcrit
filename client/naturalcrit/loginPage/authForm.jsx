@@ -68,14 +68,34 @@ const AuthForm = createReactClass({
 		});
 	}, 1000),
 
+	getUsernameStatus: function () {
+		const { username, checkingUsername, usernameExists } = this.state;
+		const { actionType } = this.props;
+
+		if (!username) return 'empty';
+
+		// ✅ Pattern rule for signup/rename
+		if (actionType === 'signup' || actionType === 'rename') {
+			const pattern = /^[A-Za-z0-9_.-&%$]+$/;
+			if (!pattern.test(username)) {
+				return 'invalidPattern';
+			}
+		}
+
+		if (checkingUsername) return 'checking';
+		if (usernameExists) return 'taken';
+		return 'valid';
+	},
+
 	isValid : function () {
 		const { username, password, usernameExists, processing } = this.state;
 		const { actionType } = this.props;
 
 		if (processing) return false;
-
-		if (actionType === 'login') return username && password;
-		if (actionType === 'signup' || actionType === 'rename') return username && password && !usernameExists;
+		if (actionType === 'login') return this.state.username && password;
+		if (actionType === 'signup' || actionType === 'rename') {
+			return password && this.getUsernameStatus() === 'valid';
+		}
 
 		return false;
 	},

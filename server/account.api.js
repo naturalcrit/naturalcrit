@@ -71,4 +71,18 @@ router.put('/rename', async (req, res)=>{
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 });
+
+router.delete('/delete', async (req, res) => {
+	try {
+		const { username } = req.body;
+		const user = await Account.getUser(username);
+		if (!user) return res.status(404).json({ error: 'User not found' });
+		await user.remove();
+
+		res.json(true);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json(err);
+	}
+});
 export default router;
