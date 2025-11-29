@@ -4,73 +4,42 @@
 
 //Animates all properties on an element
 .animateAll(@duration : @defaultDuration, @easing : @defaultEasing){
-	-webkit-transition: all @duration @easing;
-	   -moz-transition: all @duration @easing;
-		 -o-transition: all @duration @easing;
-			transition: all @duration @easing;
+	transition: all @duration @easing;
 }
 //Animates Specific property
 .animate(@prop, @duration : @defaultDuration, @easing : @defaultEasing){
-	-webkit-transition: @prop @duration @easing;
-	   -moz-transition: @prop @duration @easing;
-		 -o-transition: @prop @duration @easing;
-			transition: @prop @duration @easing;
+	transition: @prop @duration @easing;
 }
 
 .animateMany(...){
 	@value: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
-	-webkit-transition-property: @value;
-	   -moz-transition-property: @value;
-		 -o-transition-property: @value;
-			transition-property: @value;
+	transition-property: @value;
 
 	.animateDuration();
 	.animateEasing();
 }
 
 .animateDuration(@duration : @defaultDuration){
-	-webkit-transition-duration: @duration;
-	   -moz-transition-duration: @duration;
-		 -o-transition-duration: @duration;
-			transition-duration: @duration;
+	transition-duration: @duration;
 }
 
 .animateEasing(@easing : @defaultEasing){
-	-webkit-transition-timing-function: @easing;
-	   -moz-transition-timing-function: @easing;
-		 -o-transition-timing-function: @easing;
-			transition-timing-function: @easing;
+	transition-timing-function: @easing;
 }
-
 
 .transition (@prop, @duration: @defaultDuration) {
-	-webkit-transition: @prop @duration, -webkit-transform @duration;
-	   -moz-transition: @prop @duration, -moz-transform @duration;
-		 -o-transition: @prop @duration, -o-transform @duration;
-		-ms-transition: @prop @duration, -ms-transform @duration;
-			transition: @prop @duration, transform @duration;
+	transition: @prop @duration, transform @duration;
 }
 .transform (@transform) {
-	-webkit-transform: @transform;
-	   -moz-transform: @transform;
-		 -o-transform: @transform;
-		-ms-transform: @transform;
-			transform: @transform;
+	transform: @transform;
 }
-
 
 .delay(@delay){
-	animation-delay:@delay;
-	-webkit-animation-delay:@delay;
 	transition-delay:@delay;
-	-webkit-transition-delay:@delay;
+	animation-delay:@delay;
 }
 .keep(){
-	-webkit-animation-fill-mode:forwards;
-	   -moz-animation-fill-mode:forwards;
-		-ms-animation-fill-mode:forwards;
-		 -o-animation-fill-mode:forwards;
-			animation-fill-mode:forwards;
+	animation-fill-mode:forwards;
 }
 
 
@@ -105,28 +74,14 @@
 		to { @to(); }
 	};
 	@-webkit-keyframes @name {@frames();}
-	   @-moz-keyframes @name {@frames();}
-		@-ms-keyframes @name {@frames();}
-		 @-o-keyframes @name {@frames();}
-			@keyframes @name {@frames();}
+	@keyframes @name {@frames();}
 }
 
 .createAnimation(@name, @duration : @defaultDuration, @easing : @defaultEasing){
-	-webkit-animation-name: @name;
-	   -moz-animation-name: @name;
-		-ms-animation-name: @name;
-			animation-name: @name;
-	-webkit-animation-duration: @duration;
-	   -moz-animation-duration: @duration;
-		-ms-animation-duration: @duration;
-			animation-duration: @duration;
-	-webkit-animation-timing-function: @easing;
-	   -moz-animation-timing-function: @easing;
-		-ms-animation-timing-function: @easing;
-			animation-timing-function: @easing;
+	animation-name: @name;
+	animation-duration: @duration;
+	animation-timing-function: @easing;
 }
-
-
 
 /***************************
 	  Standard Animations
@@ -226,10 +181,7 @@
 		to   { .transform(rotate(360deg)); }
 	}
 	@-webkit-keyframes spin {.spinKeyFrames();}
-	   @-moz-keyframes spin {.spinKeyFrames();}
-	    @-ms-keyframes spin {.spinKeyFrames();}
-	     @-o-keyframes spin {.spinKeyFrames();}
-	        @keyframes spin {.spinKeyFrames();}
+	@keyframes spin {.spinKeyFrames();}
 }
 
 .bounce(@duration : @defaultDuration, @easing : @defaultEasing){
@@ -240,10 +192,7 @@
 		60% { .transform(translateY(-15px));}
 	}
 	@-webkit-keyframes bounce {.bounceKeyFrames();}
-	   @-moz-keyframes bounce {.bounceKeyFrames();}
-	    @-ms-keyframes bounce {.bounceKeyFrames();}
-	     @-o-keyframes bounce {.bounceKeyFrames();}
-	        @keyframes bounce {.bounceKeyFrames();}
+	@keyframes bounce {.bounceKeyFrames();}
 }
 
 .pulse(@duration : @defaultDuration, @easing : @defaultEasing){
@@ -254,10 +203,7 @@
 		100% { .transform(scale(1));}
 	}
 	@-webkit-keyframes pulse {.pulseKeyFrames();}
-	   @-moz-keyframes pulse {.pulseKeyFrames();}
-	    @-ms-keyframes pulse {.pulseKeyFrames();}
-	     @-o-keyframes pulse {.pulseKeyFrames();}
-	        @keyframes pulse {.pulseKeyFrames();}
+	@keyframes pulse {.pulseKeyFrames();}
 }
 
 .rubberBand(@duration : @defaultDuration, @easing : @defaultEasing){
@@ -270,10 +216,7 @@
 		100% {.transform(scale(1));}
 	}
 	@-webkit-keyframes rubberBand {.rubberBandKeyFrames();}
-	   @-moz-keyframes rubberBand {.rubberBandKeyFrames();}
-	    @-ms-keyframes rubberBand {.rubberBandKeyFrames();}
-	     @-o-keyframes rubberBand {.rubberBandKeyFrames();}
-	        @keyframes rubberBand {.rubberBandKeyFrames();}
+	@keyframes rubberBand {.rubberBandKeyFrames();}
 }
 
 .shake(@duration : @defaultDuration, @easing : @defaultEasing){
@@ -284,10 +227,7 @@
 		20%, 40%, 60%, 80% {.transform( translateX(10px));}
 	}
 	@-webkit-keyframes shake {.shakeKeyFrames();}
-	   @-moz-keyframes shake {.shakeKeyFrames();}
-	    @-ms-keyframes shake {.shakeKeyFrames();}
-	     @-o-keyframes shake {.shakeKeyFrames();}
-	        @keyframes shake {.shakeKeyFrames();}
+	@keyframes shake {.shakeKeyFrames();}
 }
 
 .swing(@duration : @defaultDuration, @easing : @defaultEasing){
@@ -303,10 +243,7 @@
 		100% {.transform(rotate(0deg));}
 	}
 	@-webkit-keyframes swing {.swingKeyFrames();}
-	   @-moz-keyframes swing {.swingKeyFrames();}
-	    @-ms-keyframes swing {.swingKeyFrames();}
-	     @-o-keyframes swing {.swingKeyFrames();}
-	        @keyframes swing {.swingKeyFrames();}
+	@keyframes swing {.swingKeyFrames();}
 }
 
 .twist(@duration : @defaultDuration, @easing : @defaultEasing){
@@ -322,10 +259,7 @@
 		100% {.transform(rotate(0deg));}
 	}
 	@-webkit-keyframes swing {.swingKeyFrames();}
-	   @-moz-keyframes swing {.swingKeyFrames();}
-	    @-ms-keyframes swing {.swingKeyFrames();}
-	     @-o-keyframes swing {.swingKeyFrames();}
-	        @keyframes swing {.swingKeyFrames();}
+	@keyframes swing {.swingKeyFrames();}
 }
 
 .wobble(@duration : @defaultDuration, @easing : @defaultEasing){
@@ -340,10 +274,7 @@
 		100% {.transform(translateX(0%));}
 	}
 	@-webkit-keyframes wobble {.wobbleKeyFrames();}
-	   @-moz-keyframes wobble {.wobbleKeyFrames();}
-	    @-ms-keyframes wobble {.wobbleKeyFrames();}
-	     @-o-keyframes wobble {.wobbleKeyFrames();}
-	        @keyframes wobble {.wobbleKeyFrames();}
+	@keyframes wobble {.wobbleKeyFrames();}
 }
 
 .popIn(@duration : @defaultDuration, @easing : @defaultEasing){
@@ -354,8 +285,5 @@
 		100% { .transform(scale(1));}
 	}
 	@-webkit-keyframes popIn {.popInKeyFrames();}
-	   @-moz-keyframes popIn {.popInKeyFrames();}
-	    @-ms-keyframes popIn {.popInKeyFrames();}
-	     @-o-keyframes popIn {.popInKeyFrames();}
-	        @keyframes popIn {.popInKeyFrames();}
+	@keyframes popIn {.popInKeyFrames();}
 }
