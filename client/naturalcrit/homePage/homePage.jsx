@@ -2,10 +2,10 @@ import React from 'react';
 import _ from 'lodash';
 import cx from 'classnames';
 
-import NaturalCritIcon from '../../../shared/naturalcrit/components/naturalcritLogo.jsx';
-import HomebrewIcon from '../../../shared/naturalcrit/svg/homebrew_svg.jsx';
-import TPKIcon from '../../../shared/naturalcrit/svg/tpk_svg.jsx';
-import BadgeIcon from '../../../shared/naturalcrit/svg/badge_svg.jsx';
+import NaturalCritIcon from '../../assets/svg/naturalcritLogo.jsx';
+import HomebrewIcon from '../../assets/svg/homebrew_svg.jsx';
+import TPKIcon from '../../assets/svg/tpk_svg.jsx';
+import BadgeIcon from '../../assets/svg/badge_svg.jsx';
 
 import './homePage.less';
 

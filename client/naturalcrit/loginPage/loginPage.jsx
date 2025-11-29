@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import AccountActions from '../account.actions.js';
 import AuthForm from './authForm.jsx';
-import NaturalCritIcon from '../../../shared/naturalcrit/components/naturalcritLogo.jsx';
+import NaturalCritIcon from '../../assets/svg/naturalcritLogo.jsx';
 
 import './loginPage.less';
 

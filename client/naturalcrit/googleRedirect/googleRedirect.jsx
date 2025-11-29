@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import createReactClass from 'create-react-class';
 
-import NaturalCritIcon from "../../../shared/naturalcrit/components/naturalcritLogo";
+import NaturalCritIcon from "../../assets/svg/naturalcritLogo";
 import AccountActions from "../account.actions";
 //TODO: Almost identidal to "loginPage". Should possibly be merged to reduce redundancy
 
