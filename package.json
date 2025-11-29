@@ -15,7 +15,7 @@
 	"author": "stolksdorf",
 	"license": "BSD-2-Clause",
 	"dependencies": {
-		"@vitejs/plugin-react": "^4.7.0",
+		"@vitejs/plugin-react": "^5.1.1",
 		"app-module-path": "2.2.0",
 		"bcrypt": "^6.0.0",
 		"body-parser": "^2.2.0",
@@ -48,7 +48,7 @@
 		"source-map-support": "^0.5.21",
 		"superagent": "^10.2.3",
 		"uglify-es": "^3.3.10",
-		"vite": "^6.4.1",
+		"vite": "^7.2.4",
 		"watchify": "^4.0.0"
 	},
 	"devDependencies": {
