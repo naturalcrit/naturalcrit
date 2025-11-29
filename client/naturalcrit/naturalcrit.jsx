@@ -1,8 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
-import { Routes, Route, Navigate, BrowserRouter, useSearchParams } from 'react-router-dom';
-import { StaticRouter } from 'react-router-dom/server';
+import { Routes, Route, Navigate, BrowserRouter, StaticRouter, useSearchParams } from 'react-router';
 
 import HomePage       from './homePage/homePage.jsx';
 import LoginPage      from './loginPage/loginPage.jsx';
