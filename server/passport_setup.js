@@ -1,17 +1,16 @@
-const passport = require('passport');
-const ExtractJwt = require('passport-jwt').ExtractJwt;
-const JwtStrategy = require('passport-jwt').Strategy;
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const Account = require('./account.model.js').model;
+import passport from 'passport';
+import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import Account from './account.model.js';
+import nconf from 'nconf';
 
 // Load configuration values
-const config = require('nconf')
+const config = nconf
 	.argv()
 	.env({ lowerCase: true }) // Load environment variables
 	.file('environment', { file: `config/${process.env.NODE_ENV}.json` })
 	.file('defaults', { file: 'config/default.json' });
 
-console.log('did we get google client id?: ', config.get('googleClientId') || process.env.googleClientId);
 passport.initialize();
 
 passport.serializeUser((user, done) => {
@@ -20,7 +19,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
 	try {
-		const user = await User.findById(id);
+		const user = await Account.findById(id);
 		done(null, user);
 	} catch (err) {
 		done(err);
@@ -37,7 +36,7 @@ passport.use(
 		},
 		async (payload, done) => {
 			try {
-				const user = await users.getUserById(parseInt(payload.sub));
+				const user = await Account.findById(parseInt(payload.sub));
 				if (user) {
 					return done(null, user, payload);
 				}
@@ -102,3 +101,5 @@ passport.use(
 		}
 	)
 );
+
+export default passport;

@@ -1,4 +1,4 @@
-var React = require('react');
+import React from 'react';
 
 import createReactClass from 'create-react-class';
 
@@ -8,4 +8,4 @@ var SignupPage = createReactClass({
 	},
 });
 
-module.exports = SignupPage;
+export default SignupPage;

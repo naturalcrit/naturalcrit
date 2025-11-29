@@ -4,6 +4,8 @@ import AccountActions from '../account.actions.js';
 import AuthForm from './authForm.jsx';
 import NaturalCritIcon from '../../../shared/naturalcrit/components/naturalcritLogo.jsx';
 
+import './loginPage.less';
+
 const RedirectLocation = 'NC-REDIRECT-URL';
 
 const LoginPage = ({ redirect = '', user = null }) => {
@@ -30,7 +32,6 @@ const LoginPage = ({ redirect = '', user = null }) => {
 		if (action === 'login') {
 			return AccountActions.login(username, password)
 				.then(() => {
-					console.log('Eureka!');
 					setRedirecting(true);
 					redirectTo();
 				})
@@ -121,4 +122,4 @@ const LoginPage = ({ redirect = '', user = null }) => {
 	);
 };
 
-module.exports = LoginPage;
+export default LoginPage;

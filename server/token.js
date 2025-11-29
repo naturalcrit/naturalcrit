@@ -1,11 +1,13 @@
-const jwt = require('jwt-simple');
+import jwt from 'jwt-simple';
 
 // Load configuration values
-const config = require('nconf')
-	.argv()
-	.env({ lowerCase: true })	// Load environment variables
-	.file('environment', { file: `config/${process.env.NODE_ENV}.json` })
-	.file('defaults', { file: 'config/default.json' });
+import nconf from 'nconf';
+
+const config = nconf
+  .argv()
+  .env({ lowerCase: true }) // Load environment variables
+  .file('environment', { file: `config/${process.env.NODE_ENV}.json` })
+  .file('defaults', { file: 'config/default.json' })
 
 // Generate an Access Token for the given User ID
 const generateAccessToken = (req, res) => {
@@ -33,6 +35,6 @@ const generateAccessToken = (req, res) => {
   return token;
 }
 
-module.exports = {
+export default {
     generateAccessToken: generateAccessToken
 }

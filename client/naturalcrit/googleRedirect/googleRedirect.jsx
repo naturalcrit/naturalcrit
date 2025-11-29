@@ -1,11 +1,13 @@
-const React = require('react');
-const _ = require('lodash');
-const cx = require('classnames');
+
+import React from "react";
+
+import cx from 'classnames';
+import _ from 'lodash';
 
 import createReactClass from 'create-react-class';
 
-const NaturalCritIcon = require('naturalcrit/svg/naturalcrit.svg.jsx');
-const AccountActions = require('../account.actions.js');
+import NaturalCritIcon from "../../../shared/naturalcrit/components/naturalcritLogo";
+import AccountActions from "../account.actions";
 //TODO: Almost identidal to "loginPage". Should possibly be merged to reduce redundancy
 
 const LoginPage = createReactClass({
@@ -282,4 +284,4 @@ const LoginPage = createReactClass({
 	},
 });
 
-module.exports = LoginPage;
+export default LoginPage;

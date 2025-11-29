@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import _ from 'lodash';
 import BadgeTemplate from './badgeTemplate.js';
 
-//import './badgeRender.less';
+import './badgeRender.less';
 
 const replaceAll = (text, target, str) => text.replace(new RegExp(target, 'g'), str);
 
@@ -163,4 +163,4 @@ const BadgeRender = ({ title = '', text = '', rawSVG = '', color = '#333' }) => 
 	);
 };
 
-module.exports = BadgeRender;
+export default BadgeRender;
