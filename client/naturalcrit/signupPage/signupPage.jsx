@@ -1,9 +1,11 @@
-var React = require('react');
+import React from 'react';
 
-var SignupPage = React.createClass({
-	render: function () {
-		return <div className="signupPage">SignupPage Component Ready.</div>;
+import createReactClass from 'create-react-class';
+
+const SignupPage = createReactClass({
+	render : function () {
+		return <div className='signupPage'>SignupPage Component Ready.</div>;
 	},
 });
 
-module.exports = SignupPage;
+export default SignupPage;

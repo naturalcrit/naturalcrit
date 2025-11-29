@@ -1,18 +1,14 @@
-@import "shared/naturalcrit/styles/core.less";
+@import '../styles/core.less';
 
-main {
-	position: relative;
-	height: 100%;
-}
 
-.badges {
+.naturalcrit >.badges {
 	--bg-clr: white;
 	--p-clr: black;
 
 	position: relative;
 	height: 100%;
-	background: var(--bg-clr);
-	color: var(--p-clr);
+	background: var(--bg-clr, white);
+	color: var(--p-clr, black);
 
 	.mainContent {
 		height: 100%;
@@ -30,7 +26,7 @@ main {
 	}
 
 	h1 {
-		margin:0;
+		margin: 0;
 		margin-bottom: 10px;
 		padding-top: 30px;
 		font-family: 'Calluna';
@@ -40,10 +36,10 @@ main {
 	}
 
 	p {
-		color:inherit;
+		color: inherit;
 	}
-	
-	&>p {
+
+	& > p {
 		margin-bottom: 20px;
 		font-size: 0.8em;
 		text-align: center;
@@ -69,77 +65,77 @@ main {
 		color: var(--p-clr);
 		opacity: 80%;
 	}
-}
 
-button {
-	border: none;
-	font-family: 'CodeBold';
-	letter-spacing: 1px;
-	padding: 12px 20px;
-	margin: 10px;
-	background-color: var(--p-clr);
-	color: var(--bg-clr);
-	text-transform: uppercase;
-	text-align: center;
-
-	&:hover {
+	button {
+		border: none;
+		font-family: 'CodeBold';
+		letter-spacing: 1px;
+		padding: 12px 20px;
+		margin: 10px;
 		background-color: var(--p-clr);
 		color: var(--bg-clr);
-		filter: contrast(0.7);
-	}
+		text-transform: uppercase;
+		text-align: center;
 
-	&:enabled {
-		cursor: pointer;
-	}
+		&:hover {
+			background-color: var(--p-clr);
+			color: var(--bg-clr);
+			filter: contrast(0.7);
+		}
 
-	&:disabled {
-		background-color: #444;
-		cursor: not-allowed;
-	}
+		&:enabled {
+			cursor: pointer;
+		}
 
-	&:is(.red, .green, .orange):disabled {
-		filter: saturate(40%);
-	}
+		&:disabled {
+			background-color: #444;
+			cursor: not-allowed;
+		}
 
-	&.red {
-		background-color: @red;
-	}
+		&:is(.red, .green, .orange):disabled {
+			filter: saturate(40%);
+		}
 
-	&.green {
-		background-color: @green;
-	}
+		&.red {
+			background-color: @red;
+		}
 
-	&.orange {
-		background-color: @orange;
-	}
-}
+		&.green {
+			background-color: @green;
+		}
 
-.logo {
-	position: fixed;
-	top: 10px;
-	left: 10px;
-	font-size: 2em;
-	color: var(--p-clr);
-	text-decoration: none;
-
-	svg {
-		height: .9em;
-		margin-right: .2em;
-		cursor: pointer;
-		fill: currentColor;
-	}
-
-	.name {
-		font-family: 'CodeLight';
-
-		.crit {
-			font-family: 'CodeBold';
+		&.orange {
+			background-color: @orange;
 		}
 	}
-}
 
-.theme {
-	position: fixed;
-	top: 0;
-	right: 0;
+	.logo {
+		position: fixed;
+		top: 10px;
+		left: 10px;
+		font-size: 2em;
+		color: var(--p-clr);
+		text-decoration: none;
+
+		svg {
+			height: 0.9em;
+			margin-right: 0.2em;
+			cursor: pointer;
+			fill: currentColor;
+		}
+
+		.name {
+			font-family: 'CodeLight';
+
+			.crit {
+				font-family: 'CodeBold';
+			}
+		}
+	}
+
+	.theme {
+		position: fixed;
+		top: 0;
+		right: 0;
+	}
 }

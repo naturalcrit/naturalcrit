@@ -1,12 +1,12 @@
-const request = require('superagent');
+import request from 'superagent';
 
 const AccountActions = {
-	login: (user, pass) => {
-		return new Promise((resolve, reject) => {
+	login : (user, pass)=>{
+		return new Promise((resolve, reject)=>{
 			request
 				.post('/login')
 				.send({ user, pass })
-				.end((err, res) => {
+				.end((err, res)=>{
 					if (err) return reject(res.body);
 					AccountActions.createSession(res.body);
 					return resolve(res.body);
@@ -14,12 +14,12 @@ const AccountActions = {
 		});
 	},
 
-	signup: (user, pass) => {
-		return new Promise((resolve, reject) => {
+	signup : (user, pass)=>{
+		return new Promise((resolve, reject)=>{
 			request
 				.post('/signup')
 				.send({ user, pass })
-				.end((err, res) => {
+				.end((err, res)=>{
 					if (err) return reject(res.body);
 					AccountActions.createSession(res.body);
 					return resolve(res.body);
@@ -27,12 +27,12 @@ const AccountActions = {
 		});
 	},
 
-	linkGoogle: (username, pass, user) => {
-		return new Promise((resolve, reject) => {
+	linkGoogle : (username, pass, user)=>{
+		return new Promise((resolve, reject)=>{
 			request
 				.post('/link')
 				.send({ username, pass, user })
-				.end((err, res) => {
+				.end((err, res)=>{
 					if (err) return reject(res.body);
 					AccountActions.createSession(res.body);
 					return resolve(res.body);
@@ -40,37 +40,37 @@ const AccountActions = {
 		});
 	},
 
-	validateUsername: (username) => {
+	validateUsername : (username)=>{
 		const regex = /^(?!.*@).{3,}$/;
 		return regex.test(username);
 	},
 
-	checkUsername: (username) => {
-		return new Promise((resolve, reject) => {
+	checkUsername : (username)=>{
+		return new Promise((resolve, reject)=>{
 			request
 				.get(`/user_exists/${username}`)
 				.send()
-				.end((err, res) => {
+				.end((err, res)=>{
 					if (err) return reject(res.body);
 					return resolve(res.body);
 				});
 		});
 	},
 
-	rename: (username, newUsername, password) => {
+	rename : (username, newUsername, password)=>{
 		console.log('attempting rename');
 		return AccountActions.login(username, password)
-			.then(() => {
-				return new Promise((resolve, reject) => {
+			.then(()=>{
+				return new Promise((resolve, reject)=>{
 					request
 						.put('/rename')
 						.send({ username, newUsername })
-						.end((err, res) => {
+						.end((err, res)=>{
 							if (err) return reject(err);
 							console.log('correctly renamed, now relogging');
 							AccountActions.removeSession();
-							AccountActions.login(newUsername, password).then(() => {
-								setTimeout(() => {
+							AccountActions.login(newUsername, password).then(()=>{
+								setTimeout(()=>{
 									window.location.reload();
 								}, 500);
 							});
@@ -78,14 +78,14 @@ const AccountActions = {
 								.put('https://homebrewery.naturalcrit.com/api/user/rename')
 								.withCredentials() //send session cookie manually
 								.send({ username, newUsername })
-								.end((err, res) => {
+								.end((err, res)=>{
 									if (err) return reject(err);
 									return resolve(res.body);
 								});
 						});
 				});
 			})
-			.catch((err) => {
+			.catch((err)=>{
 				return Promise.reject(err);
 			});
 	},
@@ -107,15 +107,15 @@ const AccountActions = {
 			);
 	},	
 
-	createSession: (token) => {
+	createSession : (token)=>{
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
 		document.cookie = `nc_session=${token}; max-age=${60 * 60 * 24 * 365}; path=/; samesite=lax;domain=${domain}`;
 	},
 
-	removeSession: () => {
+	removeSession : ()=>{
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
 		document.cookie = `nc_session=; expires=Thu, 01 Jan 1970 00:00:01 GMT; samesite=lax; domain=${domain}`;
 	},
 };
 
-module.exports = AccountActions;
+export default AccountActions;

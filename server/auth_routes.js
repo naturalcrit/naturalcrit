@@ -1,8 +1,10 @@
-const express      = require('express');
-const passport     = require('passport');
-const token        = require('./token.js');
-const AccountModel = require('./account.model.js').model; // Assuming this is needed for `login`.
 
+import passport from 'passport';
+import './passport_setup.js';
+import token from './token.js';
+import AccountModel from './account.model.js';
+
+import express from 'express';
 const router = express.Router();
 
 // TODO: MERGE from ACCOUNT.API.JS then probably rename ACCOUNT.API.JS
@@ -13,22 +15,19 @@ function generateUserToken(req, res) {
 	return accessToken;
 }
 
-// Login API
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res)=>{
 	const { user, pass } = req.body;
 	const jwt = await AccountModel.login(user, pass)
-		.catch(err => res.status(err.status || 500).json(err) );
-	if(jwt)
+		.catch((err)=>res.status(err.status || 500).json(err));
+	if (jwt)
 		res.json(jwt);
 });
 
-// Render login page
-router.get('/login', (req, res) => {
-	res.render('login'); // Renders the login page (template view).
+router.get('/login', (req, res)=>{
+	res.render('login');
 });
 
-// Logout
-router.get('/logout', (req, res) => {
+router.get('/logout', (req, res)=>{
 	// Placeholder for logout functionality. Actual session management should be implemented here.
 	res.send('Logging out');
 });
@@ -46,7 +45,7 @@ router.get('/google',
 // Google authentication redirect route
 router.get('/google/redirect',
 	passport.authenticate('google', { session: false }),
-	(req, res, next) => {
+	(req, res, next)=>{
 		if (!req.user.username)
 			return next();	// Stay on the page if we still need local sign-in
 
@@ -61,4 +60,6 @@ router.get('/google/redirect',
 	}
 );
 
-module.exports = router;
+const authRoutes = router;
+
+export default authRoutes;

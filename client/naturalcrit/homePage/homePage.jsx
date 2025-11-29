@@ -1,82 +1,68 @@
-const React = require('react');
-const _ = require('lodash');
-const cx = require('classnames');
+import React from 'react';
+import _ from 'lodash';
+import cx from 'classnames';
 
-const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
+import NaturalCritIcon from '../../assets/svg/naturalcritLogo.jsx';
+import HomebrewIcon from '../../assets/svg/homebrew_svg.jsx';
+import TPKIcon from '../../assets/svg/tpk_svg.jsx';
+import BadgeIcon from '../../assets/svg/badge_svg.jsx';
 
-const HomebrewIcon = require('naturalcrit/svg/homebrew.svg.jsx');
-const TPKIcon = require('naturalcrit/svg/tpk.svg.jsx');
-const BadgeIcon = require('naturalcrit/svg/badge.svg.jsx');
+import './homePage.less';
 
-const HomePage = React.createClass({
-	getDefaultProps: function () {
-		return {
-			tools: [
-				{
-					id: 'homebrew',
-					path: 'https://homebrewery.naturalcrit.com',
-					name: 'The Homebrewery',
-					icon: <HomebrewIcon />,
-					desc: 'Make authentic-looking D&D homebrews using Markdown',
-
-					show: true,
-					beta: false,
-				},
-				{
-					id: 'badges',
-					path: '/badges',
-					name: 'Achievement Badges',
-					icon: <BadgeIcon />,
-					desc: 'Create simple badges to award your players',
-
-					show: true,
-					beta: false,
-				},
-				{
-					id: 'tpk',
-					path: 'http://tpk.naturalcrit.com',
-					name: 'Total Player Knoller',
-					icon: <TPKIcon />,
-					desc: 'Effortless custom character sheets',
-
-					show: false,
-					beta: true,
-				},
-			],
-		};
+const defaultTools = [
+	{
+		id   : 'homebrew',
+		path : 'https://homebrewery.naturalcrit.com',
+		name : 'The Homebrewery',
+		icon : <HomebrewIcon />,
+		desc : 'Make authentic-looking D&D homebrews using Markdown',
+		show : true,
+		beta : false,
 	},
+	{
+		id   : 'badges',
+		path : '/badges',
+		name : 'Achievement Badges',
+		icon : <BadgeIcon />,
+		desc : 'Create simple badges to award your players',
+		show : true,
+		beta : false,
+	},
+	{
+		id   : 'tpk',
+		path : 'http://tpk.naturalcrit.com',
+		name : 'Total Player Knoller',
+		icon : <TPKIcon />,
+		desc : 'Effortless custom character sheets',
+		show : false,
+		beta : true,
+	},
+];
 
-	renderTool: function (tool) {
+const HomePage = ({ tools = defaultTools })=>{
+	const renderTool = (tool)=>{
 		if (!tool.show) return null;
 
 		return (
 			<a href={tool.path} className={cx('tool', tool.id, { beta: tool.beta })} key={tool.id}>
-				<div className="content">
+				<div className='content'>
 					{tool.icon}
 					<h2>{tool.name}</h2>
 					<p>{tool.desc}</p>
 				</div>
 			</a>
 		);
-	},
+	};
 
-	renderTools: function () {
-		return _.map(this.props.tools, (tool) => {
-			return this.renderTool(tool);
-		});
-	},
-
-	render: function () {
-		return (
-			<div className="homePage">
-				<div className="top">
-					<NaturalCritIcon />
-					<p>Top-tier tools for the discerning DM</p>
-				</div>
-				<div className="tools">{this.renderTools()}</div>
+	return (
+		<div className='homePage'>
+			<div className='top'>
+				<NaturalCritIcon />
+				<p>Top-tier tools for the discerning DM</p>
 			</div>
-		);
-	},
-});
+			<div className='tools'>{_.map(tools, renderTool)}</div>
+		</div>
+	);
+};
 
-module.exports = HomePage;
+export default HomePage;

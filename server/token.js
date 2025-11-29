@@ -1,38 +1,35 @@
-const jwt = require('jwt-simple');
+import jwt from 'jwt-simple';
 
-// Load configuration values
-const config = require('nconf')
-	.argv()
-	.env({ lowerCase: true })	// Load environment variables
-	.file('environment', { file: `config/${process.env.NODE_ENV}.json` })
-	.file('defaults', { file: 'config/default.json' });
+import nconf from 'nconf';
 
-// Generate an Access Token for the given User ID
-const generateAccessToken = (req, res) => {
-  const payload = req.user.toJSON();
+const config = nconf
+  .argv()
+  .env({ lowerCase: true }) // Load environment variables
+  .file('environment', { file: `config/${process.env.NODE_ENV}.json` })
+  .file('defaults', { file: 'config/default.json' });
 
-  // When the token was issued
-  payload.issued = (new Date());
-  // Which service issued the Token
-  payload.issuer = config.get('authentication_token_issuer');
-  // Which service is the token intended for
-  payload.audience = config.get('authentication_token_audience');
-  // The signing key for signing the token
-  delete payload.password;
-  delete payload._id;
+const generateAccessToken = (req, res)=>{
+	const payload = req.user.toJSON();
 
-	console.log("THE PAYLOAD");
+	payload.issued = (new Date());
+	payload.issuer = config.get('authentication_token_issuer');
+	payload.audience = config.get('authentication_token_audience');
+
+	delete payload.password;
+	delete payload._id;
+
+	console.log('THE PAYLOAD');
 	console.log(payload);
 
-  const secret = config.get('authentication_token_secret');
-	console.log("ENCODING WITH SECRET:");
+	const secret = config.get('authentication_token_secret');
+	console.log('ENCODING WITH SECRET:');
 	console.log(secret);
 
-  const token = jwt.encode(payload, secret);
+	const token = jwt.encode(payload, secret);
 
-  return token;
-}
+	return token;
+};
 
-module.exports = {
-    generateAccessToken: generateAccessToken
-}
+export default {
+	generateAccessToken : generateAccessToken
+};

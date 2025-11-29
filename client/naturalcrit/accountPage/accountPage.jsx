@@ -1,7 +1,9 @@
-const React = require('react');
-const AccountActions = require('../account.actions.js');
-const NaturalCritIcon = require('naturalcrit/components/naturalcritLogo.jsx');
-const AuthForm = require('../loginPage/authForm.jsx'); // Import AuthForm
+import React from 'react';
+import AccountActions from '../account.actions.js';
+import NaturalCritIcon from '../../assets/svg/naturalcritLogo.jsx';
+import AuthForm from '../loginPage/authForm.jsx';
+
+import './accountPage.less';
 
 class AccountPage extends React.Component {
 	constructor(props) {
@@ -31,27 +33,27 @@ class AccountPage extends React.Component {
 
 		if (!regex.test(newUsername)) {
 			this.setState({
-				processing: false,
-				errors: { msg: 'Username must be at least 3 characters long and not include @!?.' },
+				processing : false,
+				errors     : { msg: 'Username must be at least 3 characters long and not include @!?.' },
 			});
 			return Promise.reject('Invalid username');
 		}
 		if (!confirm('Are you sure you want to rename your account?')) return Promise.reject('User canceled rename');
 
 		this.setState({
-			processing: true,
-			errors: null,
+			processing : true,
+			errors     : null,
 		});
 
 		return AccountActions.rename(this.props.user.username, newUsername, password)
-			.then(() => {
+			.then(()=>{
 				this.setState({
-					processing: false,
-					errors: null,
-					showRenameForm: false,
+					processing     : false,
+					errors         : null,
+					showRenameForm : false,
 				});
 			})
-			.catch((err) => {
+			.catch((err)=>{
 				console.log(err);
 				this.setState({
 					processing: false,
@@ -81,8 +83,8 @@ class AccountPage extends React.Component {
 				console.log(err);
 				localStorage.setItem('errors', JSON.stringify(err)); // Store error in localStorage
 				this.setState({
-					processing: false,
-					errors: err,
+					processing : false,
+					errors     : err,
 				});
 				return Promise.reject(err);
 			});
@@ -90,9 +92,9 @@ class AccountPage extends React.Component {
 
 	render() {
 		return (
-			<div className="accountPage">
+			<div className='accountPage'>
 				<NaturalCritIcon />
-				<div className="details">
+				<div className='details'>
 					<h1>Account Page</h1>
 					<br />
 					<p>
@@ -101,8 +103,8 @@ class AccountPage extends React.Component {
 					</p>
 					<br />
 					<button
-						className="logout"
-						onClick={() => {
+						className='logout'
+						onClick={()=>{
 							if (confirm('Are you sure you want to log out?')) {
 								AccountActions.removeSession();
 								window.location = '/';
@@ -132,4 +134,4 @@ class AccountPage extends React.Component {
 	}
 }
 
-module.exports = AccountPage;
+export default AccountPage;

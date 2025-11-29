@@ -1,108 +1,80 @@
-const React = require('react');
+import React from 'react';
+import { useState, useEffect } from 'react';
 
-const CreateRouter = require('pico-router').createRouter;
+import { Routes, Route, Navigate, BrowserRouter, StaticRouter, useSearchParams } from 'react-router';
 
-//Pages
-const HomePage = require('./homePage/homePage.jsx');
-const AccountPage = require('./accountPage/accountPage.jsx');
-const LoginPage = require('./loginPage/loginPage.jsx');
-const SuccessPage = require('./successPage/successPage.jsx');
-const GoogleRedirect = require('./googleRedirect/googleRedirect.jsx');
+import HomePage       from './homePage/homePage.jsx';
+import LoginPage      from './loginPage/loginPage.jsx';
+import SuccessPage    from './successPage/successPage.jsx';
+import GoogleRedirect from './googleRedirect/googleRedirect.jsx';
+import Badges         from '../badges/badges.jsx';
+import AccountPage    from './accountPage/accountPage.jsx';
 
-let Router;
-const Naturalcrit = React.createClass({
-	getDefaultProps: function () {
-		return {
-			user: null,
-			url: '',
-			domain: '',
-			authToken: '',
-			environment: '',
-		};
-	},
+import './naturalcrit.less';
 
-	getInitialState: function () {
-		return { theme: 'light' };
-	},
-	
-	
-	componentWillMount: function () {
-		global.domain = this.props.domain;
+const Naturalcrit = ({ user, url, tools, environment, domain })=>{
+	const [theme, setTheme] = useState('light');
 
-		Router = CreateRouter({
-			'/account': (args, query) => {
-				if (!this.props.user || !this.props.user.username) {
-					return <LoginPage redirect={this.props.url} user={this.props.user} />;
-				}
-				return <AccountPage user={this.props.user} />;
-			},
-			'/login': (args, query) => {
-				return <LoginPage redirect={query.redirect} user={this.props.user} />;
-			},
-			'/success': (args, query) => {
-				return <SuccessPage user={this.props.user} />;
-			},
-			'/auth/google/redirect': (args, query) => {
-				return <GoogleRedirect user={this.props.user} />;
-			},
-			'*': () => {
-				return <HomePage configTools={this.props.tools} user={this.props.user} />;
-			},
-		});
-	},
-
-	componentDidMount: function () {
-		if (typeof localStorage !== 'undefined') {
+	useEffect(()=>{
+		if (typeof window !== 'undefined') {
+			window.domain = domain;
 			const storedTheme = localStorage.getItem('theme');
-			if (storedTheme) {
-				this.setState({ theme: storedTheme });
-			}
+			if (storedTheme) setTheme(storedTheme);
 		}
-	},
+	}, [domain]);
 
-	toggleTheme: function () {
-		const newTheme = this.state.theme === 'light' ? 'dark' : 'light';
-		if (typeof localStorage !== 'undefined') {
-			localStorage.setItem('theme', newTheme);
-		}
-		this.setState({ theme: newTheme });
-	},
+	const toggleTheme = ()=>{
+		const newTheme = theme === 'light' ? 'dark' : 'light';
+		localStorage.setItem('theme', newTheme);
+		setTheme(newTheme);
+	};
 
-	renderAccount: function () {
-		let accountLink = '';
-		if (this.props.user && this.props.user.username) {
-			accountLink = <a href="/account">{this.props.user.username}</a>;
-		} else {
-			accountLink = <a href="/login">Log in</a>;
-		}
-		return accountLink;
-	},
+	const Router = typeof window === 'undefined' ? StaticRouter : BrowserRouter;
+	const routerProps = typeof window === 'undefined' ? { location: url, context: {} } : {};
 
-	renderEnviroment: function () {
-		const env = this.props.environment;
-		if (env[0] === 'production' && !env[1]) return; // Live site
-		if (env[0] === 'production' && env[1]) return <div className="environment">PR - {env[1]}</div>; // PR
-		return <div className="environment">Local</div>; // Local
-	},
+	const LoginWrapper = ({ user })=>{
+		const [searchParams] = useSearchParams();
+		const redirect = searchParams.get('redirect') || '/';
+		return <LoginPage redirect={redirect} user={user} />;
+	};
 
-	renderThemePicker: function () {
-		return (
-			<button className='theme' onClick={this.toggleTheme}>
-				<i className={`fas ${this.state.theme === 'light' ? 'fa-sun' : 'fa-moon'}`}></i>
+	return (
+		<div className={`naturalcrit theme-${theme}`}>
+			<Router {...routerProps}>
+				<Routes>
+					<Route
+						path='/account'
+						element={
+							user?.username ? (
+								<AccountPage user={user} />
+							) : (
+								<Navigate to='/login?redirect=/account' replace />
+							)
+						}
+					/>
+					<Route path='/login' element={<LoginWrapper user={user} />} />
+					<Route path='/success' element={<SuccessPage user={user} />} />
+					<Route path='/auth/google/redirect' element={<GoogleRedirect user={user} />} />
+					<Route path='/badges' element={<Badges />} />
+					<Route path='*' element={<HomePage configTools={tools} user={user} />} />
+				</Routes>
+			</Router>
+
+			<button className='theme' onClick={toggleTheme}>
+				<i className={`fas ${theme === 'light' ? 'fa-sun' : 'fa-moon'}`}></i>
 			</button>
-		);
-	},
 
-	render: function () {
-		return (
-			<div className={`naturalcrit theme-${this.state.theme}`}>
-				<Router initialUrl={this.props.url} />
-				{this.renderThemePicker()}
-				<div className={`accountButton ${this.props.user ? '' : 'login'}`}>{this.renderAccount()}</div>
-				{this.renderEnviroment()}
+			<div className={`accountButton ${user ? '' : 'login'}`}>
+				{user?.username ? <a href='/account'>{user.username}</a> : <a href='/login'>Log in</a>}
 			</div>
-		);
-	},
-});
 
-module.exports = Naturalcrit;
+			{environment[0] === 'production' && environment[1] ? (
+				<div className='environment'>PR - {environment[1]}</div>
+			) : environment[0] === 'production' ? null : (
+				<div className='environment'>Local</div>
+			)}
+		</div>
+	);
+};
+
+export default Naturalcrit;
