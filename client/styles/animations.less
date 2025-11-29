@@ -42,7 +42,6 @@
 	animation-fill-mode:forwards;
 }
 
-
 .sequentialDelay(@delayInc : 0.2s, @initialDelay : 0s){
 	&:nth-child(1){.delay(0*@delayInc + @initialDelay)}
 	&:nth-child(2){.delay(1*@delayInc + @initialDelay)}
@@ -65,8 +64,6 @@
 	&:nth-child(19){.delay(18*@delayInc + @initialDelay)}
 	&:nth-child(20){.delay(19*@delayInc + @initialDelay)}
 }
-
-
 
 .createFrames(@name, @from, @to){
 	@frames: {
@@ -166,9 +163,6 @@
 		{ opacity : 0; .transform(translateX(20px));}
 	);
 }
-
-
-
 
 /***************************
 		Fun Animations
