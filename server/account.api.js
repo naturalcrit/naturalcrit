@@ -2,7 +2,7 @@ import Account from './account.model.js';
 import express from 'express';
 const router = express.Router();
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res)=>{
 	try {
 		const { user, pass } = req.body;
 		const token = await Account.login(user, pass);
@@ -12,7 +12,7 @@ router.post('/login', async (req, res) => {
 	}
 });
 
-router.post('/signup', async (req, res) => {
+router.post('/signup', async (req, res)=>{
 	try {
 		const { user, pass } = req.body;
 		const token = await Account.signup(user, pass);
@@ -22,7 +22,7 @@ router.post('/signup', async (req, res) => {
 	}
 });
 
-router.post('/link', async (req, res) => {
+router.post('/link', async (req, res)=>{
 	try {
 		const { username, user } = req.body;
 		const localUser = await Account.findOne({ username });
@@ -42,7 +42,7 @@ router.post('/link', async (req, res) => {
 	}
 });
 
-router.get('/user_exists/:username', async (req, res) => {
+router.get('/user_exists/:username', async (req, res)=>{
 	try {
 		const { username } = req.params;
 		if (!username) return res.json(false);
@@ -55,7 +55,7 @@ router.get('/user_exists/:username', async (req, res) => {
 	}
 });
 
-router.put('/rename', async (req, res) => {
+router.put('/rename', async (req, res)=>{
 	try {
 		const { username, newUsername } = req.body;
 

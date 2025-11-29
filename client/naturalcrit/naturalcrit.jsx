@@ -13,10 +13,10 @@ import AccountPage    from './accountPage/accountPage.jsx';
 
 import './naturalcrit.less';
 
-const Naturalcrit = ({ user, url, tools, environment, domain }) => {
+const Naturalcrit = ({ user, url, tools, environment, domain })=>{
 	const [theme, setTheme] = useState('light');
 
-	useEffect(() => {
+	useEffect(()=>{
 		if (typeof window !== 'undefined') {
 			window.domain = domain;
 			const storedTheme = localStorage.getItem('theme');
@@ -24,7 +24,7 @@ const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 		}
 	}, [domain]);
 
-	const toggleTheme = () => {
+	const toggleTheme = ()=>{
 		const newTheme = theme === 'light' ? 'dark' : 'light';
 		localStorage.setItem('theme', newTheme);
 		setTheme(newTheme);
@@ -33,7 +33,7 @@ const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 	const Router = typeof window === 'undefined' ? StaticRouter : BrowserRouter;
 	const routerProps = typeof window === 'undefined' ? { location: url, context: {} } : {};
 
-	const LoginWrapper = ({ user }) => {
+	const LoginWrapper = ({ user })=>{
 		const [searchParams] = useSearchParams();
 		const redirect = searchParams.get('redirect') || '/';
 		return <LoginPage redirect={redirect} user={user} />;
@@ -44,35 +44,35 @@ const Naturalcrit = ({ user, url, tools, environment, domain }) => {
 			<Router {...routerProps}>
 				<Routes>
 					<Route
-						path="/account"
+						path='/account'
 						element={
 							user?.username ? (
 								<AccountPage user={user} />
 							) : (
-								<Navigate to="/login?redirect=/account" replace />
+								<Navigate to='/login?redirect=/account' replace />
 							)
 						}
 					/>
-					<Route path="/login" element={<LoginWrapper user={user} />} />
-					<Route path="/success" element={<SuccessPage user={user} />} />
-					<Route path="/auth/google/redirect" element={<GoogleRedirect user={user} />} />
-					<Route path="/badges" element={<Badges />} />
-					<Route path="*" element={<HomePage configTools={tools} user={user} />} />
+					<Route path='/login' element={<LoginWrapper user={user} />} />
+					<Route path='/success' element={<SuccessPage user={user} />} />
+					<Route path='/auth/google/redirect' element={<GoogleRedirect user={user} />} />
+					<Route path='/badges' element={<Badges />} />
+					<Route path='*' element={<HomePage configTools={tools} user={user} />} />
 				</Routes>
 			</Router>
 
-			<button className="theme" onClick={toggleTheme}>
+			<button className='theme' onClick={toggleTheme}>
 				<i className={`fas ${theme === 'light' ? 'fa-sun' : 'fa-moon'}`}></i>
 			</button>
 
 			<div className={`accountButton ${user ? '' : 'login'}`}>
-				{user?.username ? <a href="/account">{user.username}</a> : <a href="/login">Log in</a>}
+				{user?.username ? <a href='/account'>{user.username}</a> : <a href='/login'>Log in</a>}
 			</div>
 
 			{environment[0] === 'production' && environment[1] ? (
-				<div className="environment">PR - {environment[1]}</div>
+				<div className='environment'>PR - {environment[1]}</div>
 			) : environment[0] === 'production' ? null : (
-				<div className="environment">Local</div>
+				<div className='environment'>Local</div>
 			)}
 		</div>
 	);

@@ -7,11 +7,11 @@ import bcrypt   from 'bcrypt';
 const SALT_WORK_FACTOR = 10;
 
 const AccountSchema = mongoose.Schema({
-		username: { type: String, required: true, unique: true },
-		password: { type: String, required: false },
-		googleId: String,
-		googleAccessToken: String,
-		googleRefreshToken: String,
+	username           : { type: String, required: true, unique: true },
+	password           : { type: String, required: false },
+	googleId           : String,
+	googleAccessToken  : String,
+	googleRefreshToken : String,
 }, { versionKey: false });
 
 AccountSchema.pre('save', async function (next) {

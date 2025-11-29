@@ -26,7 +26,7 @@ config
 	.file('defaults', { file: 'config/default.json' });
 
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/naturalcrit');
-mongoose.connection.on('error', () => { console.log('>>>ERROR: Run Mongodb.exe ya goof!') });
+mongoose.connection.on('error', ()=>{ console.log('>>>ERROR: Run Mongodb.exe ya goof!'); });
 
 async function start() {
 	const app = express();
@@ -35,12 +35,12 @@ async function start() {
 	app.use(bodyParser.json());
 	app.use(cookieParser());
 
-	app.use((req, res, next) => {
+	app.use((req, res, next)=>{
 		if (req.cookies && req.cookies.nc_session) {
 			try {
 				req.user = jwt.decode(req.cookies.nc_session, config.get('authentication_token_secret'));
 			} catch (e) {
-				console.log("Couldn't decode user from cookie.");
+				console.log('Couldn\'t decode user from cookie.');
 				console.error(e);
 			}
 		}
@@ -51,26 +51,26 @@ async function start() {
 
 	app.use('/auth', authRoutes);
 
-	app.all('/homebrew*', (req, res) => {
-		return res.redirect(302, 'https://homebrewery.naturalcrit.com' + req.url.replace('/homebrew', ''));
+	app.all('/homebrew*', (req, res)=>{
+		return res.redirect(302, `https://homebrewery.naturalcrit.com${req.url.replace('/homebrew', '')}`);
 	});
 
 	//========-- In Dev environment, use Vite's dev server for speed --========//
 	if (!isProd) {
 		const vite = await createServer({
-			root: path.join(__dirname, 'client'),
-			server: { middlewareMode: true },
-			appType: 'custom',	// This disables Vite's default HTML serving so our `*` handler works
+			root    : path.join(__dirname, 'client'),
+			server  : { middlewareMode: true },
+			appType : 'custom',	// This disables Vite's default HTML serving so our `*` handler works
 		});
 
 		app.use(vite.middlewares);								// Let Vite handle static assets + dev transforms
-		app.get('*', async (req, res, next) => {	// Handle any other route with Express
+		app.get('*', async (req, res, next)=>{	// Handle any other route with Express
 			const url = req.originalUrl;
 			try {
 				const props = {
-					user: req.user || null,
-					domain: config.get('domain'),
-					environment: [process.env.NODE_ENV, process.env.HEROKU_PR_NUMBER],
+					user        : req.user || null,
+					domain      : config.get('domain'),
+					environment : [process.env.NODE_ENV, process.env.HEROKU_PR_NUMBER],
 				};
 
 				let template = fs.readFileSync(path.join(__dirname, 'client/index.html'), 'utf-8');
@@ -95,14 +95,14 @@ async function start() {
 		const indexHtml = fs.readFileSync(path.join(buildPath, 'index.html'), 'utf-8');
 
 		app.use(express.static(buildPath));
-		app.get('*', (req, res) => {
+		app.get('*', (req, res)=>{
 			const props = {
-				user: req.user || null,
-				domain: config.get('domain'),
-				environment: [process.env.NODE_ENV, process.env.HEROKU_PR_NUMBER],
+				user        : req.user || null,
+				domain      : config.get('domain'),
+				environment : [process.env.NODE_ENV, process.env.HEROKU_PR_NUMBER],
 			};
 
-			let prodHtml = indexHtml.replace(
+			const prodHtml = indexHtml.replace(
 				'</body>',
 				`<script>window.__INITIAL_PROPS__ = ${JSON.stringify(props)};</script></body>`
 			);
@@ -112,7 +112,7 @@ async function start() {
 	}
 
 	const port = process.env.PORT || config.get('web_port') || 8010;
-	app.listen(port, () => {
+	app.listen(port, ()=>{
 		console.log(`Server started at http://localhost:${port}`);
 	});
 }

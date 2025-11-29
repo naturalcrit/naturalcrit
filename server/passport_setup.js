@@ -13,11 +13,11 @@ const config = nconf
 
 passport.initialize();
 
-passport.serializeUser((user, done) => {
+passport.serializeUser((user, done)=>{
 	done(null, user.id);
 });
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (id, done)=>{
 	try {
 		const user = await Account.findById(id);
 		done(null, user);
@@ -29,12 +29,12 @@ passport.deserializeUser(async (id, done) => {
 passport.use(
 	new JwtStrategy(
 		{
-			jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
-			secretOrKey: config.get('authentication_token_secret') || process.env.authentication_token_secret,
-			issuer: config.get('authentication_token_issuer') || process.env.authentication_token_issuer,
-			audience: config.get('authentication_token_audience') || process.env.authentication_token_audience,
+			jwtFromRequest : ExtractJwt.fromAuthHeaderWithScheme('jwt'),
+			secretOrKey    : config.get('authentication_token_secret') || process.env.authentication_token_secret,
+			issuer         : config.get('authentication_token_issuer') || process.env.authentication_token_issuer,
+			audience       : config.get('authentication_token_audience') || process.env.authentication_token_audience,
 		},
-		async (payload, done) => {
+		async (payload, done)=>{
 			try {
 				const user = await Account.findById(parseInt(payload.sub));
 				if (user) {
@@ -52,13 +52,13 @@ passport.use(
 	new GoogleStrategy(
 		{
 			//options for the google strat
-			callbackURL: '/auth/google/redirect',
-			clientID: config.get('googleClientId') || process.env.googleClientId,
-			clientSecret: config.get('googleClientSecret') || process.env.googleClientSecret,
-			passReqToCallback: true,
-			proxy: true, //Forces callbackUrl to use https if visited from https
+			callbackURL       : '/auth/google/redirect',
+			clientID          : config.get('googleClientId') || process.env.googleClientId,
+			clientSecret      : config.get('googleClientSecret') || process.env.googleClientSecret,
+			passReqToCallback : true,
+			proxy             : true, //Forces callbackUrl to use https if visited from https
 		},
-		async (req, accessToken, refreshToken, profile, done) => {
+		async (req, accessToken, refreshToken, profile, done)=>{
 			try {
 				const googleUser = await Account.findOne({ googleId: profile.id });
 				if (googleUser) {
@@ -66,7 +66,7 @@ passport.use(
 					googleUser.googleRefreshToken = refreshToken;
 					await googleUser.save();
 					googleUser.googleAccessToken = accessToken;
-					console.log('user logged in via google: ' + googleUser);
+					console.log(`user logged in via google: ${googleUser}`);
 					return done(null, googleUser);
 				} else {
 					// Google Account does not exist
@@ -78,7 +78,7 @@ passport.use(
 						localUser.googleId = profile.id;
 						localUser.googleRefreshToken = refreshToken;
 						const updatedUser = await localUser.save();
-						console.log('Local user updated with Google Id: ' + updatedUser);
+						console.log(`Local user updated with Google Id: ${updatedUser}`);
 						updatedUser.googleAccessToken = accessToken;
 						console.log(updatedUser);
 						return done(null, updatedUser);
@@ -86,9 +86,9 @@ passport.use(
 						// If Local account does not exist either, wait until user is created in googleRedirect before merging accounts
 						console.log('not logged in locally');
 						const newAccount = new Account({
-							googleId: profile.id,
-							googleRefreshToken: refreshToken,
-							googleAccessToken: accessToken,
+							googleId           : profile.id,
+							googleRefreshToken : refreshToken,
+							googleAccessToken  : accessToken,
 						});
 						req.user = newAccount;
 						return done(null, newAccount);

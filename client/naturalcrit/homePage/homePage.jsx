@@ -11,41 +11,41 @@ import './homePage.less';
 
 const defaultTools = [
 	{
-		id: 'homebrew',
-		path: 'https://homebrewery.naturalcrit.com',
-		name: 'The Homebrewery',
-		icon: <HomebrewIcon />,
-		desc: 'Make authentic-looking D&D homebrews using Markdown',
-		show: true,
-		beta: false,
+		id   : 'homebrew',
+		path : 'https://homebrewery.naturalcrit.com',
+		name : 'The Homebrewery',
+		icon : <HomebrewIcon />,
+		desc : 'Make authentic-looking D&D homebrews using Markdown',
+		show : true,
+		beta : false,
 	},
 	{
-		id: 'badges',
-		path: '/badges',
-		name: 'Achievement Badges',
-		icon: <BadgeIcon />,
-		desc: 'Create simple badges to award your players',
-		show: true,
-		beta: false,
+		id   : 'badges',
+		path : '/badges',
+		name : 'Achievement Badges',
+		icon : <BadgeIcon />,
+		desc : 'Create simple badges to award your players',
+		show : true,
+		beta : false,
 	},
 	{
-		id: 'tpk',
-		path: 'http://tpk.naturalcrit.com',
-		name: 'Total Player Knoller',
-		icon: <TPKIcon />,
-		desc: 'Effortless custom character sheets',
-		show: false,
-		beta: true,
+		id   : 'tpk',
+		path : 'http://tpk.naturalcrit.com',
+		name : 'Total Player Knoller',
+		icon : <TPKIcon />,
+		desc : 'Effortless custom character sheets',
+		show : false,
+		beta : true,
 	},
 ];
 
-const HomePage = ({ tools = defaultTools }) => {
-	const renderTool = (tool) => {
+const HomePage = ({ tools = defaultTools })=>{
+	const renderTool = (tool)=>{
 		if (!tool.show) return null;
 
 		return (
 			<a href={tool.path} className={cx('tool', tool.id, { beta: tool.beta })} key={tool.id}>
-				<div className="content">
+				<div className='content'>
 					{tool.icon}
 					<h2>{tool.name}</h2>
 					<p>{tool.desc}</p>
@@ -55,12 +55,12 @@ const HomePage = ({ tools = defaultTools }) => {
 	};
 
 	return (
-		<div className="homePage">
-			<div className="top">
+		<div className='homePage'>
+			<div className='top'>
 				<NaturalCritIcon />
 				<p>Top-tier tools for the discerning DM</p>
 			</div>
-			<div className="tools">{_.map(tools, renderTool)}</div>
+			<div className='tools'>{_.map(tools, renderTool)}</div>
 		</div>
 	);
 };

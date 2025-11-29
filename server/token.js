@@ -6,30 +6,30 @@ const config = nconf
   .argv()
   .env({ lowerCase: true }) // Load environment variables
   .file('environment', { file: `config/${process.env.NODE_ENV}.json` })
-  .file('defaults', { file: 'config/default.json' })
+  .file('defaults', { file: 'config/default.json' });
 
-const generateAccessToken = (req, res) => {
-  const payload = req.user.toJSON();
+const generateAccessToken = (req, res)=>{
+	const payload = req.user.toJSON();
 
-  payload.issued = (new Date());
-  payload.issuer = config.get('authentication_token_issuer');
-  payload.audience = config.get('authentication_token_audience');
+	payload.issued = (new Date());
+	payload.issuer = config.get('authentication_token_issuer');
+	payload.audience = config.get('authentication_token_audience');
 
-  delete payload.password;
-  delete payload._id;
+	delete payload.password;
+	delete payload._id;
 
-	console.log("THE PAYLOAD");
+	console.log('THE PAYLOAD');
 	console.log(payload);
 
-  const secret = config.get('authentication_token_secret');
-	console.log("ENCODING WITH SECRET:");
+	const secret = config.get('authentication_token_secret');
+	console.log('ENCODING WITH SECRET:');
 	console.log(secret);
 
-  const token = jwt.encode(payload, secret);
+	const token = jwt.encode(payload, secret);
 
-  return token;
-}
+	return token;
+};
 
 export default {
-    generateAccessToken: generateAccessToken
-}
+	generateAccessToken : generateAccessToken
+};

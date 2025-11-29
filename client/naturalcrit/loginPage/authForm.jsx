@@ -1,74 +1,74 @@
 
-import React from "react";
+import React from 'react';
 
 import cx from 'classnames';
 import _ from 'lodash';
-import AccountActions from "../account.actions";
+import AccountActions from '../account.actions';
 
 import createReactClass from 'create-react-class';
 
 import './authForm.less';
 
 const AuthForm = createReactClass({
-	getDefaultProps: function () {
+	getDefaultProps : function () {
 		return {
-			onSubmit: () => Promise.resolve(),
-			user: null,
-			actionType: 'login', // 'login', 'signup', or 'rename'
+			onSubmit   : ()=>Promise.resolve(),
+			user       : null,
+			actionType : 'login', // 'login', 'signup', or 'rename'
 		};
 	},
 
-	getInitialState: function () {
+	getInitialState : function () {
 		return {
-			visible: false,
-			username: this.props.user && this.props.user.username ? this.props.user.username : '',
-			password: '',
-			processing: false,
-			checkingUsername: false,
-			usernameExists: false,
-			errors: null,
+			visible          : false,
+			username         : this.props.user && this.props.user.username ? this.props.user.username : '',
+			password         : '',
+			processing       : false,
+			checkingUsername : false,
+			usernameExists   : false,
+			errors           : null,
 		};
 	},
 
-	componentDidMount: function () {
+	componentDidMount : function () {
 		window.document.addEventListener('keydown', this.handleKeyDown);
 	},
 
-	componentWillUnmount: function () {
+	componentWillUnmount : function () {
 		window.document.removeEventListener('keydown', this.handleKeyDown);
 	},
 
-	handleKeyDown: function (e) {
+	handleKeyDown : function (e) {
 		if (e.code === 'Enter') this.handleSubmit();
 	},
 
-	handleInputChange: function (field) {
-		return (e) => {
-			this.setState({ [field]: e.target.value }, () => {
+	handleInputChange : function (field) {
+		return (e)=>{
+			this.setState({ [field]: e.target.value }, ()=>{
 				if (field === 'username') this.checkUsername();
 			});
 		};
 	},
 
-    checkUsername: function () {
+	checkUsername : function () {
 		if (this.state.username === '') return;
 
 		this.setState({
-			checkingUsername: true,
+			checkingUsername : true,
 		});
 		this.debounceCheckUsername(this.state.username);
 	},
 
-	debounceCheckUsername: _.debounce(function () {
-		AccountActions.checkUsername(this.state.username).then((doesExist) => {
+	debounceCheckUsername : _.debounce(function () {
+		AccountActions.checkUsername(this.state.username).then((doesExist)=>{
 			this.setState({
-				usernameExists: !!doesExist,
-				checkingUsername: false,
+				usernameExists   : !!doesExist,
+				checkingUsername : false,
 			});
 		});
 	}, 1000),
 
-	isValid: function () {
+	isValid : function () {
 		const { username, password, usernameExists, processing } = this.state;
 		const { actionType } = this.props;
 
@@ -80,7 +80,7 @@ const AuthForm = createReactClass({
 		return false;
 	},
 
-	handleSubmit: function () {
+	handleSubmit : function () {
 		const { username, password } = this.state;
 		const { actionType, onSubmit } = this.props;
 
@@ -89,36 +89,36 @@ const AuthForm = createReactClass({
 		this.setState({ processing: true, errors: null });
 
 		onSubmit(username, password, actionType)
-			.then(() => this.setState({ processing: false, errors: null }))
-			.catch((err) => {
-                console.error(err);
+			.then(()=>this.setState({ processing: false, errors: null }))
+			.catch((err)=>{
+				console.error(err);
 				this.setState({
-					processing: false,
-					errors: err,
+					processing : false,
+					errors     : err,
 				});
 			});
 	},
 
-	renderErrors: function () {
+	renderErrors : function () {
 		const { errors } = this.state;
 		if (!errors) return null;
 
-		return <div className="errors">{errors.msg || 'Something went wrong'}</div>;
+		return <div className='errors'>{errors.msg || 'Something went wrong'}</div>;
 	},
 
-	renderUsernameValidation: function () {
+	renderUsernameValidation : function () {
 		const { checkingUsername, usernameExists, username } = this.state;
 		if (!username) return null;
 
 		let icon;
-		if (checkingUsername) icon = <i className="fa fa-spinner fa-spin" />;
-		else if (usernameExists) icon = <i className="fa fa-times red" />;
-		else icon = <i className="fa fa-check green" />;
+		if (checkingUsername) icon = <i className='fa fa-spinner fa-spin' />;
+		else if (usernameExists) icon = <i className='fa fa-times red' />;
+		else icon = <i className='fa fa-check green' />;
 
-		return <div className="control">{icon}</div>;
+		return <div className='control'>{icon}</div>;
 	},
 
-	renderButton: function () {
+	renderButton : function () {
 		let className = '';
 		let text = '';
 		let icon = '';
@@ -149,7 +149,7 @@ const AuthForm = createReactClass({
 		);
 	},
 
-	render: function () {
+	render : function () {
 		const { actionType } = this.props;
 		const { visible, username, password, processing } = this.state;
 
@@ -161,20 +161,20 @@ const AuthForm = createReactClass({
 
 		return (
 			<div className={`authForm ${actionType}`}>
-				<label className="field user">
+				<label className='field user'>
 					Username
-					<input type="text" onChange={this.handleInputChange('username')} value={username} />
+					<input type='text' onChange={this.handleInputChange('username')} value={username} />
 					{this.props.actionType !== 'login' && this.renderUsernameValidation()}
 				</label>
 
-				<label className="field password">
+				<label className='field password'>
 					Password
 					<input
 						type={cx({ text: visible, password: !visible })}
 						onChange={this.handleInputChange('password')}
 						value={password}
 					/>
-					<div className="control" onClick={() => this.setState({ visible: !visible })}>
+					<div className='control' onClick={()=>this.setState({ visible: !visible })}>
 						<i className={cx('fa', { 'fa-eye': !visible, 'fa-eye-slash': visible })} />
 					</div>
 				</label>

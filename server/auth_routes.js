@@ -1,6 +1,6 @@
 
 import passport from 'passport';
-import './passport_setup.js'
+import './passport_setup.js';
 import token from './token.js';
 import AccountModel from './account.model.js';
 
@@ -15,19 +15,19 @@ function generateUserToken(req, res) {
 	return accessToken;
 }
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res)=>{
 	const { user, pass } = req.body;
 	const jwt = await AccountModel.login(user, pass)
-		.catch(err => res.status(err.status || 500).json(err) );
-	if(jwt)
+		.catch((err)=>res.status(err.status || 500).json(err));
+	if (jwt)
 		res.json(jwt);
 });
 
-router.get('/login', (req, res) => {
+router.get('/login', (req, res)=>{
 	res.render('login');
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', (req, res)=>{
 	// Placeholder for logout functionality. Actual session management should be implemented here.
 	res.send('Logging out');
 });
@@ -45,7 +45,7 @@ router.get('/google',
 // Google authentication redirect route
 router.get('/google/redirect',
 	passport.authenticate('google', { session: false }),
-	(req, res, next) => {
+	(req, res, next)=>{
 		if (!req.user.username)
 			return next();	// Stay on the page if we still need local sign-in
 
