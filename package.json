@@ -10,7 +10,7 @@
 		"start": "node server.js"
 	},
 	"engines": {
-		"node": "18.18.0"
+		"node": "24.11.1"
 	},
 	"author": "stolksdorf",
 	"license": "BSD-2-Clause",
