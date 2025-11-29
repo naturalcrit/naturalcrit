@@ -1,0 +1,16 @@
+{
+  "customSyntax": "postcss-less",
+  "extends": [
+    "stylelint-config-recommended",
+    "stylelint-config-recess-order"
+  ],
+  "rules": {
+    "color-hex-case": "upper",
+    "color-hex-length": "long",
+    "string-quotes": "single",
+    "indentation": 4,
+    "block-opening-brace-space-before": "always",
+    "declaration-block-trailing-semicolon": "always",
+    "number-leading-zero": "always"
+  }
+}

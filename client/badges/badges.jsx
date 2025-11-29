@@ -5,7 +5,7 @@ import './badges.less';
 
 import BadgeRender from './badgeRender/badgeRender.jsx';
 import Controls from './controls/controls.jsx';
-import NaturalCritIcon from '../../shared/naturalcrit/components/naturalcritLogo.jsx';
+import NaturalCritIcon from '../assets/svg/naturalcritLogo.jsx';
 
 var Badges = createReactClass({
 	getInitialState: function () {

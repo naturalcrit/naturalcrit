@@ -2,7 +2,7 @@ import React from "react";
 
 import createReactClass from 'create-react-class';
 
-import NaturalCritIcon from "../../../shared/naturalcrit/components/naturalcritLogo";
+import NaturalCritIcon from "../../assets/svg/naturalcritLogo";
 
 const RedirectLocation = 'NC-REDIRECT-URL';
 

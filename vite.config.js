@@ -17,7 +17,7 @@ export default defineConfig({
 		preprocessorOptions: {
 			less: {
 				javascriptEnabled: true,
-				additionalData: `@import "./shared/naturalcrit/styles/core.less";`,
+				additionalData: `@import "./client/styles/core.less";`,
 			},
 		},
 	},
