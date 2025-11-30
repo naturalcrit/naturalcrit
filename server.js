@@ -51,7 +51,7 @@ async function start() {
 
 	app.use('/auth', authRoutes);
 
-	app.all('/homebrew/*homebrewPath', (req, res) => {
+	app.all('/homebrew/{*path}', (req, res)=>{
 		return res.redirect(302, `https://homebrewery.naturalcrit.com${req.url.replace('/homebrew', '')}`);
 	});
 
@@ -64,7 +64,7 @@ async function start() {
 		});
 
 		app.use(vite.middlewares);	// Let Vite handle static assets + dev transforms
-		app.get('/*path', async (req, res, next) => {
+		app.get('/{*path}', async (req, res, next)=>{
 			const url = req.originalUrl;
 			try {
 				const props = {
@@ -94,7 +94,7 @@ async function start() {
 		const indexHtml = fs.readFileSync(path.join(buildPath, 'index.html'), 'utf-8');
 
 		app.use(express.static(buildPath));
-		app.get('/*path', (req, res) => {
+		app.get('/{*path}', (req, res)=>{
 			const props = {
 				user        : req.user || null,
 				domain      : config.get('domain'),
