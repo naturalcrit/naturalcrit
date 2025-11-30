@@ -51,8 +51,8 @@ async function start() {
 
 	app.use('/auth', authRoutes);
 
-	app.all(/^\/homebrew(.*)/, (req, res) => {
-  		return res.redirect(302, `https://homebrewery.naturalcrit.com${req.url.replace('/homebrew', '')}`);
+	app.all('/homebrew/*homebrewPath', (req, res) => {
+		return res.redirect(302, `https://homebrewery.naturalcrit.com${req.url.replace('/homebrew', '')}`);
 	});
 
 	//========-- In Dev environment, use Vite's dev server for speed --========//
@@ -63,8 +63,8 @@ async function start() {
 			appType : 'custom',	// This disables Vite's default HTML serving so our `*` handler works
 		});
 
-		app.use(vite.middlewares);								// Let Vite handle static assets + dev transforms
-		app.get(/.*/, async (req, res, next) => {	// Handle any other route with Express
+		app.use(vite.middlewares);	// Let Vite handle static assets + dev transforms
+		app.get('/*allRoutes', async (req, res, next) => {
 			const url = req.originalUrl;
 			try {
 				const props = {
@@ -87,7 +87,6 @@ async function start() {
 			}
 		});
 
-
 	}
 	//========-- In Production environment, use Express to serve from build path --========//
 	else {
@@ -95,7 +94,7 @@ async function start() {
 		const indexHtml = fs.readFileSync(path.join(buildPath, 'index.html'), 'utf-8');
 
 		app.use(express.static(buildPath));
-		app.get('/*', (req, res)=>{
+		app.get('/*anyPath', (req, res) => {
 			const props = {
 				user        : req.user || null,
 				domain      : config.get('domain'),
