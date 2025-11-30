@@ -95,7 +95,7 @@ async function start() {
 		const indexHtml = fs.readFileSync(path.join(buildPath, 'index.html'), 'utf-8');
 
 		app.use(express.static(buildPath));
-		app.get('*', (req, res)=>{
+		app.get('/*', (req, res)=>{
 			const props = {
 				user        : req.user || null,
 				domain      : config.get('domain'),
