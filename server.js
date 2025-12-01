@@ -93,7 +93,7 @@ async function start() {
 		const buildPath = path.join(__dirname, 'build');
 		const indexHtml = fs.readFileSync(path.join(buildPath, 'index.html'), 'utf-8');
 
-		app.use(express.static(buildPath));
+		app.use(express.static(buildPath), {index: false});
 		app.get('/{*path}', (req, res)=>{
 			const props = {
 				user        : req.user || null,
