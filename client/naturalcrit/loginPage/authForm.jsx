@@ -76,7 +76,8 @@ const AuthForm = createReactClass({
 
 		// ✅ Pattern rule for signup/rename
 		if (actionType === 'signup' || actionType === 'rename') {
-			const pattern = /^[A-Za-z0-9_.-&%$]+$/;
+			const pattern = /^[A-Za-z0-9_.\-%$&]+$/
+;
 			if (!pattern.test(username)) {
 				return 'invalidPattern';
 			}
