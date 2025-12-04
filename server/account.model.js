@@ -14,7 +14,7 @@ const AccountSchema = mongoose.Schema({
 	googleRefreshToken : String,
 }, { versionKey: false });
 
-AccountSchema.pre('save', async function (next) {
+AccountSchema.pre('save', async function () {
 	try {
 		const account = this;
 		console.log(account);
@@ -22,9 +22,8 @@ AccountSchema.pre('save', async function (next) {
 			const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
 			account.password = await bcrypt.hash(account.password, salt);
 		}
-		next();
 	} catch (err) {
-		next({ ok: false, msg: 'Error generating password hash' });
+		throw({ ok: false, msg: 'Error generating password hash' });
 	}
 });
 
