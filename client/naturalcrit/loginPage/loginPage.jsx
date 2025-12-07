@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import cx from 'classnames';
 import AccountActions from '../account.actions.js';
 import AuthForm from './authForm.jsx';
 import NaturalCritIcon from '../../assets/svg/naturalcritLogo.jsx';
@@ -101,10 +100,10 @@ const LoginPage = ({ redirect = '', user = null })=>{
 			<NaturalCritIcon />
 			<div className='content'>
 				<div className='switchView'>
-					<div className={cx('login', { selected: view === 'login' })} onClick={()=>setView('login')}>
+					<div className={`login${view === 'login' ? ' selected': ''}`} onClick={()=>setView('login')}>
 						<i className='fa fa-sign-in' /> Login
 					</div>
-					<div className={cx('signup', { selected: view === 'signup' })} onClick={()=>setView('signup')}>
+					<div className={`signup${view === 'signup' ? ' selected': ''}`} onClick={()=>setView('signup')}>
 						<i className='fa fa-user-plus' /> Signup
 					</div>
 				</div>

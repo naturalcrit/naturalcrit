@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import cx from 'classnames';
 
 import NaturalCritIcon from '../../assets/svg/naturalcritLogo.jsx';
 import HomebrewIcon from '../../assets/svg/homebrew_svg.jsx';
@@ -44,7 +43,7 @@ const HomePage = ({ tools = defaultTools })=>{
 		if (!tool.show) return null;
 
 		return (
-			<a href={tool.path} className={cx('tool', tool.id, { beta: tool.beta })} key={tool.id}>
+			<a href={tool.path} className={`tool ${tool.id}${tool.beta ? ' beta' : ''}`} key={tool.id}>
 				<div className='content'>
 					{tool.icon}
 					<h2>{tool.name}</h2>

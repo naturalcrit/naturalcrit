@@ -1,7 +1,6 @@
 
 import React from 'react';
 
-import cx from 'classnames';
 import _ from 'lodash';
 
 import './googleRedirect.less';
@@ -204,7 +203,7 @@ const LoginPage = createReactClass({
 		}
 
 		return (
-			<button className={cx('action', className)} disabled={!this.isValid()} onClick={this.handleClick}>
+			<button className={`action ${className}`} disabled={!this.isValid()} onClick={this.handleClick}>
 				<i className={`fa ${icon}`} />
 				{text}
 			</button>
@@ -230,13 +229,13 @@ const LoginPage = createReactClass({
 				<div className='content'>
 					<div className='switchView'>
 						<div
-							className={cx('login', { 'selected': this.state.view === 'login' })}
+							className={`login${this.state.view === 'login' ? ' selected': ''}`}
 							onClick={this.handleChangeView.bind(null, 'login')}>
 							<i className='fa fa-sign-in' /> Login
 						</div>
 
 						<div
-							className={cx('signup', { 'selected': this.state.view === 'signup' })}
+							className={`signup${this.state.view === 'signup' ? ' selected': ''}`}
 							onClick={this.handleChangeView.bind(null, 'signup')}>
 							<i className='fa fa-user-plus' /> Signup
 						</div>
@@ -254,7 +253,7 @@ const LoginPage = createReactClass({
 					<div className='field password'>
 						<label>password</label>
 						<input
-							type={cx({ text: this.state.visible, password: !this.state.visible })}
+							type={this.state.visible ? 'text' : 'password'}
 							onChange={this.handlePassChange}
 							value={this.state.password}
 						/>
@@ -265,10 +264,7 @@ const LoginPage = createReactClass({
 								this.setState({ visible: !this.state.visible });
 							}}>
 							<i
-								className={cx('fa', {
-									'fa-eye'       : !this.state.visible,
-									'fa-eye-slash' : this.state.visible,
-								})}
+								className={`fa${this.state.visible ? ' fa-eye-slash' :' fa-eye'}`}
 							/>
 						</div>
 					</div>

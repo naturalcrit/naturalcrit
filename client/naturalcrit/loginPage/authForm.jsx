@@ -1,7 +1,6 @@
 
 import React from 'react';
 
-import cx from 'classnames';
 import _ from 'lodash';
 import AccountActions from '../account.actions';
 
@@ -142,7 +141,7 @@ const AuthForm = createReactClass({
 		}
 
 		return (
-			<button className={cx('action', className)} disabled={!this.isValid()} onClick={this.handleSubmit}>
+			<button className={`action ${className}`} disabled={!this.isValid()} onClick={this.handleSubmit}>
 				<i className={`fa ${icon}`} />
 				{text}
 			</button>
@@ -170,12 +169,12 @@ const AuthForm = createReactClass({
 				<label className='field password'>
 					Password
 					<input
-						type={cx({ text: visible, password: !visible })}
+						type={this.state.visible ? 'text' : 'password'}
 						onChange={this.handleInputChange('password')}
 						value={password}
 					/>
 					<div className='control' onClick={()=>this.setState({ visible: !visible })}>
-						<i className={cx('fa', { 'fa-eye': !visible, 'fa-eye-slash': visible })} />
+						<i className={`fa${this.state.visible ? ' fa-eye-slash' :' fa-eye'}`} />
 					</div>
 				</label>
 
