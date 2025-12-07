@@ -1,101 +1,137 @@
-import request from 'superagent';
 
 const AccountActions = {
-	login : (user, pass)=>{
-		return new Promise((resolve, reject)=>{
-			request
-				.post('/login')
-				.send({ user, pass })
-				.end((err, res)=>{
-					if (err) return reject(res.body);
-					AccountActions.createSession(res.body);
-					return resolve(res.body);
-				});
-		});
-	},
+	async login(user, pass) {
+        try {
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user, pass })
+            });
 
-	signup : (user, pass)=>{
-		return new Promise((resolve, reject)=>{
-			request
-				.post('/signup')
-				.send({ user, pass })
-				.end((err, res)=>{
-					if (err) return reject(res.body);
-					AccountActions.createSession(res.body);
-					return resolve(res.body);
-				});
-		});
-	},
+            if (!res.ok) {
+                const body = await res.json();
+                throw body;
+            }
 
-	linkGoogle : (username, pass, user)=>{
-		return new Promise((resolve, reject)=>{
-			request
-				.post('/link')
-				.send({ username, pass, user })
-				.end((err, res)=>{
-					if (err) return reject(res.body);
-					AccountActions.createSession(res.body);
-					return resolve(res.body);
-				});
-		});
-	},
+            const body = await res.json();
+            AccountActions.createSession(body);
+            return body;
+        } catch (err) {
+            throw err;
+        }
+    },
 
-	validateUsername : (username)=>{
-		const regex = /^(?!.*@).{3,}$/;
-		return regex.test(username);
-	},
+	
+    async signup(user, pass) {
+        try {
+            const res = await fetch('/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user, pass })
+            });
 
-	checkUsername : (username)=>{
-		return new Promise((resolve, reject)=>{
-			request
-				.get(`/user_exists/${username}`)
-				.send()
-				.end((err, res)=>{
-					if (err) return reject(res.body);
-					return resolve(res.body);
-				});
-		});
-	},
+            if (!res.ok) {
+                const body = await res.json();
+                throw body;
+            }
 
-	rename : (username, newUsername, password)=>{
-		console.log('attempting rename');
-		return AccountActions.login(username, password)
-			.then(()=>{
-				return new Promise((resolve, reject)=>{
-					request
-						.put('/rename')
-						.send({ username, newUsername })
-						.end((err, res)=>{
-							if (err) return reject(err);
-							console.log('correctly renamed, now relogging');
-							AccountActions.removeSession();
-							AccountActions.login(newUsername, password).then(()=>{
-								setTimeout(()=>{
-									window.location.reload();
-								}, 500);
-							});
-							request
-								.put('https://homebrewery.naturalcrit.com/api/user/rename')
-								.withCredentials() //send session cookie manually
-								.send({ username, newUsername })
-								.end((err, res)=>{
-									if (err) return reject(err);
-									return resolve(res.body);
-								});
-						});
-				});
-			})
-			.catch((err)=>{
-				return Promise.reject(err);
-			});
-	},
+            const body = await res.json();
+            AccountActions.createSession(body);
+            return body;
+        } catch (err) {
+            throw err;
+        }
+    },
 
-	createSession : (token)=>{
+	async linkGoogle(username, pass, user) {
+        try {
+            const res = await fetch('/link', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, pass, user })
+            });
+
+            if (!res.ok) {
+                const body = await res.json();
+                throw body;
+            }
+
+            const body = await res.json();
+            AccountActions.createSession(body);
+            return body;
+        } catch (err) {
+            throw err;
+        }
+    },
+    validateUsername(username) {
+        const regex = /^(?!.*@).{3,}$/;
+        return regex.test(username);
+    },
+
+ 	async checkUsername(username) {
+        try {
+            const res = await fetch(`/user_exists/${username}`);
+
+            if (!res.ok) {
+                const body = await res.json();
+                throw body;
+            }
+
+            return res.json();
+        } catch (err) {
+            throw err;
+        }
+    },
+
+	async rename(username, newUsername, password) {
+        console.log('attempting rename');
+
+        try {
+            await AccountActions.login(username, password);
+
+            const res = await fetch('/rename', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, newUsername })
+            });
+
+            if (!res.ok) throw await res.text();
+
+            console.log('correctly renamed, now relogging');
+
+            AccountActions.removeSession();
+
+            await AccountActions.login(newUsername, password);
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+
+            // Remote rename API call
+            const remoteRes = await fetch(
+                'https://homebrewery.naturalcrit.com/api/user/rename',
+                {
+                    method: 'PUT',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, newUsername })
+                }
+            );
+
+            if (!remoteRes.ok) throw await remoteRes.text();
+
+            return remoteRes.json();
+        } catch (err) {
+            return Promise.reject(err);
+        }
+    },
+
+	createSession(token) {
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
 		document.cookie = `nc_session=${token}; max-age=${60 * 60 * 24 * 365}; path=/; samesite=lax;domain=${domain}`;
 	},
 
-	removeSession : ()=>{
+	removeSession() {
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
 		document.cookie = `nc_session=; expires=Thu, 01 Jan 1970 00:00:01 GMT; samesite=lax; domain=${domain}`;
 	},
