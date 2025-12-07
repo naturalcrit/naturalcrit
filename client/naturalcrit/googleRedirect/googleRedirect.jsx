@@ -4,6 +4,8 @@ import React from 'react';
 import cx from 'classnames';
 import _ from 'lodash';
 
+import './googleRedirect.less';
+
 import createReactClass from 'create-react-class';
 
 import NaturalCritIcon from '../../assets/svg/naturalcritLogo';
@@ -212,13 +214,7 @@ const LoginPage = createReactClass({
 	render : function () {
 		return (
 			<div className='loginPage'>
-				<div className='logo'>
 					<NaturalCritIcon />
-					<span className='name'>
-						Natural
-						<span className='crit'>Crit</span>
-					</span>
-				</div>
 
 				<p>
 					To finish linking your Google account to the Homebrewery, please create a user ID
