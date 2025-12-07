@@ -107,7 +107,6 @@ const AccountActions = {
                 window.location.reload();
             }, 500);
 
-            // Remote rename API call
             const remoteRes = await fetch(
                 'https://homebrewery.naturalcrit.com/api/user/rename',
                 {
