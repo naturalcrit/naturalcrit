@@ -1,129 +1,129 @@
 
 const AccountActions = {
 	async login(user, pass) {
-        try {
-            const res = await fetch('/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user, pass })
-            });
+		try {
+			const res = await fetch('/login', {
+				method  : 'POST',
+				headers : { 'Content-Type': 'application/json' },
+				body    : JSON.stringify({ user, pass })
+			});
 
-            if (!res.ok) {
-                const body = await res.json();
-                throw body;
-            }
+			if (!res.ok) {
+				const body = await res.json();
+				throw body;
+			}
 
-            const body = await res.json();
-            AccountActions.createSession(body);
-            return body;
-        } catch (err) {
-            throw err;
-        }
-    },
+			const body = await res.json();
+			AccountActions.createSession(body);
+			return body;
+		} catch (err) {
+			throw err;
+		}
+	},
 
-	
-    async signup(user, pass) {
-        try {
-            const res = await fetch('/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user, pass })
-            });
 
-            if (!res.ok) {
-                const body = await res.json();
-                throw body;
-            }
+	async signup(user, pass) {
+		try {
+			const res = await fetch('/signup', {
+				method  : 'POST',
+				headers : { 'Content-Type': 'application/json' },
+				body    : JSON.stringify({ user, pass })
+			});
 
-            const body = await res.json();
-            AccountActions.createSession(body);
-            return body;
-        } catch (err) {
-            throw err;
-        }
-    },
+			if (!res.ok) {
+				const body = await res.json();
+				throw body;
+			}
+
+			const body = await res.json();
+			AccountActions.createSession(body);
+			return body;
+		} catch (err) {
+			throw err;
+		}
+	},
 
 	async linkGoogle(username, pass, user) {
-        try {
-            const res = await fetch('/link', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, pass, user })
-            });
+		try {
+			const res = await fetch('/link', {
+				method  : 'POST',
+				headers : { 'Content-Type': 'application/json' },
+				body    : JSON.stringify({ username, pass, user })
+			});
 
-            if (!res.ok) {
-                const body = await res.json();
-                throw body;
-            }
+			if (!res.ok) {
+				const body = await res.json();
+				throw body;
+			}
 
-            const body = await res.json();
-            AccountActions.createSession(body);
-            return body;
-        } catch (err) {
-            throw err;
-        }
-    },
-    validateUsername(username) {
-        const regex = /^(?!.*@).{3,}$/;
-        return regex.test(username);
-    },
+			const body = await res.json();
+			AccountActions.createSession(body);
+			return body;
+		} catch (err) {
+			throw err;
+		}
+	},
+	validateUsername(username) {
+		const regex = /^(?!.*@).{3,}$/;
+		return regex.test(username);
+	},
 
  	async checkUsername(username) {
-        try {
-            const res = await fetch(`/user_exists/${username}`);
+		try {
+			const res = await fetch(`/user_exists/${username}`);
 
-            if (!res.ok) {
-                const body = await res.json();
-                throw body;
-            }
+			if (!res.ok) {
+				const body = await res.json();
+				throw body;
+			}
 
-            return res.json();
-        } catch (err) {
-            throw err;
-        }
-    },
+			return res.json();
+		} catch (err) {
+			throw err;
+		}
+	},
 
 	async rename(username, newUsername, password) {
-        console.log('attempting rename');
+		console.log('attempting rename');
 
-        try {
-            await AccountActions.login(username, password);
+		try {
+			await AccountActions.login(username, password);
 
-            const res = await fetch('/rename', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, newUsername })
-            });
+			const res = await fetch('/rename', {
+				method  : 'PUT',
+				headers : { 'Content-Type': 'application/json' },
+				body    : JSON.stringify({ username, newUsername })
+			});
 
-            if (!res.ok) throw await res.text();
+			if (!res.ok) throw await res.text();
 
-            console.log('correctly renamed, now relogging');
+			console.log('correctly renamed, now relogging');
 
-            AccountActions.removeSession();
+			AccountActions.removeSession();
 
-            await AccountActions.login(newUsername, password);
+			await AccountActions.login(newUsername, password);
 
-            setTimeout(() => {
-                window.location.reload();
-            }, 500);
+			setTimeout(()=>{
+				window.location.reload();
+			}, 500);
 
-            const remoteRes = await fetch(
-                'https://homebrewery.naturalcrit.com/api/user/rename',
-                {
-                    method: 'PUT',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, newUsername })
-                }
-            );
+			const remoteRes = await fetch(
+				'https://homebrewery.naturalcrit.com/api/user/rename',
+				{
+					method      : 'PUT',
+					credentials : 'include',
+					headers     : { 'Content-Type': 'application/json' },
+					body        : JSON.stringify({ username, newUsername })
+				}
+			);
 
-            if (!remoteRes.ok) throw await remoteRes.text();
+			if (!remoteRes.ok) throw await remoteRes.text();
 
-            return remoteRes.json();
-        } catch (err) {
-            return Promise.reject(err);
-        }
-    },
+			return remoteRes.json();
+		} catch (err) {
+			return Promise.reject(err);
+		}
+	},
 
 	createSession(token) {
 		const domain = window.domain === '.local.naturalcrit.com' ? 'localhost' : window.domain;
