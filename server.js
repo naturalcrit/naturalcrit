@@ -4,7 +4,6 @@ import path from 'path';
 import fs from 'fs';
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
 import jwt from 'jwt-simple';
 import mongoose from 'mongoose';
 import config from 'nconf';
@@ -32,7 +31,7 @@ async function start() {
 	const app = express();
 	const isProd = process.env.NODE_ENV === 'production';
 
-	app.use(bodyParser.json());
+	app.use(express.json());
 	app.use(cookieParser());
 
 	app.use((req, res, next)=>{
