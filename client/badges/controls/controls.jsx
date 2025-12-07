@@ -4,7 +4,6 @@ import './controls.less';
 
 import _ from 'lodash';
 import createReactClass from 'create-react-class';
-import cx from 'classnames';
 import { SliderPicker } from 'react-color';
 
 const Controls = createReactClass({
@@ -76,7 +75,7 @@ const Controls = createReactClass({
 					<label>SVG</label>
 					<div className='value'>
 						<div
-							className={cx('dropZone', { hover: this.state.hover })}
+							className={`dropZone${this.state.hover ? ' hover' : ''}`}
 							onDragOver={(e)=>this.handleHover(e, true)}
 							onDragLeave={(e)=>this.handleHover(e, false)}
 							onDrop={this.handleDrop}>
