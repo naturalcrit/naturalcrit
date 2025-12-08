@@ -1,118 +1,83 @@
-
-import React from 'react';
-
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import AccountActions from '../account.actions';
-
-import createReactClass from 'create-react-class';
 
 import './authForm.less';
 
-const AuthForm = createReactClass({
-	getDefaultProps : function () {
-		return {
-			onSubmit   : ()=>Promise.resolve(),
-			user       : null,
-			actionType : 'login', // 'login', 'signup', or 'rename'
+const AuthForm = ({
+	onSubmit = () => Promise.resolve(),
+	user = null,
+	actionType = 'login',
+}) => {
+
+	const [visible, setVisible] = useState(false);
+	const [username, setUsername] = useState(user?.username || '');
+	const [password, setPassword] = useState('');
+	const [processing, setProcessing] = useState(false);
+	const [checkingUsername, setCheckingUsername] = useState(false);
+	const [usernameExists, setUsernameExists] = useState(false);
+	const [errors, setErrors] = useState(null);
+
+	useEffect(() => {
+		const handleKeyDown = (e) => {
+			if (e.code === 'Enter') handleSubmit();
 		};
-	},
+		document.addEventListener('keydown', handleKeyDown);
+		return () => document.removeEventListener('keydown', handleKeyDown);
+	});
 
-	getInitialState : function () {
-		return {
-			visible          : false,
-			username         : this.props.user && this.props.user.username ? this.props.user.username : '',
-			password         : '',
-			processing       : false,
-			checkingUsername : false,
-			usernameExists   : false,
-			errors           : null,
-		};
-	},
+	const debounceRef = useRef(null);
 
-	componentDidMount : function () {
-		window.document.addEventListener('keydown', this.handleKeyDown);
-	},
+	const checkUsername = useCallback(() => {
+		if (!username) return;
 
-	componentWillUnmount : function () {
-		window.document.removeEventListener('keydown', this.handleKeyDown);
-	},
+		setCheckingUsername(true);
 
-	handleKeyDown : function (e) {
-		if (e.code === 'Enter') this.handleSubmit();
-	},
-
-	handleInputChange : function (field) {
-		return (e)=>{
-			this.setState({ [field]: e.target.value }, ()=>{
-				if (field === 'username') this.checkUsername();
-			});
-		};
-	},
-
-	checkUsername : function () {
-		if (this.state.username === '') return;
-
-		this.setState({
-			checkingUsername : true,
-		});
-		this.debounceCheckUsername(this.state.username);
-	},
-
-	debounceCheckUsername : (function () {
-		let timeout;
-		return function () {
-			clearTimeout(timeout);
-			timeout = setTimeout(()=>{
-				AccountActions.checkUsername(this.state.username).then((doesExist)=>{
-					this.setState({
-						usernameExists   : !!doesExist,
-						checkingUsername : false,
-					});
+		clearTimeout(debounceRef.current);
+		debounceRef.current = setTimeout(() => {
+			AccountActions.checkUsername(username)
+				.then((doesExist) => {
+					setUsernameExists(!!doesExist);
+					setCheckingUsername(false);
 				});
-			}, 1000);
-		};
-	})(),
+		}, 1000);
+	}, [username]);
 
+	useEffect(() => {
+		if (actionType !== 'login') checkUsername();
+	}, [username, actionType, checkUsername]);
 
-	isValid : function () {
-		const { username, password, usernameExists, processing } = this.state;
-		const { actionType } = this.props;
-
+	const isValid = () => {
 		if (processing) return false;
-
 		if (actionType === 'login') return username && password;
-		if (actionType === 'signup' || actionType === 'rename') return username && password && !usernameExists;
+		if (actionType === 'signup' || actionType === 'rename')
+			return username && password && !usernameExists;
 
 		return false;
-	},
+	};
 
-	handleSubmit : function () {
-		const { username, password } = this.state;
-		const { actionType, onSubmit } = this.props;
+	const handleSubmit = () => {
+		if (!isValid()) return;
 
-		if (!this.isValid()) return;
-
-		this.setState({ processing: true, errors: null });
+		setProcessing(true);
+		setErrors(null);
 
 		onSubmit(username, password, actionType)
-			.then(()=>this.setState({ processing: false, errors: null }))
-			.catch((err)=>{
+			.then(() => {
+				setProcessing(false);
+				setErrors(null);
+			})
+			.catch((err) => {
 				console.error(err);
-				this.setState({
-					processing : false,
-					errors     : err,
-				});
+				setProcessing(false);
+				setErrors(err);
 			});
-	},
+	};
 
-	renderErrors : function () {
-		const { errors } = this.state;
-		if (!errors) return null;
+	const renderErrors = () =>
+		errors ? <div className='errors'>{errors.msg || 'Something went wrong'}</div> : null;
 
-		return <div className='errors'>{errors.msg || 'Something went wrong'}</div>;
-	},
-
-	renderUsernameValidation : function () {
-		const { checkingUsername, usernameExists, username } = this.state;
+	const renderUsernameValidation = () => {
+		if (actionType === 'login') return null;
 		if (!username) return null;
 
 		let icon;
@@ -121,74 +86,68 @@ const AuthForm = createReactClass({
 		else icon = <i className='fa fa-check green' />;
 
 		return <div className='control'>{icon}</div>;
-	},
+	};
 
-	renderButton : function () {
+	const renderButton = () => {
 		let className = '';
 		let text = '';
 		let icon = '';
 
-		if (this.state.processing) {
+		if (processing) {
 			className = 'processing';
 			text = 'processing';
 			icon = 'fa-spinner fa-spin';
-		} else if (this.props.actionType === 'login') {
+		} else if (actionType === 'login') {
 			className = 'login';
 			text = 'login';
 			icon = 'fa-sign-in';
-		} else if (this.props.actionType === 'signup') {
+		} else if (actionType === 'signup') {
 			className = 'signup';
 			text = 'signup';
 			icon = 'fa-user-plus';
-		} else if (this.props.actionType === 'rename') {
+		} else if (actionType === 'rename') {
 			className = 'rename';
 			text = 'rename';
 			icon = 'fa-user-plus';
 		}
 
 		return (
-			<button className={`action ${className}`} disabled={!this.isValid()} onClick={this.handleSubmit}>
+			<button className={`action ${className}`} disabled={!isValid()} onClick={handleSubmit}>
 				<i className={`fa ${icon}`} />
 				{text}
 			</button>
 		);
-	},
+	};
 
-	render : function () {
-		const { actionType } = this.props;
-		const { visible, username, password, processing } = this.state;
+	return (
+		<div className={`authForm ${actionType}`}>
 
-		let buttonText;
-		if (processing) buttonText = 'Processing...';
-		else if (actionType === 'login') buttonText = 'Login';
-		else if (actionType === 'signup') buttonText = 'Signup';
-		else buttonText = 'Rename';
+			<label className='field user'>
+				Username
+				<input
+					type='text'
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
+				/>
+				{renderUsernameValidation()}
+			</label>
 
-		return (
-			<div className={`authForm ${actionType}`}>
-				<label className='field user'>
-					Username
-					<input type='text' onChange={this.handleInputChange('username')} value={username} />
-					{this.props.actionType !== 'login' && this.renderUsernameValidation()}
-				</label>
+			<label className='field password'>
+				Password
+				<input
+					type={visible ? 'text' : 'password'}
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+				/>
+				<div className='control' onClick={() => setVisible(!visible)}>
+					<i className={`fa${visible ? ' fa-eye-slash' : ' fa-eye'}`} />
+				</div>
+			</label>
 
-				<label className='field password'>
-					Password
-					<input
-						type={this.state.visible ? 'text' : 'password'}
-						onChange={this.handleInputChange('password')}
-						value={password}
-					/>
-					<div className='control' onClick={()=>this.setState({ visible: !visible })}>
-						<i className={`fa${this.state.visible ? ' fa-eye-slash' :' fa-eye'}`} />
-					</div>
-				</label>
-
-				{this.renderErrors()}
-				{this.renderButton()}
-			</div>
-		);
-	},
-});
+			{renderErrors()}
+			{renderButton()}
+		</div>
+	);
+};
 
 export default AuthForm;
