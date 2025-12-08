@@ -1,8 +1,6 @@
 
 import React from 'react';
 
-import _ from 'lodash';
-
 import './googleRedirect.less';
 
 import createReactClass from 'create-react-class';
@@ -132,14 +130,20 @@ const LoginPage = createReactClass({
 		this.debounceCheckUsername();
 	},
 
-	debounceCheckUsername : _.debounce(function () {
-		AccountActions.checkUsername(this.state.username).then((doesExist)=>{
-			this.setState({
-				usernameExists   : !!doesExist,
-				checkingUsername : false,
-			});
-		});
-	}, 1000),
+	debounceCheckUsername : (function () {
+		let timeout;
+		return function () {
+			clearTimeout(timeout);
+			timeout = setTimeout(()=>{
+				AccountActions.checkUsername(this.state.username).then((doesExist)=>{
+					this.setState({
+						usernameExists   : !!doesExist,
+						checkingUsername : false,
+					});
+				});
+			}, 1000);
+		};
+	})(),
 
 	handleChangeView : function (newView) {
 		this.setState(
@@ -213,7 +217,7 @@ const LoginPage = createReactClass({
 	render : function () {
 		return (
 			<div className='loginPage'>
-					<NaturalCritIcon />
+				<NaturalCritIcon />
 
 				<p>
 					To finish linking your Google account to the Homebrewery, please create a user ID

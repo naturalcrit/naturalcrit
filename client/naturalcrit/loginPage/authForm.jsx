@@ -1,7 +1,6 @@
 
 import React from 'react';
 
-import _ from 'lodash';
 import AccountActions from '../account.actions';
 
 import createReactClass from 'create-react-class';
@@ -58,14 +57,21 @@ const AuthForm = createReactClass({
 		this.debounceCheckUsername(this.state.username);
 	},
 
-	debounceCheckUsername : _.debounce(function () {
-		AccountActions.checkUsername(this.state.username).then((doesExist)=>{
-			this.setState({
-				usernameExists   : !!doesExist,
-				checkingUsername : false,
-			});
-		});
-	}, 1000),
+	debounceCheckUsername : (function () {
+		let timeout;
+		return function () {
+			clearTimeout(timeout);
+			timeout = setTimeout(()=>{
+				AccountActions.checkUsername(this.state.username).then((doesExist)=>{
+					this.setState({
+						usernameExists   : !!doesExist,
+						checkingUsername : false,
+					});
+				});
+			}, 1000);
+		};
+	})(),
+
 
 	isValid : function () {
 		const { username, password, usernameExists, processing } = this.state;

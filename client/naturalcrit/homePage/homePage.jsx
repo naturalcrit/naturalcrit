@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 
 import NaturalCritIcon from '../../assets/svg/naturalcritLogo.jsx';
 import HomebrewIcon from '../../assets/svg/homebrew_svg.jsx';
@@ -59,7 +58,7 @@ const HomePage = ({ tools = defaultTools })=>{
 				<NaturalCritIcon />
 				<p>Top-tier tools for the discerning DM</p>
 			</div>
-			<div className='tools'>{_.map(tools, renderTool)}</div>
+			<div className='tools'>{tools.map(renderTool)}</div>
 		</div>
 	);
 };
