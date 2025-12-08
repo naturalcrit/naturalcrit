@@ -1,95 +1,74 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import AccountActions from '../account.actions.js';
 import NaturalCritIcon from '../../assets/svg/naturalcritLogo.jsx';
 import AuthForm from '../loginPage/authForm.jsx';
 
 import './accountPage.less';
 
-class AccountPage extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			showRenameForm : false,
-			processing     : false,
-			errors         : null,
-		};
-		this.handleRename = this.handleRename.bind(this); // Bind handleRename here
-		this.toggleRenameForm = this.toggleRenameForm.bind(this); // Bind the method here
-	}
+const AccountPage = (props)=>{
 
-	toggleRenameForm() {
-		this.setState({ showRenameForm: !this.state.showRenameForm });
-	}
+	const [showRenameForm, setShowRenameForm] = useState(false);
+	const [processing, setProcessing] = useState(false);
+	const [errors, setErrors] = useState(null);
 
-	handleRename(newUsername, password) {
+	const  handleRename = async (newUsername, password)=>{
 		const regex = /^(?!.*@).{3,}$/;
 
 		if (!regex.test(newUsername)) {
-			this.setState({
-				processing : false,
-				errors     : { msg: 'Username must be at least 3 characters long and not include @!?.' },
-			});
-			return Promise.reject('Invalid username');
+			setProcessing(false);
+			setErrors({ msg: 'Username must be at least 3 characters long and not include @!?.' });
+			throw new Error('Invalid username');
 		}
-		if (!confirm('Are you sure you want to rename your account?')) return Promise.reject('User canceled rename');
+		if (!confirm('Are you sure you want to rename your account?')) throw new Error('User canceled rename');
 
-		this.setState({
-			processing : true,
-			errors     : null,
-		});
+		setProcessing(true);
+		setErrors(null);
+		try {
+			await AccountActions.rename(props.user.username, newUsername, password);
+			setProcessing(false);
+			setErrors(null);
+			setShowRenameForm(false);
+		} catch (err) {
+			console.log(err);
+			localStorage.setItem('errors', JSON.stringify(err));
+			setProcessing(false);
+			setErrors(err);
+			throw err; // rethrow so AuthForm knows it failed
+		}
+	};
 
-		return AccountActions.rename(this.props.user.username, newUsername, password)
-			.then(()=>{
-				this.setState({
-					processing     : false,
-					errors         : null,
-					showRenameForm : false,
-				});
-			})
-			.catch((err)=>{
-				console.log(err);
-				localStorage.setItem('errors', JSON.stringify(err)); // Store error in localStorage
-				this.setState({
-					processing : false,
-					errors     : err,
-				});
-				return Promise.reject(err);
-			});
-	}
-
-	render() {
-		return (
-			<div className='accountPage'>
-				<NaturalCritIcon />
-				<div className='details'>
-					<h1>Account Page</h1>
-					<br />
-					<p>
-						<b>Username:</b> {this.props.user.username}
-						<br />
-					</p>
-					<br />
-					<button
-						className='logout'
-						onClick={()=>{
-							if (confirm('Are you sure you want to log out?')) {
-								AccountActions.removeSession();
-								window.location = '/';
-							}
-						}}>
+	return <div className='accountPage'>
+		<NaturalCritIcon />
+		<div className='details'>
+			<h1>Account Page</h1>
+			<br />
+			<p>
+				<b>Username:</b> {props.user.username}
+				<br />
+			</p>
+			<br />
+			<button
+				className='logout'
+				onClick={()=>{
+					if (confirm('Are you sure you want to log out?')) {
+						AccountActions.removeSession();
+						window.location = '/';
+					}
+				}}>
 						Log Out
-					</button>
-					<button className='rename' onClick={this.toggleRenameForm}>
-						{this.state.showRenameForm ? 'Cancel rename' : 'Change my username' }
-					</button>
-					<br />
-					<br />
-					{this.state.showRenameForm && <AuthForm actionType='rename' onSubmit={this.handleRename} />}
-					<small>Upcoming features will include account deletion.</small>
-				</div>
-			</div>
-		);
-	}
-}
+			</button>
+			<button className='rename' onClick={()=>setShowRenameForm(!showRenameForm)}>
+				{showRenameForm ? 'Cancel rename' : 'Change my username' }
+			</button>
+			<br />
+			<br />
+			{showRenameForm && <AuthForm actionType='rename' onSubmit={handleRename} />}
+			<small>Upcoming features will include account deletion.</small>
+		</div>
+	</div>;
+
+};
+
 
 export default AccountPage;
