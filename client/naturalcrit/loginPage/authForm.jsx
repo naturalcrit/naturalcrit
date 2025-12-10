@@ -3,12 +3,7 @@ import AccountActions from '../account.actions';
 
 import './authForm.less';
 
-const AuthForm = ({
-	onSubmit = () => Promise.resolve(),
-	user = null,
-	actionType = 'login',
-}) => {
-
+const AuthForm = ({ onSubmit = ()=>Promise.resolve(), user = null, actionType = 'login' })=>{
 	const [visible, setVisible] = useState(false);
 	const [username, setUsername] = useState(user?.username || '');
 	const [password, setPassword] = useState('');
@@ -17,66 +12,63 @@ const AuthForm = ({
 	const [usernameExists, setUsernameExists] = useState(false);
 	const [errors, setErrors] = useState(null);
 
-	useEffect(() => {
-		const handleKeyDown = (e) => {
+	useEffect(()=>{
+		const handleKeyDown = (e)=>{
 			if (e.code === 'Enter') handleSubmit();
 		};
 		document.addEventListener('keydown', handleKeyDown);
-		return () => document.removeEventListener('keydown', handleKeyDown);
+		return ()=>document.removeEventListener('keydown', handleKeyDown);
 	});
 
 	const debounceRef = useRef(null);
 
-	const checkUsername = useCallback(() => {
+	const checkUsername = useCallback(()=>{
 		if (!username) return;
 
 		setCheckingUsername(true);
 
 		clearTimeout(debounceRef.current);
-		debounceRef.current = setTimeout(() => {
-			AccountActions.checkUsername(username)
-				.then((doesExist) => {
-					setUsernameExists(!!doesExist);
-					setCheckingUsername(false);
-				});
+		debounceRef.current = setTimeout(()=>{
+			AccountActions.checkUsername(username).then((doesExist)=>{
+				setUsernameExists(!!doesExist);
+				setCheckingUsername(false);
+			});
 		}, 1000);
 	}, [username]);
 
-	useEffect(() => {
+	useEffect(()=>{
 		if (actionType !== 'login') checkUsername();
 	}, [username, actionType, checkUsername]);
 
-	const isValid = () => {
+	const isValid = ()=>{
 		if (processing) return false;
 		if (actionType === 'login') return username && password;
-		if (actionType === 'signup' || actionType === 'rename')
-			return username && password && !usernameExists;
+		if (actionType === 'signup' || actionType === 'rename') return username && password && !usernameExists;
 
 		return false;
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = ()=>{
 		if (!isValid()) return;
 
 		setProcessing(true);
 		setErrors(null);
 
 		onSubmit(username, password, actionType)
-			.then(() => {
+			.then(()=>{
 				setProcessing(false);
 				setErrors(null);
 			})
-			.catch((err) => {
+			.catch((err)=>{
 				console.error(err);
 				setProcessing(false);
 				setErrors(err);
 			});
 	};
 
-	const renderErrors = () =>
-		errors ? <div className='errors'>{errors.msg || 'Something went wrong'}</div> : null;
+	const renderErrors = ()=>(errors ? <div className='errors'>{errors.msg || 'Something went wrong'}</div> : null);
 
-	const renderUsernameValidation = () => {
+	const renderUsernameValidation = ()=>{
 		if (actionType === 'login') return null;
 		if (!username) return null;
 
@@ -88,7 +80,7 @@ const AuthForm = ({
 		return <div className='control'>{icon}</div>;
 	};
 
-	const renderButton = () => {
+	const renderButton = ()=>{
 		let className = '';
 		let text = '';
 		let icon = '';
@@ -121,14 +113,9 @@ const AuthForm = ({
 
 	return (
 		<div className={`authForm ${actionType}`}>
-
 			<label className='field user'>
 				Username
-				<input
-					type='text'
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
-				/>
+				<input type='text' value={username} onChange={(e)=>setUsername(e.target.value)} />
 				{renderUsernameValidation()}
 			</label>
 
@@ -137,9 +124,9 @@ const AuthForm = ({
 				<input
 					type={visible ? 'text' : 'password'}
 					value={password}
-					onChange={(e) => setPassword(e.target.value)}
+					onChange={(e)=>setPassword(e.target.value)}
 				/>
-				<div className='control' onClick={() => setVisible(!visible)}>
+				<div className='control' onClick={()=>setVisible(!visible)}>
 					<i className={`fa${visible ? ' fa-eye-slash' : ' fa-eye'}`} />
 				</div>
 			</label>

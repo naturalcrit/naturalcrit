@@ -13,6 +13,8 @@ const LoginPage = ({ redirect = '', user = null })=>{
 	const [processing, setProcessing] = useState(false);
 	const [errors, setErrors] = useState(null);
 
+	const onlySignedWithGoogle = !user?.username && user?.googleId;
+
 	useEffect(()=>{
 		if (!redirect) {
 			window.sessionStorage.removeItem(RedirectLocation);
@@ -22,34 +24,26 @@ const LoginPage = ({ redirect = '', user = null })=>{
 	}, [redirect]);
 
 	const redirectTo = ()=>{
-		if (!redirect) return (window.location = '/');
 		setRedirecting(true);
+		if (!redirect) return (window.location = '/');
 		window.location = redirect;
 	};
+	const handleLoginSignup = async (username, password, action)=>{
+		try {
+			const doAction = action === 'login'? AccountActions.login : AccountActions.signup;
 
-	const handleLoginSignup = (username, password, action)=>{
-		if (action === 'login') {
-			return AccountActions.login(username, password)
-				.then(()=>{
-					setRedirecting(true);
-					redirectTo();
-				})
-				.catch((err)=>{
-					console.log(err);
-					setErrors(err);
-					return Promise.reject(err);
-				});
-		} else if (action === 'signup') {
-			return AccountActions.signup(username, password)
-				.then(()=>{
-					setRedirecting(true);
-					redirectTo();
-				})
-				.catch((err)=>{
-					console.log(err);
-					setErrors(err);
-					return Promise.reject(err);
-				});
+			await doAction(username, password);
+
+			if (onlySignedWithGoogle) {
+				await AccountActions.linkGoogle(username, password, user);
+			}
+
+			redirectTo();
+		} catch (err) {
+			console.log(err);
+			setProcessing(false);
+			setErrors(err);
+			throw err;
 		}
 	};
 
@@ -69,6 +63,22 @@ const LoginPage = ({ redirect = '', user = null })=>{
 		setProcessing(true);
 		setErrors(null);
 		window.location.href = '/auth/google';
+	};
+
+	const renderLoggedWithGoogle = ()=>{
+		if (!onlySignedWithGoogle) return null;
+		return (
+			<p>
+				To finish linking your Google account to the Homebrewery, please create a user ID
+				<br />
+				for the Homebrewery below (or sign in to an existing Homebrewery account).
+				<br />
+				<br />
+				You will only need to complete this step once. After your Google account is linked,
+				<br />
+				you will be able to access the Homebrewery with your Google account.
+			</p>
+		);
 	};
 
 	const renderLoggedIn = ()=>{
@@ -98,12 +108,14 @@ const LoginPage = ({ redirect = '', user = null })=>{
 	return (
 		<div className='loginPage'>
 			<NaturalCritIcon />
+
+			{renderLoggedWithGoogle()}
 			<div className='content'>
 				<div className='switchView'>
-					<div className={`login${view === 'login' ? ' selected': ''}`} onClick={()=>setView('login')}>
+					<div className={`login${view === 'login' ? ' selected' : ''}`} onClick={()=>setView('login')}>
 						<i className='fa fa-sign-in' /> Login
 					</div>
-					<div className={`signup${view === 'signup' ? ' selected': ''}`} onClick={()=>setView('signup')}>
+					<div className={`signup${view === 'signup' ? ' selected' : ''}`} onClick={()=>setView('signup')}>
 						<i className='fa fa-user-plus' /> Signup
 					</div>
 				</div>
