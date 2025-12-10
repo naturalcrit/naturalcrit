@@ -6,7 +6,6 @@ import { Routes, Route, Navigate, BrowserRouter, StaticRouter, useSearchParams }
 import HomePage       from './homePage/homePage.jsx';
 import LoginPage      from './loginPage/loginPage.jsx';
 import SuccessPage    from './successPage/successPage.jsx';
-import GoogleRedirect from './googleRedirect/googleRedirect.jsx';
 import Badges         from '../badges/badges.jsx';
 import AccountPage    from './accountPage/accountPage.jsx';
 
@@ -54,7 +53,7 @@ const Naturalcrit = ({ user, url, tools, environment, domain })=>{
 					/>
 					<Route path='/login' element={<LoginWrapper user={user} />} />
 					<Route path='/success' element={<SuccessPage user={user} />} />
-					<Route path='/auth/google/redirect' element={<GoogleRedirect user={user} />} />
+					<Route path='/auth/google/redirect' element={<LoginWrapper user={user} />} />
 					<Route path='/badges' element={<Badges />} />
 					<Route path='*' element={<HomePage configTools={tools} user={user} />} />
 				</Routes>

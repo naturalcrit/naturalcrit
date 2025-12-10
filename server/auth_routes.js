@@ -54,8 +54,9 @@ router.get('/google/redirect',
 			maxAge   : 1000 * 60 * 60 * 24 * 365, // 1 year
 			path     : '/',
 			sameSite : 'lax',
-			domain   : '.naturalcrit.com', // Set domain for the cookie.
+			domain   : process.env.NODE_ENV === 'production' ? '.naturalcrit.com' : 'localhost', // Set domain for the cookie.
 		});
+		
 		res.redirect('/success');
 	}
 );
