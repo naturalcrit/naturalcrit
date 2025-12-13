@@ -7,6 +7,13 @@ import './loginPage.less';
 
 const RedirectLocation = 'NC-REDIRECT-URL';
 
+// linking a google account has an issue i am not inclined to solve at time of writing this:
+// If the google signup is done before the account is created, the route takes it through token.js and passport_setup.js
+// If the google Signup is done when already logged in, to link the account, a whole another route is taken, via the account model's jwt
+// function, and the `/link` route. Don't ask me why, i'm the front end guy. This should be fixed by someone who understands the whole shebang.
+// - 5e-Cleric
+
+
 const LoginPage = ({ redirect = '', user = null })=>{
 	const [view, setView] = useState('login'); // 'login' or 'signup'
 	const [redirecting, setRedirecting] = useState(false);

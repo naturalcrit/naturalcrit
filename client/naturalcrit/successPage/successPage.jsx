@@ -4,17 +4,17 @@ import NaturalCritIcon from '../../assets/svg/naturalcritLogo';
 
 const RedirectLocation = 'NC-REDIRECT-URL';
 
-const SuccessPage = () => {
+const SuccessPage = ()=>{
 
-	useEffect(() => {
+	useEffect(()=>{
 		const redirectURL = window.sessionStorage.getItem(RedirectLocation) || '/';
 		window.sessionStorage.removeItem(RedirectLocation);
 
-		const timer = setTimeout(() => {
+		const timer = setTimeout(()=>{
 			window.location = redirectURL;
 		}, 1500);
 
-		return () => clearTimeout(timer);
+		return ()=>clearTimeout(timer);
 	}, []);
 
 	return (
