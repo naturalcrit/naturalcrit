@@ -4,6 +4,7 @@ import NaturalCritIcon from '../../assets/svg/naturalcritLogo.jsx';
 import HomebrewIcon from '../../assets/svg/homebrew_svg.jsx';
 import TPKIcon from '../../assets/svg/tpk_svg.jsx';
 import BadgeIcon from '../../assets/svg/badge_svg.jsx';
+import TownGenIcon from '../../assets/svg/townGeneratorLogo.jsx';
 
 import './homePage.less';
 
@@ -35,6 +36,24 @@ const defaultTools = [
 		show : false,
 		beta : true,
 	},
+	{
+		id : 'APItoHB',
+		path : 'https://g-ambatte.github.io/APItoHB/',
+		name: 'API to HB',
+		icon : <TPKIcon />,
+		desc : "Get D&D's SRD in homebrewery format!",
+		show : false,
+		beta : true,
+	},
+	{
+		id   : 'townGenerator',
+		path : 'https://5e-cleric.github.io/townGenerator/?',
+		name : 'Town Generator',
+		icon : <TownGenIcon />,
+		desc : 'Generate town maps!',
+		show : false,
+		beta : true,
+	}
 ];
 
 const HomePage = ({ tools = defaultTools })=>{
