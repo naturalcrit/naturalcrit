@@ -1,159 +1,218 @@
-import React, { useEffect, useRef } from 'react';
-import _ from 'lodash';
+import React, { useEffect, useRef, useState } from 'react';
 import BadgeTemplate from './badgeTemplate.js';
 
 import './badgeRender.less';
 
-const replaceAll = (text, target, str)=>text.replace(new RegExp(target, 'g'), str);
+// Load all 192 SVG icons
+const iconAssets = import.meta.glob('../../assets/svg/elderberry-inn-icons/*.svg', { eager: true, query: '?url', import: 'default' });
 
-const BadgeRender = ({ title = '', text = '', rawSVG = '', color = '#333' })=>{
-	const canvasRef = useRef(null);
-	const ctxRef = useRef(null);
+const icons = Array.from({ length: 192 }, (_, index) => {
+	const path = `../../assets/svg/elderberry-inn-icons/${index + 1}.svg`;
+	return iconAssets[path] || null;
+});
 
-	useEffect(()=>{
-		if (canvasRef.current) {
-			ctxRef.current = canvasRef.current.getContext('2d');
-			drawBadge({ title, text, rawSVG, color });
-		}
-	}, []);
+const BadgeRender = ({ title = '', text = '', icon = 1, rawSVG = '', color = '#333' }) => {
+	const svgRef = useRef(null);
+	const height = text ? 400 : 320;
 
-	useEffect(()=>{
-		drawBadge({ title, text, rawSVG, color });
-	}, [title, text, rawSVG, color]);
+	const [iconUrl, setIconUrl] = useState(null);
 
-	const handleDownload = ()=>{
-		if (!canvasRef.current) return;
-		const target = document.createElement('a');
-		const name = title ? _.snakeCase(title) : 'badge';
-		target.download = `${name}.png`;
-		target.href = canvasRef.current
-			.toDataURL('image/png')
-			.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
-		target.click();
-	};
+	useEffect(() => {
+		let cancelled = false;
 
-	const clearCanvas = ()=>{
-		if (!ctxRef.current || !canvasRef.current) return;
-		ctxRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-	};
+		getIconUrl().then((url) => {
+			if (!cancelled) setIconUrl(url);
+		});
 
-	const readyFrame = (color)=>new Promise((resolve)=>{
-		const frame = new Image();
-		frame.src = `data:image/svg+xml;base64,${btoa(BadgeTemplate(color))}`;
-		frame.onload = ()=>resolve(frame);
-	});
-
-	const readyIconSVG = (props)=>new Promise((resolve)=>{
-		if (!props.rawSVG) return resolve();
-		const icon = new Image();
-		let svg = props.rawSVG || '';
-		if (!svg.includes('style=')) {
-			svg = _.reduce(
-				['path', 'rect', 'polygon', 'circle', 'polyline', 'ellipse'],
-				(acc, type)=>replaceAll(acc, `<${type}`, `<${type} style="fill:${props.color}"`),
-				svg
-			);
-		}
-		svg = svg.replace(/<text.*<\/text>/, '');
-		icon.onload = ()=>resolve(icon);
-		icon.src = `data:image/svg+xml;base64,${btoa(svg)}`;
-	});
-
-	const drawSVG = (props)=>Promise.all([readyFrame(props.color), readyIconSVG(props)]).then(([frame, icon])=>{
-		if (!ctxRef.current) return;
-		clearCanvas();
-		if (frame) ctxRef.current.drawImage(frame, 0, 0);
-		if (icon) {
-			const scale = 1.1;
-			const newWidth = icon.width * scale;
-			const newHeight = icon.height * scale;
-			ctxRef.current.drawImage(icon, 150 - newWidth / 2, 120 - newWidth / 2, newWidth, newHeight);
-		}
-	});
-
-	const drawTitle = (title)=>{
-		if (!ctxRef.current) return;
-		ctxRef.current.textAlign = 'center';
-		ctxRef.current.textBaseline = 'middle';
-		ctxRef.current.fillStyle = '#ffffff';
-		const trySize = (font)=>{
-			ctxRef.current.font = `${font}px Calluna`;
-			const length = ctxRef.current.measureText(title).width;
-			if (length >= 230) return trySize(font - 1);
-			return font;
+		return () => {
+			cancelled = true;
 		};
-		const finalSize = trySize(35);
-		ctxRef.current.fillText(title, 150, 220);
-	};
+	}, [icon, rawSVG, color]);
 
-	const drawText = (text)=>{
-		if (!ctxRef.current || !canvasRef.current) return;
-		ctxRef.current.textAlign = 'left';
-		ctxRef.current.font = 'bold 18px Calluna';
-		ctxRef.current.fillStyle = '#000';
-		const lines = _.reduce(
-			text.split(' '),
-			(acc, word)=>{
-				const currLine = _.last(acc);
-				const length = ctxRef.current.measureText(`${currLine.join(' ')} ${word}`).width;
-				if (length >= canvasRef.current.width - 30) {
-					acc.push([word]);
-				} else {
-					currLine.push(word);
-				}
-				return acc;
-			},
-			[[]]
-		);
-		_.each(lines, (line, index)=>{
-			ctxRef.current.fillText(line.join(' '), 15, 315 + index * 20);
+	const escapeXML = (value) =>
+		String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+
+	const recolorSVG = (svg, color) => {
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(svg, 'image/svg+xml');
+
+		doc.querySelectorAll('path, rect, circle, ellipse, polygon, polyline').forEach((element) => {
+			const fill = element.getAttribute('fill');
+
+			if (fill !== 'none') {
+				element.setAttribute('fill', color);
+			}
+
+			const stroke = element.getAttribute('stroke');
+
+			if (stroke && stroke !== 'none') {
+				element.setAttribute('stroke', color);
+			}
 		});
+
+		return new XMLSerializer().serializeToString(doc.documentElement);
 	};
 
-	const drawAttribution = (svg)=>{
-		if (!ctxRef.current || !canvasRef.current) return;
-		ctxRef.current.textAlign = 'left';
-		ctxRef.current.font = '9px Open Sans';
-		ctxRef.current.fillStyle = '#bbb';
-		let maxDepth = 95;
-		const check = svg.match(/<text.*<\/text>/);
-		if (check && check.length) {
-			const a = check[0].indexOf('Created by ') + 11;
-			const b = check[0].indexOf('</text>');
-			const author = check[0].substring(a, b);
-			const width = ctxRef.current.measureText(`Icon by ${author}`).width;
-			maxDepth = Math.max(maxDepth, width + 3);
-			ctxRef.current.fillText(
-				`Icon by ${author}`,
-				canvasRef.current.width - maxDepth,
-				canvasRef.current.height - 17
-			);
+	const getIconUrl = async () => {
+		if (rawSVG) {
+			const recolored = recolorSVG(rawSVG, color);
+			return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(recolored)))}`;
 		}
-		ctxRef.current.fillText(
-			`Made with NaturalCrit`,
-			canvasRef.current.width - maxDepth,
-			canvasRef.current.height - 7
-		);
+
+		const url = icons[Number(icon) - 1];
+		if (!url) return null;
+
+		const response = await fetch(url);
+		const svg = await response.text();
+
+		const recolored = recolorSVG(svg, color);
+
+		return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(recolored)))}`;
 	};
 
-	const drawBadge = (props)=>{
-		if (!canvasRef.current) return;
-		const height = props.text ? 400 : 320;
-		if (canvasRef.current.height !== height) canvasRef.current.height = height;
-		drawSVG(props).then(()=>{
-			drawTitle(props.title);
-			drawText(props.text);
-			drawAttribution(props.rawSVG);
+	const getTextLines = (value, maxWidth = 270) => {
+		const canvas = document.createElement('canvas');
+		const ctx = canvas.getContext('2d');
+
+		ctx.font = 'bold 18px Calluna';
+
+		const lines = [];
+		let line = '';
+
+		value.split(/\s+/).forEach((word) => {
+			const testLine = line ? `${line} ${word}` : word;
+
+			if (line && ctx.measureText(testLine).width > maxWidth) {
+				lines.push(line);
+				line = word;
+			} else {
+				line = testLine;
+			}
 		});
+
+		if (line) lines.push(line);
+
+		return lines;
+	};
+
+	const createSVG = () => {
+		const frame = BadgeTemplate(color);
+
+		let titleSize = 35;
+
+		const canvas = document.createElement('canvas');
+		const ctx = canvas.getContext('2d');
+
+		ctx.font = `${titleSize}px Calluna`;
+
+		while (ctx.measureText(title).width > 230 && titleSize > 10) {
+			titleSize--;
+			ctx.font = `${titleSize}px Calluna`;
+		}
+
+		const lines = text ? getTextLines(text) : [];
+
+		const description = lines
+			.map(
+				(line, index) => `
+          <text
+            x="15"
+            y="${315 + index * 20}"
+            font-family="Calluna"
+            font-size="18"
+            font-weight="bold"
+            fill="#000"
+          >${escapeXML(line)}</text>
+        `,
+			)
+			.join('');
+
+		return `
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        width="300"
+        height="${height}"
+        viewBox="0 0 300 ${height}"
+      >
+        <image
+          href="data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(frame)))}"
+          x="0"
+          y="0"
+          width="300"
+          height="320"
+        />
+
+        ${
+			iconUrl
+				? `
+              <image
+                href="${iconUrl}"
+                x="75"
+                y="80"
+                width="150"
+                height="150"
+                preserveAspectRatio="xMidYMid meet"
+              />
+            `
+				: ''
+		}
+
+        <text
+          x="150"
+          y="220"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          font-family="Calluna"
+          font-size="${titleSize}"
+          fill="#fff"
+        >${escapeXML(title)}</text>
+
+        ${description}
+
+        <text
+          x="190"
+          y="${height - 7}"
+          font-family="Arial"
+          font-size="9"
+          fill="#bbb"
+        >Made with NaturalCrit</text>
+      </svg>
+    `;
+	};
+
+	const svgContent = createSVG();
+
+	useEffect(() => {
+		const svg = svgRef.current;
+		if (!svg) return;
+
+		svg.innerHTML = svgContent.replace(/^<svg[^>]*>|<\/svg>$/g, '');
+	}, [svgContent]);
+
+	const handleDownload = () => {
+		const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement('a');
+
+		const filename = title ? title.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'badge';
+
+		link.download = `${filename}.svg`;
+		link.href = url;
+		link.click();
+
+		URL.revokeObjectURL(url);
 	};
 
 	return (
 		<div className='badgeRender'>
-			<canvas ref={canvasRef} width={300} height={320} />
+			<div ref={svgRef} className='badgePreview' dangerouslySetInnerHTML={{ __html: svgContent }} />
+
 			<div>
 				<button onClick={handleDownload}>
 					<i className='fa fa-download' />
-					Download
+					Download SVG
 				</button>
 			</div>
 		</div>
