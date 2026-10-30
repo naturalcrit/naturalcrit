@@ -24,7 +24,7 @@ config
 	.file('environment', { file: `config/${process.env.NODE_ENV}.json` })
 	.file('defaults', { file: 'config/default.json' });
 
-mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/naturalcrit');
+mongoose.connect(config.get('MONGODB_URI') || process.env.MONGODB_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/naturalcrit');
 mongoose.connection.on('error', ()=>{ console.log('>>>ERROR: Run Mongodb.exe ya goof!'); });
 
 async function start() {
