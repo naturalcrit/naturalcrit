@@ -22,20 +22,12 @@ const BadgeProvider = ({ children }) => {
 	const iconPositionX = 0;
 	const iconPositionY = 0;
 
-	const handleChange = (newState) => {
-		if (newState.title !== undefined) setTitle(newState.title);
-		if (newState.text !== undefined) setText(newState.text);
-		if (newState.color !== undefined) setColor(newState.color);
-		if (newState.icon !== undefined) setIcon(newState.icon);
-		if (newState.rawSVG !== undefined) setRawSVG(newState.rawSVG);
-	};
-
 	const badgeSettings = { badgeHeight, badgeWidth };
 	const textSettings = { title, titleColor, titleFontFamily, text, textColor, textFontSize, textFontFamily };
 	const iconSettings = { icon, rawSVG, iconWidth, iconPositionX, iconPositionY };
 
 	const value = useMemo(
-		() => ({ color, badgeSettings, textSettings, iconSettings, setTitle, setText, setColor, setIcon, setRawSVG, handleChange }),
+		() => ({ color, badgeSettings, textSettings, iconSettings, setTitle, setText, setColor, setIcon, setRawSVG }),
 		[title, text, color, icon, rawSVG],
 	);
 
