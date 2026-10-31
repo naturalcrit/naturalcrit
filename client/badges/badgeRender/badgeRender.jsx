@@ -60,11 +60,13 @@ const getTextLines = (value, maxWidth = 400) => {
 };
 
 const BadgeRender = () => {
-	const { color, badgeSettings, textSettings, iconSettings } = useContext(BadgeContext);
-	const { badgeHeight, badgeWidth } = badgeSettings;
+	const { badgeSettings, textSettings, iconSettings } = useContext(BadgeContext);
+	const { badgeHeight, badgeWidth, color } = badgeSettings;
 	const { title, titleColor, titleFontFamily, text, textColor, textFontSize, textFontFamily } = textSettings;
 	const { icon, rawSVG, iconWidth, iconPositionX, iconPositionY } = iconSettings;
 
+
+	console.log(titleColor);
 	const svgRef = useRef(null);
 
 	const padding = 20;

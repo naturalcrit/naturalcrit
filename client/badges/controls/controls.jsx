@@ -2,7 +2,6 @@ import './controls.less';
 import React, { useContext } from 'react';
 
 import SVGUploader from '../../components/SVGUploader.jsx';
-import { SliderPicker } from 'react-color';
 import { BadgeContext } from '../badgeContext.jsx';
 
 const iconAssets = import.meta.glob('../../assets/svg/elderberry-inn-icons/*.svg', { eager: true, query: '?url', import: 'default' });
@@ -72,7 +71,7 @@ const Controls = () => {
 
 				<div className='field'>
 					<label>Badge color</label>
-					<SliderPicker color={color} onChange={(colorObj) => setColor(colorObj.hex)} />
+					<input defaultValue = '#2c3e50' value={color} type='color' onChange={(e) => setColor(e.target.value)} />
 				</div>
 			</fieldset>
 
@@ -86,7 +85,7 @@ const Controls = () => {
 
 				<div className='field'>
 					<label>Title color</label>
-					<SliderPicker color={titleColor} onChange={(colorObj) => setTitleColor(colorObj.hex)} />
+					<input defaultValue={titleColor} type='color' onChange={(e) => setTitleColor(e.target.value)} />
 				</div>
 
 				<div className='field'>
@@ -107,7 +106,7 @@ const Controls = () => {
 
 				<div className='field'>
 					<label>Text color</label>
-					<SliderPicker color={textColor} onChange={(colorObj) => setTextColor(colorObj.hex)} />
+					<input defaultValue={textColor} type='color' onChange={(e) => setTextColor(e.target.value)} />
 				</div>
 
 				<div className='field'>
