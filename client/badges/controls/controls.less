@@ -4,7 +4,14 @@
 
 	fieldset {
 		padding: 10px;
-		margin-top: 10px;
+		border: 4px double;
+		border-radius: 10px;
+		corner-shape: square scoop scoop scoop;
+		break-inside: avoid;
+
+		&:not(:first-child) {
+			margin-top: 10px;
+		}
 
 		.field {
 			padding-left: 5px;
@@ -13,6 +20,7 @@
 		legend {
 			background-color: inherit;
 			padding: 5px;
+			font-size: 20px;
 			font-weight: 800;
 			margin-bottom: 10px;
 			border-radius: 5px;
@@ -31,8 +39,9 @@
 		align-items: center;
 		gap: 10px;
 		margin-bottom: 10px;
+		accent-color:black;
 
-		&.label-top {
+		&.description {
 			align-items: start;
 		}
 
@@ -139,10 +148,10 @@
 
 		.switchView {
 			height: 30px;
-
 			width: 100%;
 			display: flex;
 			justify-content: space-evenly;
+			border-bottom: 1px solid;
 
 			button {
 				height: 100%;
@@ -155,6 +164,10 @@
 				font-size: 10px;
 				margin: 0;
 				transition: background-color 0.2s;
+
+				&:first-child {
+					border-right: 1px solid;
+				}
 
 				&.selected {
 					background-color: #ccc;
