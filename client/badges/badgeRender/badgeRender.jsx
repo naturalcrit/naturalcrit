@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import BadgeTemplate from './badgeTemplate.js';
-
 import './badgeRender.less';
+import React, { useEffect, useRef, useState, useContext } from 'react';
+import BadgeTemplate from './badgeTemplate.js';
+import { BadgeContext } from '../badgeContext.jsx';
 
 const iconAssets = import.meta.glob('../../assets/svg/elderberry-inn-icons/*.svg', { eager: true, query: '?url', import: 'default' });
 
@@ -10,23 +10,69 @@ const icons = Array.from({ length: 192 }, (_, index) => {
 	return iconAssets[path] || null;
 });
 
-const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
+const escapeXML = (value) =>
+	String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+
+const recolorSVG = (svg, color) => {
+	const parser = new DOMParser();
+	const doc = parser.parseFromString(svg, 'image/svg+xml');
+
+	doc.querySelectorAll('path, rect, circle, ellipse, polygon, polyline').forEach((element) => {
+		const fill = element.getAttribute('fill');
+
+		if (fill !== 'none') {
+			element.setAttribute('fill', color);
+		}
+
+		const stroke = element.getAttribute('stroke');
+
+		if (stroke && stroke !== 'none') {
+			element.setAttribute('stroke', color);
+		}
+	});
+
+	return new XMLSerializer().serializeToString(doc.documentElement);
+};
+
+const getTextLines = (value, maxWidth = 400) => {
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+
+	ctx.font = 'bold 18px Calluna';
+
+	const lines = [];
+	let line = '';
+
+	value.split(/\s+/).forEach((word) => {
+		const testLine = line ? `${line} ${word}` : word;
+
+		if (line && ctx.measureText(testLine).width > maxWidth) {
+			lines.push(line);
+			line = word;
+		} else {
+			line = testLine;
+		}
+	});
+
+	if (line) lines.push(line);
+
+	return lines;
+};
+
+const BadgeRender = () => {
+	const { color, badgeSettings, textSettings, iconSettings } = useContext(BadgeContext);
+	const { badgeHeight, badgeWidth } = badgeSettings;
+	const { title, titleColor, titleFontFamily, text, textColor, textFontSize, textFontFamily } = textSettings;
+	const { icon, rawSVG, iconWidth, iconPositionX, iconPositionY } = iconSettings;
+
 	const svgRef = useRef(null);
-	const height = 414;
-	const width = 408;
 
 	const padding = 20;
-	const titlePadding = padding * 3;
 	const paddingBottom = 100;
+	const titlePadding = padding * 3;
+	const maxTextWidth = badgeWidth - padding * 2;
 
-	const iconWidth = 150;
 	const iconHeight = iconWidth;
-
-	const titleColor = '#fff';
-	const textFontSize = 18;
-	const textFontFamily = 'Calluna';
-	const textColor = '#000';
-	const titleFontFamily = 'Calluna';
 
 	const [iconUrl, setIconUrl] = useState(null);
 
@@ -41,30 +87,6 @@ const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
 			cancelled = true;
 		};
 	}, [icon, rawSVG, color]);
-
-	const escapeXML = (value) =>
-		String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-
-	const recolorSVG = (svg, color) => {
-		const parser = new DOMParser();
-		const doc = parser.parseFromString(svg, 'image/svg+xml');
-
-		doc.querySelectorAll('path, rect, circle, ellipse, polygon, polyline').forEach((element) => {
-			const fill = element.getAttribute('fill');
-
-			if (fill !== 'none') {
-				element.setAttribute('fill', color);
-			}
-
-			const stroke = element.getAttribute('stroke');
-
-			if (stroke && stroke !== 'none') {
-				element.setAttribute('stroke', color);
-			}
-		});
-
-		return new XMLSerializer().serializeToString(doc.documentElement);
-	};
 
 	const getIconUrl = async () => {
 		if (rawSVG) {
@@ -83,48 +105,22 @@ const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
 		return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(recolored)))}`;
 	};
 
-	const getTextLines = (value, maxWidth = width - padding * 2) => {
-		const canvas = document.createElement('canvas');
-		const ctx = canvas.getContext('2d');
-
-		ctx.font = 'bold 18px Calluna';
-
-		const lines = [];
-		let line = '';
-
-		value.split(/\s+/).forEach((word) => {
-			const testLine = line ? `${line} ${word}` : word;
-
-			if (line && ctx.measureText(testLine).width > maxWidth) {
-				lines.push(line);
-				line = word;
-			} else {
-				line = testLine;
-			}
-		});
-
-		if (line) lines.push(line);
-
-		return lines;
-	};
-
 	const createSVG = () => {
 		const frame = BadgeTemplate(color);
 
 		let titleSize = 35;
-
 
 		const canvas = document.createElement('canvas');
 		const ctx = canvas.getContext('2d');
 
 		ctx.font = `${titleSize}px Calluna`;
 
-		while (ctx.measureText(title).width > width - titlePadding - 10 && titleSize > 10) {
+		while (ctx.measureText(title).width > badgeWidth - titlePadding - 10 && titleSize > 10) {
 			titleSize--;
 			ctx.font = `${titleSize}px Calluna`;
 		}
 
-		const lines = text ? getTextLines(text) : [];
+		const lines = text ? getTextLines(text, maxTextWidth) : [];
 
 		const description = () => {
 			return lines
@@ -132,7 +128,7 @@ const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
 					(line, index) => `
           <text
             x="${padding}"
-            y="${height + padding + index * 20}"
+            y="${badgeHeight + padding + index * 20}"
             font-family="${textFontFamily}"
             font-size="${textFontSize}"
             font-weight="bold"
@@ -147,16 +143,16 @@ const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
 	<svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
-        width="${width}"
-        height="${height + paddingBottom}"
-        viewBox="0 0 ${width} ${height + paddingBottom}"
+        width="${badgeWidth}"
+        height="${badgeHeight + paddingBottom}"
+        viewBox="0 0 ${badgeWidth} ${badgeHeight + paddingBottom}"
       >
         <image
           href="data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(frame)))}"
           x="0"
           y="0"
-          width="${width}"
-          height="${height}"
+          width="${badgeWidth}"
+          height="${badgeHeight}"
         />
 
         ${
@@ -164,8 +160,8 @@ const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
 				? `
               <image
                 href="${iconUrl}"
-                x="${width / 2 - iconWidth / 2}"
-                y="${height / 2 - iconHeight / 2}"
+                x="${badgeWidth / 2 - iconWidth / 2 + iconPositionX}"
+                y="${badgeHeight / 2 - iconHeight / 2 + iconPositionY}"
                 width="${iconWidth}"
                 height="${iconHeight}"
                 preserveAspectRatio="xMidYMid meet"
@@ -175,8 +171,8 @@ const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
 		}
 
         <text
-          x="${width / 2}"
-          y="${height - 110}"
+          x="${badgeWidth / 2}"
+          y="${badgeHeight - 110}"
           text-anchor="middle"
           dominant-baseline="middle"
           font-family="${titleFontFamily}"
@@ -187,8 +183,8 @@ const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
         ${description()}
 
         <text
-          x="${width / 2 - 47}"
-          y="${height + paddingBottom - 7}"
+          x="${badgeWidth / 2 - 47}"
+          y="${badgeHeight + paddingBottom - 7}"
           font-family="Arial"
           font-size="9"
           fill="#bbb"
@@ -224,7 +220,6 @@ const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
 	return (
 		<div className='badgeRender'>
 			<div ref={svgRef} className='badgePreview' dangerouslySetInnerHTML={{ __html: svgContent }} />
-
 			<div>
 				<button onClick={handleDownload}>
 					<i className='fa fa-download' />
