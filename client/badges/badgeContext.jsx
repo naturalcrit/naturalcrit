@@ -6,8 +6,21 @@ const BadgeProvider = ({ children }) => {
 	const [title, setTitle] = useState('');
 	const [text, setText] = useState('');
 	const [color, setColor] = useState('#2c3e50');
+
+	const badgeHeight = 414;
+	const badgeWidth = 408;
+
+	const titleColor = '#fff';
+	const textFontSize = 18;
+	const textFontFamily = 'Calluna';
+	const textColor = '#000';
+	const titleFontFamily = 'Calluna';
+
 	const [icon, setIcon] = useState(1);
 	const [rawSVG, setRawSVG] = useState('');
+	const iconWidth = 150;
+	const iconPositionX = 0;
+	const iconPositionY = 0;
 
 	const handleChange = (newState) => {
 		if (newState.title !== undefined) setTitle(newState.title);
@@ -17,8 +30,12 @@ const BadgeProvider = ({ children }) => {
 		if (newState.rawSVG !== undefined) setRawSVG(newState.rawSVG);
 	};
 
+	const badgeSettings = { badgeHeight, badgeWidth };
+	const textSettings = { title, titleColor, titleFontFamily, text, textColor, textFontSize, textFontFamily };
+	const iconSettings = { icon, rawSVG, iconWidth, iconPositionX, iconPositionY };
+
 	const value = useMemo(
-		() => ({ title, text, color, icon, rawSVG, setTitle, setText, setColor, setIcon, setRawSVG, handleChange }),
+		() => ({ color, badgeSettings, textSettings, iconSettings, setTitle, setText, setColor, setIcon, setRawSVG, handleChange }),
 		[title, text, color, icon, rawSVG],
 	);
 

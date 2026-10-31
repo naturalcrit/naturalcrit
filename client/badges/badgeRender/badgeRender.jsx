@@ -1,8 +1,7 @@
+import './badgeRender.less';
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import BadgeTemplate from './badgeTemplate.js';
 import { BadgeContext } from '../badgeContext.jsx';
-
-import './badgeRender.less';
 
 const iconAssets = import.meta.glob('../../assets/svg/elderberry-inn-icons/*.svg', { eager: true, query: '?url', import: 'default' });
 
@@ -12,24 +11,18 @@ const icons = Array.from({ length: 192 }, (_, index) => {
 });
 
 const BadgeRender = () => {
-	const {title, text, color, icon, rawSVG, handleChange } = useContext(BadgeContext);
+	const { color, badgeSettings, textSettings, iconSettings } = useContext(BadgeContext);
+	const { badgeHeight, badgeWidth, badgePadding } = badgeSettings;
+	const { title, titleColor, titleFontFamily, text, textColor, textFontSize, textFontFamily } = textSettings;
+	const { icon, rawSVG, iconWidth, iconPositionX, iconPositionY } = iconSettings;
 
 	const svgRef = useRef(null);
-	const height = 414;
-	const width = 408;
 
 	const padding = 20;
-	const titlePadding = padding * 3;
 	const paddingBottom = 100;
+	const titlePadding = padding * 3;
 
-	const iconWidth = 150;
 	const iconHeight = iconWidth;
-
-	const titleColor = '#fff';
-	const textFontSize = 18;
-	const textFontFamily = 'Calluna';
-	const textColor = '#000';
-	const titleFontFamily = 'Calluna';
 
 	const [iconUrl, setIconUrl] = useState(null);
 
@@ -86,7 +79,7 @@ const BadgeRender = () => {
 		return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(recolored)))}`;
 	};
 
-	const getTextLines = (value, maxWidth = width - padding * 2) => {
+	const getTextLines = (value, maxWidth = badgeWidth - padding * 2) => {
 		const canvas = document.createElement('canvas');
 		const ctx = canvas.getContext('2d');
 
@@ -116,13 +109,12 @@ const BadgeRender = () => {
 
 		let titleSize = 35;
 
-
 		const canvas = document.createElement('canvas');
 		const ctx = canvas.getContext('2d');
 
 		ctx.font = `${titleSize}px Calluna`;
 
-		while (ctx.measureText(title).width > width - titlePadding - 10 && titleSize > 10) {
+		while (ctx.measureText(title).width > badgeWidth - titlePadding - 10 && titleSize > 10) {
 			titleSize--;
 			ctx.font = `${titleSize}px Calluna`;
 		}
@@ -135,7 +127,7 @@ const BadgeRender = () => {
 					(line, index) => `
           <text
             x="${padding}"
-            y="${height + padding + index * 20}"
+            y="${badgeHeight + padding + index * 20}"
             font-family="${textFontFamily}"
             font-size="${textFontSize}"
             font-weight="bold"
@@ -150,16 +142,16 @@ const BadgeRender = () => {
 	<svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
-        width="${width}"
-        height="${height + paddingBottom}"
-        viewBox="0 0 ${width} ${height + paddingBottom}"
+        width="${badgeWidth}"
+        height="${badgeHeight + paddingBottom}"
+        viewBox="0 0 ${badgeWidth} ${badgeHeight + paddingBottom}"
       >
         <image
           href="data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(frame)))}"
           x="0"
           y="0"
-          width="${width}"
-          height="${height}"
+          width="${badgeWidth}"
+          height="${badgeHeight}"
         />
 
         ${
@@ -167,8 +159,8 @@ const BadgeRender = () => {
 				? `
               <image
                 href="${iconUrl}"
-                x="${width / 2 - iconWidth / 2}"
-                y="${height / 2 - iconHeight / 2}"
+                x="${badgeWidth / 2 - iconWidth / 2 + iconPositionX}"
+                y="${badgeHeight / 2 - iconHeight / 2 + iconPositionY}"
                 width="${iconWidth}"
                 height="${iconHeight}"
                 preserveAspectRatio="xMidYMid meet"
@@ -178,8 +170,8 @@ const BadgeRender = () => {
 		}
 
         <text
-          x="${width / 2}"
-          y="${height - 110}"
+          x="${badgeWidth / 2}"
+          y="${badgeHeight - 110}"
           text-anchor="middle"
           dominant-baseline="middle"
           font-family="${titleFontFamily}"
@@ -190,8 +182,8 @@ const BadgeRender = () => {
         ${description()}
 
         <text
-          x="${width / 2 - 47}"
-          y="${height + paddingBottom - 7}"
+          x="${badgeWidth / 2 - 47}"
+          y="${badgeHeight + paddingBottom - 7}"
           font-family="Arial"
           font-size="9"
           fill="#bbb"

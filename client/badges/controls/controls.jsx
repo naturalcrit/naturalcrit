@@ -1,10 +1,9 @@
-import React, { useContext, useState } from 'react';
 import './controls.less';
+import React, { useContext, useState } from 'react';
 
 import { SliderPicker } from 'react-color';
-import {BadgeContext} from '../badgeContext.jsx';
+import { BadgeContext } from '../badgeContext.jsx';
 
-// Load all 192 icons
 const iconAssets = import.meta.glob('../../assets/svg/elderberry-inn-icons/*.svg', { eager: true, query: '?url', import: 'default' });
 
 const icons = Array.from({ length: 192 }, (_, index) => {
@@ -13,7 +12,7 @@ const icons = Array.from({ length: 192 }, (_, index) => {
 });
 
 const Controls = () => {
-	const {title, text, color, icon, rawSVG, handleChange } = useContext(BadgeContext);
+	const { title, text, color, icon, rawSVG, handleChange } = useContext(BadgeContext);
 
 	const [hover, setHover] = useState(false);
 
@@ -50,13 +49,7 @@ const Controls = () => {
 		<div className='controls'>
 			<div className='field'>
 				<label>Title</label>
-				<input
-					type='text'
-					className='value'
-					value={title}
-					onChange={(e) => handleChange('title', e.target.value)}
-					placeholder='Your title'
-				/>
+				<input type='text' className='value' value={title} onChange={(e) => handleChange('title', e.target.value)} placeholder='Your title' />
 			</div>
 
 			<div className='field'>
@@ -99,7 +92,8 @@ const Controls = () => {
 				Icons by <a href='https://www.instagram.com/anaislalovi/'>Anaislalovi</a> for{' '}
 				<a href='https://www.elderberry-inn.com/icons'>Elderberry Inn.</a>{' '}
 			</small>
-			<br /><br />
+			<br />
+			<br />
 
 			<div className='field svg'>
 				<label>Upload your own</label>
