@@ -3,11 +3,55 @@
 
 	.field {
 		display: flex;
+		gap:10px;
 		margin-bottom: 10px;
+
+		.iconGrid {
+			display: grid;
+			flex-grow: 1;
+			grid-template-columns: repeat(5, 1fr);
+			gap: 8px;
+			height: 250px;
+			overflow-y: auto;
+			padding: 4px;
+		}
+
+		.iconOption {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			aspect-ratio: 1;
+			padding: 1px;
+			border: 1px solid #ccc;
+			border-radius: 6px;
+			background: #fff;
+			cursor: pointer;
+			transition:
+				border-color 0.15s,
+				background 0.15s;
+			margin:0;
+
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				translate: 0 5px;
+			}
+
+			&:hover {
+				border-color: #777;
+				background: #f2f2f2;
+			}
+
+			&.selected {
+				border: 2px solid #2b4486;
+				background: #e8ecf5;
+			}
+		}
 
 		label {
 			vertical-align: top;
-			width: 70px;
+			min-width: 70px;
 			font-size: 0.8em;
 			font-weight: 800;
 		}
@@ -22,12 +66,11 @@
 			padding: 4px;
 			font-family: 'Open Sans';
 			font-size: 1em;
-			max-width:420px;
-			max-height:270px;
+			max-width: 420px;
+			max-height: 270px;
 		}
 
 		&.svg {
-
 			.dropZone {
 				margin-left: -1px;
 				padding: 20px 10px;
@@ -39,7 +82,7 @@
 
 				i {
 					font-size: 3em;
-					color: #999
+					color: #999;
 				}
 
 				&.hover {
@@ -47,7 +90,7 @@
 				}
 			}
 
-			.value>p {
+			.value > p {
 				margin-top: 10px;
 				font-size: 0.7em;
 			}

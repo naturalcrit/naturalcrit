@@ -3,7 +3,6 @@ import BadgeTemplate from './badgeTemplate.js';
 
 import './badgeRender.less';
 
-// Load all 192 SVG icons
 const iconAssets = import.meta.glob('../../assets/svg/elderberry-inn-icons/*.svg', { eager: true, query: '?url', import: 'default' });
 
 const icons = Array.from({ length: 192 }, (_, index) => {
@@ -11,9 +10,17 @@ const icons = Array.from({ length: 192 }, (_, index) => {
 	return iconAssets[path] || null;
 });
 
-const BadgeRender = ({ title = '', text = '', icon = 1, rawSVG = '', color = '#333' }) => {
+const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
 	const svgRef = useRef(null);
-	const height = text ? 400 : 320;
+	const height = 414;
+	const width = 408;
+
+	const padding = 20;
+	const titlePadding = padding*3;
+	const paddingBottom = 100;
+
+	const iconWidth = 150;
+	const iconHeight = iconWidth;
 
 	const [iconUrl, setIconUrl] = useState(null);
 
@@ -70,7 +77,7 @@ const BadgeRender = ({ title = '', text = '', icon = 1, rawSVG = '', color = '#3
 		return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(recolored)))}`;
 	};
 
-	const getTextLines = (value, maxWidth = 270) => {
+	const getTextLines = (value, maxWidth = width - padding *2 ) => {
 		const canvas = document.createElement('canvas');
 		const ctx = canvas.getContext('2d');
 
@@ -105,7 +112,7 @@ const BadgeRender = ({ title = '', text = '', icon = 1, rawSVG = '', color = '#3
 
 		ctx.font = `${titleSize}px Calluna`;
 
-		while (ctx.measureText(title).width > 230 && titleSize > 10) {
+		while (ctx.measureText(title).width > (width - titlePadding - 10) && titleSize > 10) {
 			titleSize--;
 			ctx.font = `${titleSize}px Calluna`;
 		}
@@ -116,8 +123,8 @@ const BadgeRender = ({ title = '', text = '', icon = 1, rawSVG = '', color = '#3
 			.map(
 				(line, index) => `
           <text
-            x="15"
-            y="${315 + index * 20}"
+            x="${padding}"
+            y="${height + padding + index * 20}"
             font-family="Calluna"
             font-size="18"
             font-weight="bold"
@@ -131,16 +138,16 @@ const BadgeRender = ({ title = '', text = '', icon = 1, rawSVG = '', color = '#3
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
-        width="300"
-        height="${height}"
-        viewBox="0 0 300 ${height}"
+        width="${width}"
+        height="${height + paddingBottom}"
+        viewBox="0 0 ${width} ${height + paddingBottom}"
       >
         <image
           href="data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(frame)))}"
           x="0"
           y="0"
-          width="300"
-          height="320"
+          width="${width}"
+          height="${height}"
         />
 
         ${
@@ -148,10 +155,10 @@ const BadgeRender = ({ title = '', text = '', icon = 1, rawSVG = '', color = '#3
 				? `
               <image
                 href="${iconUrl}"
-                x="75"
-                y="80"
-                width="150"
-                height="150"
+                x="${width / 2 - iconWidth / 2}"
+                y="${height / 2 - iconHeight / 2}"
+                width="${iconWidth}"
+                height="${iconHeight}"
                 preserveAspectRatio="xMidYMid meet"
               />
             `
@@ -159,20 +166,20 @@ const BadgeRender = ({ title = '', text = '', icon = 1, rawSVG = '', color = '#3
 		}
 
         <text
-          x="150"
-          y="220"
+          x="${width / 2}"
+          y="${height - 110}"
           text-anchor="middle"
           dominant-baseline="middle"
           font-family="Calluna"
           font-size="${titleSize}"
-          fill="#fff"
+          fill="#000"
         >${escapeXML(title)}</text>
 
         ${description}
 
         <text
-          x="190"
-          y="${height - 7}"
+          x="${width / 2 - 47}"
+          y="${height + paddingBottom - 7}"
           font-family="Arial"
           font-size="9"
           fill="#bbb"

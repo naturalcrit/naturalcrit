@@ -3,7 +3,15 @@ import './controls.less';
 
 import { SliderPicker } from 'react-color';
 
-const Controls = ({ data = { title: '', text: '', color: '#2b4486', icon: 42, rawSVG: '' }, onChange = () => {} }) => {
+// Load all 192 icons
+const iconAssets = import.meta.glob('../../assets/svg/elderberry-inn-icons/*.svg', { eager: true, query: '?url', import: 'default' });
+
+const icons = Array.from({ length: 192 }, (_, index) => {
+	const path = `../../assets/svg/elderberry-inn-icons/${index + 1}.svg`;
+	return iconAssets[path] || null;
+});
+
+const Controls = ({ data = { title, text, color, icon, rawSVG }, onChange = () => {} }) => {
 	const [hover, setHover] = useState(false);
 
 	const handleChange = (path, value) => {
@@ -36,7 +44,6 @@ const Controls = ({ data = { title: '', text: '', color: '#2b4486', icon: 42, ra
 		reader.readAsText(file);
 		setHover(false);
 
-		// Allow selecting the same file again
 		if (e.target.value) e.target.value = '';
 	};
 
@@ -58,20 +65,25 @@ const Controls = ({ data = { title: '', text: '', color: '#2b4486', icon: 42, ra
 			</div>
 
 			<div className='field'>
-				<label>Icon</label>
-				<select
-					className='value'
-					value={data.icon}
-					onChange={(e) => {
-						handleChange('icon', Number(e.target.value));
-						handleChange('rawSVG', '');
-					}}>
-					{Array.from({ length: 192 }, (_, index) => (
-						<option key={index + 1} value={index + 1}>
-							Icon {index + 1}
-						</option>
+				<label>Choose an icon</label>
+
+				<div className='iconGrid'>
+					{icons.map((src, index) => (
+						<button
+							key={index}
+							type='button'
+							className={`iconOption${!data.rawSVG && data.icon === index + 1 ? ' selected' : ''}`}
+							onClick={() => {
+								handleChange('icon', index + 1);
+								handleChange('rawSVG', '');
+							}}
+							title={`Icon ${index + 1}`}
+							aria-label={`Select icon ${index + 1}`}
+							aria-pressed={!data.rawSVG && data.icon === index + 1}>
+							{src && <img src={src} alt='' />}
+						</button>
 					))}
-				</select>
+				</div>
 			</div>
 
 			<div className='field svg'>
