@@ -220,7 +220,8 @@ const BadgeRender = () => {
 	};
 
 	return (
-		<div className='badgeRender'>
+		<fieldset className='badgeRender'>
+			<legend>Preview</legend>
 			<div ref={svgRef} className='badgePreview' dangerouslySetInnerHTML={{ __html: svgContent }} />
 			<div>
 				<button onClick={handleDownload}>
@@ -228,7 +229,7 @@ const BadgeRender = () => {
 					Download SVG
 				</button>
 			</div>
-		</div>
+		</fieldset>
 	);
 };
 
