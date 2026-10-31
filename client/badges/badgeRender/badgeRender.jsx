@@ -10,9 +10,58 @@ const icons = Array.from({ length: 192 }, (_, index) => {
 	return iconAssets[path] || null;
 });
 
+const escapeXML = (value) =>
+	String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+
+const recolorSVG = (svg, color) => {
+	const parser = new DOMParser();
+	const doc = parser.parseFromString(svg, 'image/svg+xml');
+
+	doc.querySelectorAll('path, rect, circle, ellipse, polygon, polyline').forEach((element) => {
+		const fill = element.getAttribute('fill');
+
+		if (fill !== 'none') {
+			element.setAttribute('fill', color);
+		}
+
+		const stroke = element.getAttribute('stroke');
+
+		if (stroke && stroke !== 'none') {
+			element.setAttribute('stroke', color);
+		}
+	});
+
+	return new XMLSerializer().serializeToString(doc.documentElement);
+};
+
+const getTextLines = (value, maxWidth = 400) => {
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+
+	ctx.font = 'bold 18px Calluna';
+
+	const lines = [];
+	let line = '';
+
+	value.split(/\s+/).forEach((word) => {
+		const testLine = line ? `${line} ${word}` : word;
+
+		if (line && ctx.measureText(testLine).width > maxWidth) {
+			lines.push(line);
+			line = word;
+		} else {
+			line = testLine;
+		}
+	});
+
+	if (line) lines.push(line);
+
+	return lines;
+};
+
 const BadgeRender = () => {
 	const { color, badgeSettings, textSettings, iconSettings } = useContext(BadgeContext);
-	const { badgeHeight, badgeWidth, badgePadding } = badgeSettings;
+	const { badgeHeight, badgeWidth } = badgeSettings;
 	const { title, titleColor, titleFontFamily, text, textColor, textFontSize, textFontFamily } = textSettings;
 	const { icon, rawSVG, iconWidth, iconPositionX, iconPositionY } = iconSettings;
 
@@ -21,6 +70,7 @@ const BadgeRender = () => {
 	const padding = 20;
 	const paddingBottom = 100;
 	const titlePadding = padding * 3;
+	const maxTextWidth = badgeWidth - padding * 2;
 
 	const iconHeight = iconWidth;
 
@@ -37,30 +87,6 @@ const BadgeRender = () => {
 			cancelled = true;
 		};
 	}, [icon, rawSVG, color]);
-
-	const escapeXML = (value) =>
-		String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-
-	const recolorSVG = (svg, color) => {
-		const parser = new DOMParser();
-		const doc = parser.parseFromString(svg, 'image/svg+xml');
-
-		doc.querySelectorAll('path, rect, circle, ellipse, polygon, polyline').forEach((element) => {
-			const fill = element.getAttribute('fill');
-
-			if (fill !== 'none') {
-				element.setAttribute('fill', color);
-			}
-
-			const stroke = element.getAttribute('stroke');
-
-			if (stroke && stroke !== 'none') {
-				element.setAttribute('stroke', color);
-			}
-		});
-
-		return new XMLSerializer().serializeToString(doc.documentElement);
-	};
 
 	const getIconUrl = async () => {
 		if (rawSVG) {
@@ -79,31 +105,6 @@ const BadgeRender = () => {
 		return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(recolored)))}`;
 	};
 
-	const getTextLines = (value, maxWidth = badgeWidth - padding * 2) => {
-		const canvas = document.createElement('canvas');
-		const ctx = canvas.getContext('2d');
-
-		ctx.font = 'bold 18px Calluna';
-
-		const lines = [];
-		let line = '';
-
-		value.split(/\s+/).forEach((word) => {
-			const testLine = line ? `${line} ${word}` : word;
-
-			if (line && ctx.measureText(testLine).width > maxWidth) {
-				lines.push(line);
-				line = word;
-			} else {
-				line = testLine;
-			}
-		});
-
-		if (line) lines.push(line);
-
-		return lines;
-	};
-
 	const createSVG = () => {
 		const frame = BadgeTemplate(color);
 
@@ -119,7 +120,7 @@ const BadgeRender = () => {
 			ctx.font = `${titleSize}px Calluna`;
 		}
 
-		const lines = text ? getTextLines(text) : [];
+		const lines = text ? getTextLines(text, maxTextWidth) : [];
 
 		const description = () => {
 			return lines
@@ -219,7 +220,6 @@ const BadgeRender = () => {
 	return (
 		<div className='badgeRender'>
 			<div ref={svgRef} className='badgePreview' dangerouslySetInnerHTML={{ __html: svgContent }} />
-
 			<div>
 				<button onClick={handleDownload}>
 					<i className='fa fa-download' />
