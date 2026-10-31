@@ -16,11 +16,17 @@ const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
 	const width = 408;
 
 	const padding = 20;
-	const titlePadding = padding*3;
+	const titlePadding = padding * 3;
 	const paddingBottom = 100;
 
 	const iconWidth = 150;
 	const iconHeight = iconWidth;
+
+	const titleColor = '#fff';
+	const textFontSize = 18;
+	const textFontFamily = 'Calluna';
+	const textColor = '#000';
+	const titleFontFamily = 'Calluna';
 
 	const [iconUrl, setIconUrl] = useState(null);
 
@@ -77,7 +83,7 @@ const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
 		return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(recolored)))}`;
 	};
 
-	const getTextLines = (value, maxWidth = width - padding *2 ) => {
+	const getTextLines = (value, maxWidth = width - padding * 2) => {
 		const canvas = document.createElement('canvas');
 		const ctx = canvas.getContext('2d');
 
@@ -107,35 +113,38 @@ const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
 
 		let titleSize = 35;
 
+
 		const canvas = document.createElement('canvas');
 		const ctx = canvas.getContext('2d');
 
 		ctx.font = `${titleSize}px Calluna`;
 
-		while (ctx.measureText(title).width > (width - titlePadding - 10) && titleSize > 10) {
+		while (ctx.measureText(title).width > width - titlePadding - 10 && titleSize > 10) {
 			titleSize--;
 			ctx.font = `${titleSize}px Calluna`;
 		}
 
 		const lines = text ? getTextLines(text) : [];
 
-		const description = lines
-			.map(
-				(line, index) => `
+		const description = () => {
+			return lines
+				.map(
+					(line, index) => `
           <text
             x="${padding}"
             y="${height + padding + index * 20}"
-            font-family="Calluna"
-            font-size="18"
+            font-family="${textFontFamily}"
+            font-size="${textFontSize}"
             font-weight="bold"
-            fill="#000"
+            fill="${textColor}"
           >${escapeXML(line)}</text>
         `,
-			)
-			.join('');
+				)
+				.join('');
+		};
 
 		return `
-      <svg
+	<svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         width="${width}"
@@ -170,12 +179,12 @@ const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
           y="${height - 110}"
           text-anchor="middle"
           dominant-baseline="middle"
-          font-family="Calluna"
+          font-family="${titleFontFamily}"
           font-size="${titleSize}"
-          fill="#000"
+          fill="${titleColor}"
         >${escapeXML(title)}</text>
 
-        ${description}
+        ${description()}
 
         <text
           x="${width / 2 - 47}"

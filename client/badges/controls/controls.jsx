@@ -60,10 +60,9 @@ const Controls = ({ data = { title, text, color, icon, rawSVG }, onChange = () =
 			</div>
 
 			<div className='field'>
-				<label>Color</label>
+				<label>Badge Color</label>
 				<SliderPicker className='value' color={data.color} onChange={(colorObj) => handleChange('color', colorObj.hex)} />
 			</div>
-
 			<div className='field'>
 				<label>Choose an icon</label>
 
