@@ -1,5 +1,5 @@
 import './controls.less';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import SVGUploader from '../../components/SVGUploader.jsx';
 import { BadgeContext } from '../badgeContext.jsx';
@@ -40,6 +40,9 @@ const Controls = () => {
 
 	const { icon, rawSVG, iconWidth, iconPositionX, iconPositionY } = iconSettings;
 
+
+	const [view, setView] = useState('choose');
+
 	return (
 		<div className='controls'>
 			<fieldset>
@@ -51,7 +54,7 @@ const Controls = () => {
 						type='range'
 						className='value'
 						min='200'
-						max='800'
+						max='600'
 						value={badgeWidth}
 						onChange={(e) => setBadgeWidth(Number(e.target.value))}
 					/>
@@ -63,7 +66,7 @@ const Controls = () => {
 						type='range'
 						className='value'
 						min='200'
-						max='800'
+						max='500'
 						value={badgeHeight}
 						onChange={(e) => setBadgeHeight(Number(e.target.value))}
 					/>
@@ -71,7 +74,7 @@ const Controls = () => {
 
 				<div className='field'>
 					<label>Badge color</label>
-					<input defaultValue = '#2c3e50' value={color} type='color' onChange={(e) => setColor(e.target.value)} />
+					<input defaultValue='#2c3e50' value={color} type='color' onChange={(e) => setColor(e.target.value)} />
 				</div>
 			</fieldset>
 
@@ -137,30 +140,37 @@ const Controls = () => {
 			<fieldset>
 				<legend>Icon settings</legend>
 
-				<div className='field label-top'>
-					<label>Choose an icon</label>
-					<div className='iconGrid'>
-						{icons.map((src, index) => (
-							<button
-								key={index}
-								type='button'
-								className={`iconOption${!rawSVG && icon === index + 1 ? ' selected' : ''}`}
-								onClick={() => {
-									setIcon(index + 1);
-									setRawSVG('');
-								}}
-								title={`Icon ${index + 1}`}
-								aria-label={`Select icon ${index + 1}`}
-								aria-pressed={!rawSVG && icon === index + 1}>
-								{src && <img src={src} alt='' />}
-							</button>
-						))}
+				<div className='field tabs'>
+					<div className='switchView'>
+						<button className={view === 'choose' ? ' selected' : ''} onClick={() => setView('choose')}>
+							Choose an icon
+						</button>
+						<button className={view === 'upload' ? ' selected' : ''}  onClick={() => setView('upload')}>
+							Upload your own
+						</button>
 					</div>
-				</div>
-
-				<div className='field svg label-top'>
-					<label>Upload your own</label>
-					<SVGUploader rawSVG={rawSVG} setRawSVG={setRawSVG} />
+					{view === 'choose' && <div className='tab'>
+						<div className='iconGrid'>
+							{icons.map((src, index) => (
+								<button
+									key={index}
+									type='button'
+									className={`iconOption${!rawSVG && icon === index + 1 ? ' selected' : ''}`}
+									onClick={() => {
+										setIcon(index + 1);
+										setRawSVG('');
+									}}
+									title={`Icon ${index + 1}`}
+									aria-label={`Select icon ${index + 1}`}
+									aria-pressed={!rawSVG && icon === index + 1}>
+									{src && <img src={src} alt='' />}
+								</button>
+							))}
+						</div>
+					</div>}
+					{view === 'upload' && <div className='tab svg'>
+						<SVGUploader rawSVG={rawSVG} setRawSVG={setRawSVG} />
+					</div>}
 				</div>
 
 				<div className='field'>
@@ -168,7 +178,7 @@ const Controls = () => {
 					<input
 						type='range'
 						className='value'
-						min='20'
+						min='80'
 						step='10'
 						max='400'
 						value={iconWidth}
@@ -181,9 +191,9 @@ const Controls = () => {
 					<input
 						type='range'
 						className='value'
-						min='-200'
+						min={Math.round((badgeWidth / -2 + iconWidth / 3) / 10) * 10}
 						step='10'
-						max='200'
+						max={Math.round((badgeWidth / 2 - iconWidth / 3) / 10) * 10}
 						value={iconPositionX}
 						onChange={(e) => setIconPositionX(Number(e.target.value))}
 					/>
