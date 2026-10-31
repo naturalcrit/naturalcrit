@@ -6,8 +6,8 @@ import Controls from './controls/controls.jsx';
 import NaturalCritIcon from '../assets/svg/naturalcritLogo.jsx';
 
 const Badges = () => {
-	const [title, setTitle] = useState('Lorem Ipsum');
-	const [text, setText] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
+	const [title, setTitle] = useState('');
+	const [text, setText] = useState('');
 	const [color, setColor] = useState('#2c3e50');
 	const [icon, setIcon] = useState(1);
 	const [rawSVG, setRawSVG] = useState('');

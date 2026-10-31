@@ -51,12 +51,24 @@ const Controls = ({ data = { title, text, color, icon, rawSVG }, onChange = () =
 		<div className='controls'>
 			<div className='field'>
 				<label>Title</label>
-				<input type='text' className='value' value={data.title} onChange={(e) => handleChange('title', e.target.value)} />
+				<input
+					type='text'
+					className='value'
+					value={data.title}
+					onChange={(e) => handleChange('title', e.target.value)}
+					placeholder='Your title'
+				/>
 			</div>
 
 			<div className='field'>
 				<label>Text</label>
-				<textarea className='value' rows={3} value={data.text} onChange={(e) => handleChange('text', e.target.value)} />
+				<textarea
+					className='value'
+					rows={3}
+					value={data.text}
+					onChange={(e) => handleChange('text', e.target.value)}
+					placeholder='Enter your text here.'
+				/>
 			</div>
 
 			<div className='field'>
@@ -84,9 +96,14 @@ const Controls = ({ data = { title, text, color, icon, rawSVG }, onChange = () =
 					))}
 				</div>
 			</div>
+			<small>
+				Icons by <a href='https://www.instagram.com/anaislalovi/'>Anaislalovi</a> for{' '}
+				<a href='https://www.elderberry-inn.com/icons'>Elderberry Inn.</a>{' '}
+			</small>
+			<br /><br />
 
 			<div className='field svg'>
-				<label>Custom SVG</label>
+				<label>Upload your own</label>
 
 				<div className='value'>
 					<div
