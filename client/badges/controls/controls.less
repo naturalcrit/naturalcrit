@@ -1,5 +1,5 @@
 .controls {
-	width: 800px;
+	width: 900px;
 	columns:2;
 
 	fieldset {
@@ -21,20 +21,27 @@
 		small {
 			display:block;
 			margin-bottom: 10px;
+			padding-left:80px;
 		}
 	}
 
 	.field {
-		display: flex;
+		display: grid;
+		grid-template-columns: 130px 1fr;
+		align-items: center;
 		gap: 10px;
 		margin-bottom: 10px;
+
+		&.label-top{
+			align-items: start;
+		}
 
 		.iconGrid {
 			display: grid;
 			flex-grow: 1;
 			grid-template-columns: repeat(5, 1fr);
 			gap: 8px;
-			height: 250px;
+			height: 200px;
 			overflow-y: auto;
 			padding: 4px;
 		}
@@ -73,7 +80,6 @@
 		}
 
 		label {
-			vertical-align: top;
 			min-width: 70px;
 			font-size: 0.8em;
 			font-weight: 800;
@@ -89,8 +95,11 @@
 			padding: 4px;
 			font-family: 'Open Sans';
 			font-size: 1em;
-			max-width: 420px;
-			max-height: 270px;
+			max-height: 8lh;
+		}
+
+		textarea {
+			resize:vertical;
 		}
 
 		&.svg {

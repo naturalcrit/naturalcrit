@@ -29,8 +29,8 @@ const Badges = () => {
 			</div>
 
 			<p className='credit'>
-				Inspired by <br />
-				Howlett Studios's D&D badges
+				Icons by <a href='https://www.instagram.com/anaislalovi/'>Anaislalovi</a> for{' '}
+				<a href='https://www.elderberry-inn.com/icons'>Elderberry Inn.</a>
 			</p>
 		</div>
 	);

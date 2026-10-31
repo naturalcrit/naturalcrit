@@ -99,7 +99,7 @@ const Controls = () => {
 					/>
 				</div>
 
-				<div className='field'>
+				<div className='field label-top'>
 					<label>Text</label>
 					<textarea className='value' rows={3} value={text} onChange={(e) => setText(e.target.value)} placeholder='Enter your text here.' />
 				</div>
@@ -137,7 +137,7 @@ const Controls = () => {
 			<fieldset>
 				<legend>Icon settings</legend>
 
-				<div className='field'>
+				<div className='field label-top'>
 					<label>Choose an icon</label>
 					<div className='iconGrid'>
 						{icons.map((src, index) => (
@@ -158,12 +158,7 @@ const Controls = () => {
 					</div>
 				</div>
 
-				<small>
-					Icons by <a href='https://www.instagram.com/anaislalovi/'>Anaislalovi</a> for{' '}
-					<a href='https://www.elderberry-inn.com/icons'>Elderberry Inn.</a>
-				</small>
-
-				<div className='field svg'>
+				<div className='field svg label-top'>
 					<label>Upload your own</label>
 					<SVGUploader rawSVG={rawSVG} setRawSVG={setRawSVG} />
 				</div>
