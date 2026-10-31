@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './controls.less';
 
 import { SliderPicker } from 'react-color';
+import {BadgeContext} from '../badgeContext.jsx';
 
 // Load all 192 icons
 const iconAssets = import.meta.glob('../../assets/svg/elderberry-inn-icons/*.svg', { eager: true, query: '?url', import: 'default' });
@@ -11,12 +12,10 @@ const icons = Array.from({ length: 192 }, (_, index) => {
 	return iconAssets[path] || null;
 });
 
-const Controls = ({ data = { title, text, color, icon, rawSVG }, onChange = () => {} }) => {
-	const [hover, setHover] = useState(false);
+const Controls = () => {
+	const {title, text, color, icon, rawSVG, handleChange } = useContext(BadgeContext);
 
-	const handleChange = (path, value) => {
-		onChange({ [path]: value });
-	};
+	const [hover, setHover] = useState(false);
 
 	const handleDrop = (e) => {
 		e.preventDefault();
@@ -54,7 +53,7 @@ const Controls = ({ data = { title, text, color, icon, rawSVG }, onChange = () =
 				<input
 					type='text'
 					className='value'
-					value={data.title}
+					value={title}
 					onChange={(e) => handleChange('title', e.target.value)}
 					placeholder='Your title'
 				/>
@@ -65,7 +64,7 @@ const Controls = ({ data = { title, text, color, icon, rawSVG }, onChange = () =
 				<textarea
 					className='value'
 					rows={3}
-					value={data.text}
+					value={text}
 					onChange={(e) => handleChange('text', e.target.value)}
 					placeholder='Enter your text here.'
 				/>
@@ -73,7 +72,7 @@ const Controls = ({ data = { title, text, color, icon, rawSVG }, onChange = () =
 
 			<div className='field'>
 				<label>Badge Color</label>
-				<SliderPicker className='value' color={data.color} onChange={(colorObj) => handleChange('color', colorObj.hex)} />
+				<SliderPicker className='value' color={color} onChange={(colorObj) => handleChange('color', colorObj.hex)} />
 			</div>
 			<div className='field'>
 				<label>Choose an icon</label>
@@ -83,14 +82,14 @@ const Controls = ({ data = { title, text, color, icon, rawSVG }, onChange = () =
 						<button
 							key={index}
 							type='button'
-							className={`iconOption${!data.rawSVG && data.icon === index + 1 ? ' selected' : ''}`}
+							className={`iconOption${!rawSVG && icon === index + 1 ? ' selected' : ''}`}
 							onClick={() => {
 								handleChange('icon', index + 1);
 								handleChange('rawSVG', '');
 							}}
 							title={`Icon ${index + 1}`}
 							aria-label={`Select icon ${index + 1}`}
-							aria-pressed={!data.rawSVG && data.icon === index + 1}>
+							aria-pressed={!rawSVG && icon === index + 1}>
 							{src && <img src={src} alt='' />}
 						</button>
 					))}
@@ -131,7 +130,7 @@ const Controls = ({ data = { title, text, color, icon, rawSVG }, onChange = () =
 						.
 					</p>
 
-					{data.rawSVG && (
+					{rawSVG && (
 						<div className='custom-svg-status'>
 							<span>Custom SVG selected</span>
 							<button type='button' onClick={() => handleChange('rawSVG', '')}>

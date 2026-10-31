@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import BadgeTemplate from './badgeTemplate.js';
+import { BadgeContext } from '../badgeContext.jsx';
 
 import './badgeRender.less';
 
@@ -10,7 +11,9 @@ const icons = Array.from({ length: 192 }, (_, index) => {
 	return iconAssets[path] || null;
 });
 
-const BadgeRender = ({ title, text, icon, rawSVG, color }) => {
+const BadgeRender = () => {
+	const {title, text, color, icon, rawSVG, handleChange } = useContext(BadgeContext);
+
 	const svgRef = useRef(null);
 	const height = 414;
 	const width = 408;
