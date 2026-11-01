@@ -1,19 +1,90 @@
 .controls {
-	width: 500px;
+	width: 900px;
+	columns: 2;
+
+	fieldset {
+		padding: 10px;
+		padding-top: 5px;
+		border: 4px double;
+		border-radius: 10px;
+		corner-shape: square scoop scoop scoop;
+		break-inside: avoid;
+		background: white;
+
+		&:not(:first-child) {
+			margin-top: 10px;
+		}
+
+		.field {
+			padding-left: 5px;
+		}
+
+		legend {
+			background-color: inherit;
+			padding: 10px 15px;
+			font-size: 20px;
+			font-weight: 800;
+			position: relative;
+			border-radius: 5px;
+			corner-shape: scoop;
+
+			&::before {
+				content: '';
+				position: absolute;
+				left: 50%;
+				top: 3px;
+				translate: -50% 0;
+				width: calc(100% + 22px);
+				height: calc(100% + 22px);
+				border: 4px double;
+				border-radius: 15px;
+				corner-shape: notch;
+				clip-path: inset(10px 15px 50% 15px);
+			}
+
+			&::after {
+				box-sizing: border-box;
+				content: '';
+				position: absolute;
+				top: 0px;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				border: 4px double;
+				border-radius: 5px;
+				corner-shape: scoop;
+				clip-path: inset(0 0 55% 0);
+			}
+		}
+
+		small {
+			display: block;
+			margin-bottom: 10px;
+			padding-left: 80px;
+		}
+	}
 
 	.field {
-		display: flex;
-		gap:10px;
-		margin-bottom: 10px;
+		display: grid;
+		grid-template-columns: 130px 1fr;
+		align-items: center;
+		gap: 10px;
+		margin-bottom: 5px;
+		accent-color: #800;
+
+		&.description {
+			align-items: start;
+		}
 
 		.iconGrid {
 			display: grid;
 			flex-grow: 1;
 			grid-template-columns: repeat(5, 1fr);
 			gap: 8px;
-			height: 250px;
+			height: 200px;
 			overflow-y: auto;
 			padding: 4px;
+			margin-bottom: 10px;
 		}
 
 		.iconOption {
@@ -27,9 +98,9 @@
 			background: #fff;
 			cursor: pointer;
 			transition:
-				border-color 0.15s,
-				background 0.15s;
-			margin:0;
+				border-color 1.2s,
+				background-color 1.2s;
+			margin: 0;
 
 			img {
 				width: 100%;
@@ -40,17 +111,16 @@
 
 			&:hover {
 				border-color: #777;
-				background: #f2f2f2;
+				background-color: #f2f2f2;
 			}
 
 			&.selected {
 				border: 2px solid #2b4486;
-				background: #e8ecf5;
+				background-color: #e8ecf5;
 			}
 		}
 
 		label {
-			vertical-align: top;
 			min-width: 70px;
 			font-size: 0.8em;
 			font-weight: 800;
@@ -61,16 +131,27 @@
 			flex-grow: 1;
 		}
 
+		input[type='text'] {
+			padding: 4px;
+			height: 1.5em;
+		}
+		input[type='range'] {
+			height: 1.5em;
+		}
 		textarea.value,
 		input.value {
-			padding: 4px;
 			font-family: 'Open Sans';
 			font-size: 1em;
-			max-width: 420px;
-			max-height: 270px;
 		}
 
-		&.svg {
+		textarea {
+			padding: 4px;
+			resize: vertical;
+			max-height: 7lh;
+			min-height: 2em;
+		}
+
+		.svg {
 			.dropZone {
 				margin-left: -1px;
 				padding: 20px 10px;
@@ -97,6 +178,44 @@
 
 			input {
 				margin-top: 10px;
+			}
+		}
+	}
+
+	.field.tabs {
+		display: flex;
+		flex-direction: column;
+
+		.switchView {
+			height: 30px;
+			width: 100%;
+			display: flex;
+			justify-content: space-evenly;
+			border-bottom: 1px solid;
+
+			button {
+				height: 100%;
+				width: 100%;
+				color: black;
+				background: unset;
+				padding: 0;
+				font-family: inherit;
+				font-weight: 900;
+				font-size: 10px;
+				margin: 0;
+				transition: background-color 0.2s;
+
+				&:first-child {
+					border-right: 1px solid;
+				}
+
+				&.selected {
+					background-color: #ccc;
+				}
+
+				&:hover {
+					background-color: #aaa;
+				}
 			}
 		}
 	}

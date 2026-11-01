@@ -34,11 +34,11 @@ const recolorSVG = (svg, color) => {
 	return new XMLSerializer().serializeToString(doc.documentElement);
 };
 
-const getTextLines = (value, maxWidth = 400) => {
+const getTextLines = (value, fontFamily, fontSize, maxWidth = 400) => {
 	const canvas = document.createElement('canvas');
 	const ctx = canvas.getContext('2d');
 
-	ctx.font = 'bold 18px Calluna';
+	ctx.font = `bold ${fontSize}px ${fontFamily}`;
 
 	const lines = [];
 	let line = '';
@@ -60,8 +60,8 @@ const getTextLines = (value, maxWidth = 400) => {
 };
 
 const BadgeRender = () => {
-	const { color, badgeSettings, textSettings, iconSettings } = useContext(BadgeContext);
-	const { badgeHeight, badgeWidth } = badgeSettings;
+	const { badgeSettings, textSettings, iconSettings } = useContext(BadgeContext);
+	const { badgeHeight, badgeWidth, color } = badgeSettings;
 	const { title, titleColor, titleFontFamily, text, textColor, textFontSize, textFontFamily } = textSettings;
 	const { icon, rawSVG, iconWidth, iconPositionX, iconPositionY } = iconSettings;
 
@@ -113,14 +113,14 @@ const BadgeRender = () => {
 		const canvas = document.createElement('canvas');
 		const ctx = canvas.getContext('2d');
 
-		ctx.font = `${titleSize}px Calluna`;
+		ctx.font = `${titleSize}px ${titleFontFamily}`;
 
 		while (ctx.measureText(title).width > badgeWidth - titlePadding - 10 && titleSize > 10) {
 			titleSize--;
-			ctx.font = `${titleSize}px Calluna`;
+			ctx.font = `${titleSize}px ${titleFontFamily}`;
 		}
 
-		const lines = text ? getTextLines(text, maxTextWidth) : [];
+		const lines = text ? getTextLines(text, textFontFamily, textFontSize, maxTextWidth) : [];
 
 		const description = () => {
 			return lines
@@ -153,6 +153,7 @@ const BadgeRender = () => {
           y="0"
           width="${badgeWidth}"
           height="${badgeHeight}"
+		  preserveAspectRatio="xMidYMid meet"
         />
 
         ${
@@ -172,7 +173,7 @@ const BadgeRender = () => {
 
         <text
           x="${badgeWidth / 2}"
-          y="${badgeHeight - 110}"
+          y="${badgeHeight* 0.74}"
           text-anchor="middle"
           dominant-baseline="middle"
           font-family="${titleFontFamily}"
@@ -218,7 +219,8 @@ const BadgeRender = () => {
 	};
 
 	return (
-		<div className='badgeRender'>
+		<fieldset className='badgeRender'>
+			<legend>Preview</legend>
 			<div ref={svgRef} className='badgePreview' dangerouslySetInnerHTML={{ __html: svgContent }} />
 			<div>
 				<button onClick={handleDownload}>
@@ -226,7 +228,7 @@ const BadgeRender = () => {
 					Download SVG
 				</button>
 			</div>
-		</div>
+		</fieldset>
 	);
 };
 
