@@ -2,18 +2,20 @@
 
 .naturalcrit {
 	--bg-clr: white;
+	--bg-img: url('../assets/images/fluffy_background.webp');
 	--p-clr: black;
-	height: fit-content;
 
+	height: fit-content;
 	min-height: 100%;
-	overflow:auto;
+	overflow: auto;
 	color: var(--p-clr, black);
 	background-color: var(--bg-clr, white);
-	//set transition
-	transition: all 0.5s ease-in-out;
+	background-image: var(--bg-img);
+	background-size: cover;
 
 	&.theme-dark {
 		--bg-clr: #333333;
+		--bg-img: url('../assets/images/fluffy_background_dark.webp');
 		--p-clr: #eeeeee;
 	}
 }
