@@ -5,7 +5,7 @@ const BadgeContext = createContext(null);
 const BadgeProvider = ({ children }) => {
 	// Badge settings
 	const [badgeHeight, setBadgeHeight] = useState(330);
-	const [badgeWidth, setBadgeWidth] = useState(300);
+	const [badgeWidth, setBadgeWidth] = useState(330);
 	const [color, setColor] = useState('#2c3e50');
 
 	// Text settings
