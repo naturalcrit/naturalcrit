@@ -34,11 +34,11 @@ const recolorSVG = (svg, color) => {
 	return new XMLSerializer().serializeToString(doc.documentElement);
 };
 
-const getTextLines = (value, maxWidth = 400) => {
+const getTextLines = (value, fontFamily, fontSize, maxWidth = 400) => {
 	const canvas = document.createElement('canvas');
 	const ctx = canvas.getContext('2d');
 
-	ctx.font = 'bold 18px Calluna';
+	ctx.font = `bold ${fontSize}px ${fontFamily}`;
 
 	const lines = [];
 	let line = '';
@@ -115,14 +115,14 @@ const BadgeRender = () => {
 		const canvas = document.createElement('canvas');
 		const ctx = canvas.getContext('2d');
 
-		ctx.font = `${titleSize}px Calluna`;
+		ctx.font = `${titleSize}px ${titleFontFamily}`;
 
 		while (ctx.measureText(title).width > badgeWidth - titlePadding - 10 && titleSize > 10) {
 			titleSize--;
-			ctx.font = `${titleSize}px Calluna`;
+			ctx.font = `${titleSize}px ${titleFontFamily}`;
 		}
 
-		const lines = text ? getTextLines(text, maxTextWidth) : [];
+		const lines = text ? getTextLines(text, textFontFamily, textFontSize, maxTextWidth) : [];
 
 		const description = () => {
 			return lines
