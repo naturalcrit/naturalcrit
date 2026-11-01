@@ -3,18 +3,18 @@
 .naturalcrit {
 	--bg-clr: white;
 	--p-clr: black;
+	height: fit-content;
 
 	min-height: 100%;
-	height: fit-content;
 	overflow:auto;
-	background-color: var(--bg-clr, white);
 	color: var(--p-clr, black);
+	background-color: var(--bg-clr, white);
 	//set transition
 	transition: all 0.5s ease-in-out;
 
 	&.theme-dark {
-		--bg-clr: #333;
-		--p-clr: #eee;
+		--bg-clr: #333333;
+		--p-clr: #eeeeee;
 	}
 }
 
@@ -52,19 +52,19 @@ p {
 }
 
 button {
-	border: none;
-	font-family: 'CodeBold';
-	letter-spacing: 1px;
 	padding: 12px 20px;
 	margin: 10px;
-	background-color: var(--p-clr);
+	font-family: 'CodeBold';
 	color: var(--bg-clr);
-	text-transform: uppercase;
 	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	background-color: var(--p-clr);
+	border: none;
 
 	&:hover {
-		background-color: var(--p-clr);
 		color: var(--bg-clr);
+		background-color: var(--p-clr);
 		filter: contrast(0.7);
 	}
 
@@ -73,8 +73,8 @@ button {
 	}
 
 	&:disabled {
-		background-color: #444;
 		cursor: not-allowed;
+		background-color: #444444;
 	}
 
 	&:is(.red, .green, .orange):disabled {
@@ -95,15 +95,15 @@ button {
 }
 
 .accountButton {
-	font-family: 'CodeBold';
-	letter-spacing: 2px;
 	position: fixed;
 	top: 10px;
 	right: 10px;
-	background-color: var(--p-clr);
+	font-family: 'CodeBold';
 	color: var(--bg-clr);
-	text-transform: uppercase;
 	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	background-color: var(--p-clr);
 
 	&:hover {
 		filter: contrast(0.7);
@@ -112,26 +112,26 @@ button {
 	a {
 		display: block;
 		padding: 15px 30px;
-		text-decoration: none;
 		color: currentColor;
+		text-decoration: none;
 	}
 }
 
 .theme {
 	position: fixed;
-	bottom: 0;
 	right: 0;
+	bottom: 0;
 }
 
 .environment {
-	font-family: 'CodeBold';
-	letter-spacing: 2px;
 	position: fixed;
 	bottom: 10px;
 	left: 10px;
-	background-color: #840000;
 	padding: 12px 20px;
+	font-family: 'CodeBold';
 	color: white;
-	text-transform: uppercase;
 	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	background-color: #840000;
 }

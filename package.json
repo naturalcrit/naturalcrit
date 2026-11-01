@@ -20,7 +20,7 @@
 		"postinstall": "npm run build",
 		"lint": "eslint --fix",
 		"lint:dry": "eslint",
-		"stylelint": "stylelint --fix **/*.{less}",
+		"stylelint": "stylelint --fix \"**/*.less\"",
 		"stylelint:dry": "stylelint **/*.less"
 	},
 	"eslintIgnore": [

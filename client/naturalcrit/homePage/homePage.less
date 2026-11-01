@@ -6,8 +6,8 @@
 	.top {
 		.fadeInTop(1s);
 		.delay(0.5);
-		margin-bottom: 100px;
 		padding-top: 100px;
+		margin-bottom: 100px;
 		text-align: center;
 
 		p {
@@ -28,14 +28,14 @@
 			.keep();
 			display: inline-block;
 			vertical-align: top;
-			cursor: pointer;
-			opacity: 0;
 			color: inherit;
 			text-align: center;
 			text-decoration: none;
+			cursor: pointer;
+			opacity: 0;
 
 			&+.tool {
-				border-left: 1px solid #666;
+				border-left: 1px solid #666666;
 			}
 
 			.badges svg {
@@ -91,20 +91,20 @@
 					&:after {
 						.animateAll();
 						.transform(rotate(45deg));
-						content: "beta!";
 						position: absolute;
-						display: block;
 						top: -12px;
 						right: -46px;
+						display: block;
 						width: 36%;
 						padding-top: 27px;
 						padding-bottom: 15px;
-						//opacity          : 0;
-						background-color: fade(@grey, 50%);
 						font-size: 1em;
 						font-weight: 800;
 						text-align: center;
 						text-transform: uppercase;
+						content: "beta!";
+						//opacity          : 0;
+						background-color: fade(@grey, 50%);
 					}
 				}
 			}
@@ -121,11 +121,11 @@
 	rect,
 	polygon {
 		.sketch(@length, @color, 4s);
-		stroke-dasharray: @length;
-		stroke-dashoffset: 0px;
+		fill: @color;
 		stroke: @color;
 		stroke-width: 0.5px;
-		fill: @color;
+		stroke-dasharray: @length;
+		stroke-dashoffset: 0px;
 		//.animateAll(3s);
 	}
 }
@@ -135,23 +135,23 @@
 
 	.sketchKeyFrames() {
 		0% {
-			stroke-dashoffset: @length;
 			fill: transparent;
+			stroke-dashoffset: @length;
 		}
 
 		50% {
-			stroke-dashoffset: @length;
 			fill: transparent;
+			stroke-dashoffset: @length;
 		}
 
 		80% {
-			stroke-dashoffset: 0px;
 			fill: transparent;
+			stroke-dashoffset: 0px;
 		}
 
 		100% {
-			stroke-dashoffset: 0px;
 			fill: @color;
+			stroke-dashoffset: 0px;
 		}
 	}
 
