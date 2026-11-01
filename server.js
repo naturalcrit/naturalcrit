@@ -85,14 +85,13 @@ async function start() {
 				next(e);
 			}
 		});
-
 	}
 	//========-- In Production environment, use Express to serve from build path --========//
 	else {
 		const buildPath = path.join(__dirname, 'build');
 		const indexHtml = fs.readFileSync(path.join(buildPath, 'index.html'), 'utf-8');
 
-		app.use(express.static(buildPath, {index:false}));
+		app.use(express.static(buildPath, { index: false }));
 		app.get('/{*path}', (req, res)=>{
 			const props = {
 				user        : req.user || null,

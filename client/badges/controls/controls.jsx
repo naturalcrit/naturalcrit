@@ -6,12 +6,12 @@ import { BadgeContext } from '../badgeContext.jsx';
 
 const iconAssets = import.meta.glob('../../assets/svg/elderberry-inn-icons/*.svg', { eager: true, query: '?url', import: 'default' });
 
-const icons = Array.from({ length: 192 }, (_, index) => {
+const icons = Array.from({ length: 192 }, (_, index)=>{
 	const path = `../../assets/svg/elderberry-inn-icons/${index + 1}.svg`;
 	return iconAssets[path] || null;
 });
 
-const Controls = () => {
+const Controls = ()=>{
 	const {
 		color,
 		badgeSettings,
@@ -55,7 +55,7 @@ const Controls = () => {
 						min='200'
 						max='340'
 						value={badgeHeight}
-						onChange={(e) =>{
+						onChange={(e)=>{
 							setBadgeHeight(Number(e.target.value));
 							setBadgeWidth(Number(e.target.value));
 						}}
@@ -64,7 +64,7 @@ const Controls = () => {
 
 				<div className='field'>
 					<label>Badge color</label>
-					<input defaultValue='#2c3e50' value={color} type='color' onChange={(e) => setColor(e.target.value)} />
+					<input defaultValue='#2c3e50' value={color} type='color' onChange={(e)=>setColor(e.target.value)} />
 				</div>
 			</fieldset>
 
@@ -73,12 +73,12 @@ const Controls = () => {
 
 				<div className='field'>
 					<label>Title</label>
-					<input type='text' className='value' value={title} onChange={(e) => setTitle(e.target.value)} placeholder='Your title' />
+					<input type='text' className='value' value={title} onChange={(e)=>setTitle(e.target.value)} placeholder='Your title' />
 				</div>
 
 				<div className='field'>
 					<label>Title color</label>
-					<input defaultValue={titleColor} type='color' onChange={(e) => setTitleColor(e.target.value)} />
+					<input defaultValue={titleColor} type='color' onChange={(e)=>setTitleColor(e.target.value)} />
 				</div>
 
 				<div className='field'>
@@ -87,7 +87,7 @@ const Controls = () => {
 						type='text'
 						className='value'
 						value={titleFontFamily}
-						onChange={(e) => setTitleFontFamily(e.target.value)}
+						onChange={(e)=>setTitleFontFamily(e.target.value)}
 						placeholder='Calluna'
 					/>
 				</div>
@@ -95,12 +95,12 @@ const Controls = () => {
 				<hr />
 				<div className='field description'>
 					<label>Text</label>
-					<textarea className='value' rows={3} value={text} onChange={(e) => setText(e.target.value)} placeholder='Enter your text here.' />
+					<textarea className='value' rows={3} value={text} onChange={(e)=>setText(e.target.value)} placeholder='Enter your text here.' />
 				</div>
 
 				<div className='field'>
 					<label>Text color</label>
-					<input defaultValue={textColor} type='color' onChange={(e) => setTextColor(e.target.value)} />
+					<input defaultValue={textColor} type='color' onChange={(e)=>setTextColor(e.target.value)} />
 				</div>
 
 				<div className='field'>
@@ -109,7 +109,7 @@ const Controls = () => {
 						type='text'
 						className='value'
 						value={textFontFamily}
-						onChange={(e) => setTextFontFamily(e.target.value)}
+						onChange={(e)=>setTextFontFamily(e.target.value)}
 						placeholder='Calluna'
 					/>
 				</div>
@@ -123,7 +123,7 @@ const Controls = () => {
 						step='1'
 						max='48'
 						value={textFontSize}
-						onChange={(e) => setTextFontSize(Number(e.target.value))}
+						onChange={(e)=>setTextFontSize(Number(e.target.value))}
 					/>
 				</div>
 			</fieldset>
@@ -133,22 +133,22 @@ const Controls = () => {
 
 				<div className='field tabs'>
 					<div className='switchView'>
-						<button className={view === 'choose' ? ' selected' : ''} onClick={() => setView('choose')}>
+						<button className={view === 'choose' ? ' selected' : ''} onClick={()=>setView('choose')}>
 							Choose an icon
 						</button>
-						<button className={view === 'upload' ? ' selected' : ''} onClick={() => setView('upload')}>
+						<button className={view === 'upload' ? ' selected' : ''} onClick={()=>setView('upload')}>
 							Upload your own
 						</button>
 					</div>
 					{view === 'choose' && (
 						<div className='tab'>
 							<div className='iconGrid'>
-								{icons.map((src, index) => (
+								{icons.map((src, index)=>(
 									<button
 										key={index}
 										type='button'
 										className={`iconOption${!rawSVG && icon === index + 1 ? ' selected' : ''}`}
-										onClick={() => {
+										onClick={()=>{
 											setIcon(index + 1);
 											setRawSVG('');
 										}}
@@ -177,7 +177,7 @@ const Controls = () => {
 						step='10'
 						max='400'
 						value={iconWidth}
-						onChange={(e) => setIconWidth(Number(e.target.value))}
+						onChange={(e)=>setIconWidth(Number(e.target.value))}
 					/>
 				</div>
 
@@ -190,7 +190,7 @@ const Controls = () => {
 						step='10'
 						max={Math.round((badgeWidth / 2 - iconWidth / 3) / 10) * 10}
 						value={iconPositionX}
-						onChange={(e) => setIconPositionX(Number(e.target.value))}
+						onChange={(e)=>setIconPositionX(Number(e.target.value))}
 					/>
 				</div>
 
@@ -203,7 +203,7 @@ const Controls = () => {
 						step='10'
 						max='200'
 						value={iconPositionY}
-						onChange={(e) => setIconPositionY(Number(e.target.value))}
+						onChange={(e)=>setIconPositionY(Number(e.target.value))}
 					/>
 				</div>
 			</fieldset>

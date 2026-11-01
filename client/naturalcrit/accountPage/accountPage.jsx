@@ -7,7 +7,6 @@ import AuthForm from '../loginPage/authForm.jsx';
 import './accountPage.less';
 
 const AccountPage = (props)=>{
-
 	const [showRenameForm, setShowRenameForm] = useState(false);
 	const [processing, setProcessing] = useState(false);
 	const [errors, setErrors] = useState(null);
@@ -67,8 +66,6 @@ const AccountPage = (props)=>{
 			<small>Upcoming features will include account deletion.</small>
 		</div>
 	</div>;
-
 };
-
 
 export default AccountPage;

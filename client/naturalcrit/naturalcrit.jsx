@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 
 import { Routes, Route, Navigate, BrowserRouter, StaticRouter, useSearchParams } from 'react-router';
 
-import HomePage       from './homePage/homePage.jsx';
-import LoginPage      from './loginPage/loginPage.jsx';
-import SuccessPage    from './successPage/successPage.jsx';
-import Badges         from '../badges/badges.jsx';
-import AccountPage    from './accountPage/accountPage.jsx';
+import HomePage from './homePage/homePage.jsx';
+import LoginPage from './loginPage/loginPage.jsx';
+import SuccessPage from './successPage/successPage.jsx';
+import Badges from '../badges/badges.jsx';
+import AccountPage from './accountPage/accountPage.jsx';
 
 import './naturalcrit.less';
 
@@ -43,13 +43,7 @@ const Naturalcrit = ({ user, url, tools, environment, domain })=>{
 				<Routes>
 					<Route
 						path='/account'
-						element={
-							user?.username ? (
-								<AccountPage user={user} />
-							) : (
-								<Navigate to='/login?redirect=/account' replace />
-							)
-						}
+						element={user?.username ? <AccountPage user={user} /> : <Navigate to='/login?redirect=/account' replace />}
 					/>
 					<Route path='/login' element={<LoginWrapper user={user} />} />
 					<Route path='/success' element={<SuccessPage user={user} />} />
