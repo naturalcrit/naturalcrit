@@ -48,26 +48,17 @@ const Controls = () => {
 				<legend>Badge settings</legend>
 
 				<div className='field'>
-					<label>Badge width: {badgeWidth}px</label>
-					<input
-						type='range'
-						className='value'
-						min='200'
-						max='400'
-						value={badgeWidth}
-						onChange={(e) => setBadgeWidth(Number(e.target.value))}
-					/>
-				</div>
-
-				<div className='field'>
-					<label>Badge height: {badgeHeight}px</label>
+					<label>Badge size: {badgeHeight}px</label>
 					<input
 						type='range'
 						className='value'
 						min='200'
 						max='340'
 						value={badgeHeight}
-						onChange={(e) => setBadgeHeight(Number(e.target.value))}
+						onChange={(e) =>{
+							setBadgeHeight(Number(e.target.value));
+							setBadgeWidth(Number(e.target.value));
+						}}
 					/>
 				</div>
 

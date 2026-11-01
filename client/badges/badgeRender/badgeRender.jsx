@@ -155,6 +155,7 @@ const BadgeRender = () => {
           y="0"
           width="${badgeWidth}"
           height="${badgeHeight}"
+		  preserveAspectRatio="xMidYMid meet"
         />
 
         ${
@@ -174,7 +175,7 @@ const BadgeRender = () => {
 
         <text
           x="${badgeWidth / 2}"
-          y="${badgeHeight - 110}"
+          y="${badgeHeight* 0.75}"
           text-anchor="middle"
           dominant-baseline="middle"
           font-family="${titleFontFamily}"
