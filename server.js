@@ -85,14 +85,13 @@ async function start() {
 				next(e);
 			}
 		});
-
 	}
 	//========-- In Production environment, use Express to serve from build path --========//
 	else {
 		const buildPath = path.join(__dirname, 'build');
 		const indexHtml = fs.readFileSync(path.join(buildPath, 'index.html'), 'utf-8');
 
-		app.use(express.static(buildPath, {index:false}));
+		app.use(express.static(buildPath, { index: false }));
 		app.get('/{*path}', (req, res)=>{
 			const props = {
 				user        : req.user || null,
@@ -111,7 +110,16 @@ async function start() {
 
 	const port = process.env.PORT || config.get('web_port') || 8010;
 	app.listen(port, ()=>{
-		console.log(`Server started at http://localhost:${port}`);
+		const reset = '\x1b[0m'; // Reset to default style
+		const bright = '\x1b[1m'; // Bright (bold) style
+		const cyan = '\x1b[92m'; // Green color
+		const underline = '\x1b[4m'; // Underlined style
+
+		console.log(`\n\tserver started at: ${new Date().toLocaleString()}`);
+		console.log(`\tserver on port: ${port}`);
+		console.log(
+			`\t${bright + cyan}Open in browser: ${reset}${underline + bright + cyan}http://localhost:${port}${reset}\n\n`,
+		);
 	});
 }
 

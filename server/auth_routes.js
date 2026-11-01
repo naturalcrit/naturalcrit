@@ -56,7 +56,7 @@ router.get('/google/redirect',
 			sameSite : 'lax',
 			domain   : process.env.NODE_ENV === 'production' ? '.naturalcrit.com' : 'localhost', // Set domain for the cookie.
 		});
-		
+
 		res.redirect('/success');
 	}
 );

@@ -6,10 +6,10 @@ import BadgeProvider from './badgeContext.jsx';
 import BadgeRender from './badgeRender/badgeRender.jsx';
 import Controls from './controls/controls.jsx';
 
-const Badges = () => {
+const Badges = ()=>{
 	const [theme, setTheme] = useState('light');
 
-	useEffect(() => {
+	useEffect(()=>{
 		const storedTheme = localStorage.getItem('theme');
 		if (storedTheme) setTheme(storedTheme);
 	}, []);

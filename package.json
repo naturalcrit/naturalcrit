@@ -1,24 +1,35 @@
 {
 	"name": "naturalcrit",
 	"description": "Top-tier Tools for the discerning DM",
-	"version": "3.0.0",
+	"version": "3.1.0",
 	"type": "module",
-	"scripts": {
-		"dev": "vite",
-		"build": "vite build",
-		"postinstall": "npm run build",
-		"start": "node server.js"
-	},
-	"engines": {
-		"node": "24.11.1"
-	},
 	"author": "stolksdorf",
 	"license": "BSD-2-Clause",
+	"engines": {
+		"npm": ">=10.8 <12",
+		"node": ">=24.11.1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/naturalcrit/homebrewery.git"
+	},
+	"scripts": {
+		"start": "node server.js",
+		"build": "vite build",
+		"build:clean": "node -e \"const fs=require('fs'); fs.rmSync('.vite',{recursive:true,force:true}); fs.rmSync('node_modules/.vite',{recursive:true,force:true});\" && vite build",
+		"postinstall": "npm run build",
+		"lint": "eslint --fix",
+		"lint:dry": "eslint",
+		"stylelint": "stylelint --fix \"**/*.less\"",
+		"stylelint:dry": "stylelint **/*.less"
+	},
+	"eslintIgnore": [
+		"build/*"
+	],
 	"dependencies": {
 		"@vitejs/plugin-react": "^5.1.1",
 		"bcrypt": "^6.0.0",
 		"cookie-parser": "^1.4.7",
-		"create-react-class": "^15.7.0",
 		"express": "^5.1.0",
 		"jwt-simple": "^0.5.6",
 		"lodash": "^4.17.21",
@@ -27,17 +38,19 @@
 		"passport": "^0.7.0",
 		"passport-google-oauth20": "2.0.0",
 		"passport-jwt": "4.0.1",
+		"postcss-less": "^7.0.1",
 		"react": "^19.2.0",
-		"react-color": "^2.19.3",
 		"react-dom": "^19.2.0",
 		"react-router": "^7.9.6",
-		"vite": "^7.2.4"
+		"stylelint-config-recess-order": "^7.9.0"
 	},
 	"devDependencies": {
-		"eslint": "^9.39.1",
+		"eslint": "^9.7",
 		"eslint-plugin-react": "^7.37.5",
 		"globals": "^16.5.0",
 		"less": "^4.4.2",
-		"less-loader": "^12.3.0"
+		"stylelint": "^17.16.0",
+		"stylelint-config-recommended": "^18.0.0",
+		"vite": "^7.2.4"
 	}
 }

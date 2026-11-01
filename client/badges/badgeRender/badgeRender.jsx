@@ -5,19 +5,18 @@ import { BadgeContext } from '../badgeContext.jsx';
 
 const iconAssets = import.meta.glob('../../assets/svg/elderberry-inn-icons/*.svg', { eager: true, query: '?url', import: 'default' });
 
-const icons = Array.from({ length: 192 }, (_, index) => {
+const icons = Array.from({ length: 192 }, (_, index)=>{
 	const path = `../../assets/svg/elderberry-inn-icons/${index + 1}.svg`;
 	return iconAssets[path] || null;
 });
 
-const escapeXML = (value) =>
-	String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+const escapeXML = (value)=>String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 
-const recolorSVG = (svg, color) => {
+const recolorSVG = (svg, color)=>{
 	const parser = new DOMParser();
 	const doc = parser.parseFromString(svg, 'image/svg+xml');
 
-	doc.querySelectorAll('path, rect, circle, ellipse, polygon, polyline').forEach((element) => {
+	doc.querySelectorAll('path, rect, circle, ellipse, polygon, polyline').forEach((element)=>{
 		const fill = element.getAttribute('fill');
 
 		if (fill !== 'none') {
@@ -34,7 +33,7 @@ const recolorSVG = (svg, color) => {
 	return new XMLSerializer().serializeToString(doc.documentElement);
 };
 
-const getTextLines = (value, fontFamily, fontSize, maxWidth = 400) => {
+const getTextLines = (value, fontFamily, fontSize, maxWidth = 400)=>{
 	const canvas = document.createElement('canvas');
 	const ctx = canvas.getContext('2d');
 
@@ -43,7 +42,7 @@ const getTextLines = (value, fontFamily, fontSize, maxWidth = 400) => {
 	const lines = [];
 	let line = '';
 
-	value.split(/\s+/).forEach((word) => {
+	value.split(/\s+/).forEach((word)=>{
 		const testLine = line ? `${line} ${word}` : word;
 
 		if (line && ctx.measureText(testLine).width > maxWidth) {
@@ -59,7 +58,7 @@ const getTextLines = (value, fontFamily, fontSize, maxWidth = 400) => {
 	return lines;
 };
 
-const BadgeRender = () => {
+const BadgeRender = ()=>{
 	const { badgeSettings, textSettings, iconSettings } = useContext(BadgeContext);
 	const { badgeHeight, badgeWidth, color } = badgeSettings;
 	const { title, titleColor, titleFontFamily, text, textColor, textFontSize, textFontFamily } = textSettings;
@@ -76,19 +75,19 @@ const BadgeRender = () => {
 
 	const [iconUrl, setIconUrl] = useState(null);
 
-	useEffect(() => {
+	useEffect(()=>{
 		let cancelled = false;
 
-		getIconUrl().then((url) => {
+		getIconUrl().then((url)=>{
 			if (!cancelled) setIconUrl(url);
 		});
 
-		return () => {
+		return ()=>{
 			cancelled = true;
 		};
 	}, [icon, rawSVG, color]);
 
-	const getIconUrl = async () => {
+	const getIconUrl = async ()=>{
 		if (rawSVG) {
 			const recolored = recolorSVG(rawSVG, color);
 			return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(recolored)))}`;
@@ -105,7 +104,7 @@ const BadgeRender = () => {
 		return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(recolored)))}`;
 	};
 
-	const createSVG = () => {
+	const createSVG = ()=>{
 		const frame = BadgeTemplate(color);
 
 		let titleSize = 35;
@@ -122,10 +121,10 @@ const BadgeRender = () => {
 
 		const lines = text ? getTextLines(text, textFontFamily, textFontSize, maxTextWidth) : [];
 
-		const description = () => {
+		const description = ()=>{
 			return lines
 				.map(
-					(line, index) => `
+					(line, index)=>`
           <text
             x="${padding}"
             y="${badgeHeight + padding + index * 20}"
@@ -157,8 +156,8 @@ const BadgeRender = () => {
         />
 
         ${
-			iconUrl
-				? `
+	iconUrl
+		? `
               <image
                 href="${iconUrl}"
                 x="${badgeWidth / 2 - iconWidth / 2 + iconPositionX}"
@@ -168,8 +167,8 @@ const BadgeRender = () => {
                 preserveAspectRatio="xMidYMid meet"
               />
             `
-				: ''
-		}
+		: ''
+}
 
         <text
           x="${badgeWidth / 2}"
@@ -196,14 +195,14 @@ const BadgeRender = () => {
 
 	const svgContent = createSVG();
 
-	useEffect(() => {
+	useEffect(()=>{
 		const svg = svgRef.current;
 		if (!svg) return;
 
 		svg.innerHTML = svgContent.replace(/^<svg[^>]*>|<\/svg>$/g, '');
 	}, [svgContent]);
 
-	const handleDownload = () => {
+	const handleDownload = ()=>{
 		const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
 
 		const url = URL.createObjectURL(blob);

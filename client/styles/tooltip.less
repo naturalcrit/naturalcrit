@@ -72,14 +72,14 @@
 .tooltipRight(@content){
 	.tooltipBase(@content);
 	&:before {
-		margin-left: -@arrowSize * 2;
 		margin-bottom: -@arrowSize;
+		margin-left: -@arrowSize * 2;
 		border-right-color: @tooltipColor;
 	}
 	&:after{ margin-bottom: -14px;}
 	&:before, &:after {
-		left: 100%;
-		bottom: 50%; }
+		bottom: 50%;
+		left: 100%; }
 	&:hover:after, &:hover:before, &:focus:after, &:focus:before {
 		.transform(translateX(@arrowSize + 2));
 	}
@@ -94,29 +94,29 @@
 	&:before, &:after{
 		.animateAll();
 		position: absolute;
-		opacity: 0;
 		z-index: 1000000;
 		pointer-events: none;
+		opacity: 0;
 	}
 
 	//Arrow
 	&:before{
+		z-index: 1000001;
 		content: '';
 		background: transparent;
 		border: @arrowSize solid transparent;
-		z-index: 1000001;
 	}
 
 	//Box
 	&:after{
-		content: @content;
-		color: white;
-		background: @tooltipColor;
+		visibility: hidden;
 		padding: 8px 10px;
 		font-size: 12px;
 		line-height: 12px;
+		color: white;
 		white-space: nowrap;
-		visibility: hidden;
+		content: @content;
+		background: @tooltipColor;
 	}
 	&:hover:before, &:hover:after {
 		visibility: visible;

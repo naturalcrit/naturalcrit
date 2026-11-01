@@ -11,9 +11,9 @@ body {
 .container {
 	position: relative;
 	max-width: @containerWidth;
-	margin: 0 auto;
 	padding-right: 20px;
 	padding-left: 20px;
+	margin: 0 auto;
 }
 
 h1 {
@@ -39,8 +39,8 @@ h3 {
 p {
 	margin-bottom: 1em;
 	font-size: 16px;
-	color: @copyGrey;
 	line-height: 1.5em;
+	color: @copyGrey;
 }
 
 b, strong {
@@ -53,10 +53,10 @@ small {
 }
 
 code {
-	background-color: #F8F8F8;
 	font-family: 'Courier', mono;
 	color: black;
 	white-space: pre;
+	background-color: #F8F8F8;
 }
 
 a {
@@ -72,14 +72,14 @@ button {
 	.animate(background-color);
 	display: inline-block;
 	padding: 0.6em 1.2em;
-	cursor: pointer;
-	background-color: @backgroundColor;
 	font-family: "Lato", Helvetica, Arial, sans-serif;
 	font-size: 15px;
 	color: white;
 	text-decoration: none;
-	border: none;
+	cursor: pointer;
 	outline: none;
+	background-color: @backgroundColor;
+	border: none;
 
 	&:hover {
 		background-color: darken(@backgroundColor, 5%);
@@ -96,9 +96,9 @@ button {
 
 .iconButton(@backgroundColor : @green) {
 	padding: 0.6em;
-	cursor: pointer;
-	background-color: @backgroundColor;
 	font-size: 14px;
 	color: white;
 	text-align: center;
+	cursor: pointer;
+	background-color: @backgroundColor;
 }

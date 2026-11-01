@@ -9,7 +9,7 @@ const SALT_WORK_FACTOR = 10;
 const AccountSchema = mongoose.Schema({
 	username           : { type: String, required: true, unique: true },
 	password           : { type: String, required: false },
-	createdAt  		   : { type: Date, default: Date.now, index: true },
+	createdAt     		   : { type: Date, default: Date.now, index: true },
 	googleId           : String,
 	googleAccessToken  : String,
 	googleRefreshToken : String,
@@ -24,7 +24,7 @@ AccountSchema.pre('save', async function () {
 			account.password = await bcrypt.hash(account.password, salt);
 		}
 	} catch (err) {
-		throw({ ok: false, msg: 'Error generating password hash' });
+		throw ({ ok: false, msg: 'Error generating password hash' });
 	}
 });
 

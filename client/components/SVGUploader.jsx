@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-const SVGUploader = ({ rawSVG, setRawSVG }) => {
+const SVGUploader = ({ rawSVG, setRawSVG })=>{
 	const [hover, setHover] = useState(false);
 
-	const handleDrop = (e) => {
+	const handleDrop = (e)=>{
 		e.preventDefault();
 
 		const files = e.target.files || e.dataTransfer.files;
@@ -17,8 +17,8 @@ const SVGUploader = ({ rawSVG, setRawSVG }) => {
 		}
 
 		const reader = new FileReader();
-		reader.onload = (e) => setRawSVG(e.target.result);
-		reader.onerror = () => console.error('Failed to read SVG file.');
+		reader.onload = (e)=>setRawSVG(e.target.result);
+		reader.onerror = ()=>console.error('Failed to read SVG file.');
 		reader.readAsText(file);
 		setHover(false);
 		if (e.target.value) e.target.value = '';
@@ -28,11 +28,11 @@ const SVGUploader = ({ rawSVG, setRawSVG }) => {
 		<div className='value'>
 			<div
 				className={`dropZone${hover ? ' hover' : ''}`}
-				onDragOver={(e) => {
+				onDragOver={(e)=>{
 					e.preventDefault();
 					setHover(true);
 				}}
-				onDragLeave={(e) => {
+				onDragLeave={(e)=>{
 					e.preventDefault();
 					setHover(false);
 				}}
@@ -51,7 +51,7 @@ const SVGUploader = ({ rawSVG, setRawSVG }) => {
 			{rawSVG && (
 				<div className='custom-svg-status'>
 					<span>Custom SVG selected</span>
-					<button type='button' onClick={() => setRawSVG('')}>
+					<button type='button' onClick={()=>setRawSVG('')}>
 						Remove custom SVG
 					</button>
 				</div>

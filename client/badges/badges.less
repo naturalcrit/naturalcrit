@@ -1,36 +1,35 @@
 @import '../styles/core.less';
 
-
 .naturalcrit >.badges {
-	--bg-clr: #fff;
+	--bg-clr: #ffffff;
 	--bg-img:  url('../assets/images/fluffy_background.webp');
 	--p-clr: black;
 
 	position: relative;
 	height:fit-content;
 	min-height: 100vh;
-	background-image: var(--bg-img);
-	background-color: var(--bg-clr, white);
 	color: var(--p-clr, black);
+	background-color: var(--bg-clr, white);
+	background-image: var(--bg-img);
 
 	.mainContent {
-		width: 800px;
-		margin: auto;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
 		align-items: center;
+		justify-content: center;
+		width: 800px;
+		margin: auto;
 	}
 
 	&.theme-dark {
-		--bg-clr: #333;
-		--p-clr: #eee;
+		--bg-clr: #333333;
+		--p-clr: #eeeeee;
 	}
 
 	h1 {
+		padding-top: 30px;
 		margin: 0;
 		margin-bottom: 10px;
-		padding-top: 30px;
 		font-family: 'Calluna';
 		font-size: 2.5em;
 		font-weight: 800;
@@ -49,42 +48,42 @@
 
 	.content {
 		display: flex;
-		padding-top: 50px;
-		justify-content: space-between;
 		gap: 20px;
+		justify-content: space-between;
 		padding-inline: 100px;
+		padding-top: 50px;
 	}
 
 	.credit {
-		width: fit-content;
 		position:absolute;
 		bottom:10px;
 		left:50%;
-		translate:0 -50%;
 		display: block;
+		width: fit-content;
 		margin: 0;
 		font-family: 'Calluna';
 		font-size: 0.8em;
-		text-align: center;
 		line-height: 1.2em;
 		color: var(--p-clr);
+		text-align: center;
 		opacity: 80%;
+		translate:0 -50%;
 	}
 
 	button {
-		border: none;
-		font-family: 'CodeBold';
-		letter-spacing: 1px;
 		padding: 12px 20px;
 		margin: 10px;
-		background-color: var(--p-clr);
+		font-family: 'CodeBold';
 		color: var(--bg-clr);
-		text-transform: uppercase;
 		text-align: center;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		background-color: var(--p-clr);
+		border: none;
 
 		&:hover {
-			background-color: var(--p-clr);
 			color: var(--bg-clr);
+			background-color: var(--p-clr);
 			filter: contrast(0.7);
 		}
 
@@ -93,8 +92,8 @@
 		}
 
 		&:disabled {
-			background-color: #444;
 			cursor: not-allowed;
+			background-color: #444444;
 		}
 
 		&:is(.red, .green, .orange):disabled {

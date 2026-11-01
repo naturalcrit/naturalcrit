@@ -1,8 +1,8 @@
-import React, { createContext, useState, useMemo } from 'react';
+import React, { createContext, useState } from 'react';
 
 const BadgeContext = createContext(null);
 
-const BadgeProvider = ({ children }) => {
+const BadgeProvider = ({ children })=>{
 	// Badge settings
 	const [badgeHeight, setBadgeHeight] = useState(330);
 	const [badgeWidth, setBadgeWidth] = useState(330);
