@@ -53,7 +53,7 @@ const Controls = () => {
 						type='range'
 						className='value'
 						min='200'
-						max='600'
+						max='400'
 						value={badgeWidth}
 						onChange={(e) => setBadgeWidth(Number(e.target.value))}
 					/>
@@ -65,7 +65,7 @@ const Controls = () => {
 						type='range'
 						className='value'
 						min='200'
-						max='500'
+						max='340'
 						value={badgeHeight}
 						onChange={(e) => setBadgeHeight(Number(e.target.value))}
 					/>
@@ -74,6 +74,66 @@ const Controls = () => {
 				<div className='field'>
 					<label>Badge color</label>
 					<input defaultValue='#2c3e50' value={color} type='color' onChange={(e) => setColor(e.target.value)} />
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<legend>Text settings</legend>
+
+				<div className='field'>
+					<label>Title</label>
+					<input type='text' className='value' value={title} onChange={(e) => setTitle(e.target.value)} placeholder='Your title' />
+				</div>
+
+				<div className='field'>
+					<label>Title color</label>
+					<input defaultValue={titleColor} type='color' onChange={(e) => setTitleColor(e.target.value)} />
+				</div>
+
+				<div className='field'>
+					<label>Title font family</label>
+					<input
+						type='text'
+						className='value'
+						value={titleFontFamily}
+						onChange={(e) => setTitleFontFamily(e.target.value)}
+						placeholder='Calluna'
+					/>
+				</div>
+
+				<hr />
+				<div className='field description'>
+					<label>Text</label>
+					<textarea className='value' rows={3} value={text} onChange={(e) => setText(e.target.value)} placeholder='Enter your text here.' />
+				</div>
+
+				<div className='field'>
+					<label>Text color</label>
+					<input defaultValue={textColor} type='color' onChange={(e) => setTextColor(e.target.value)} />
+				</div>
+
+				<div className='field'>
+					<label>Text font family</label>
+					<input
+						type='text'
+						className='value'
+						value={textFontFamily}
+						onChange={(e) => setTextFontFamily(e.target.value)}
+						placeholder='Calluna'
+					/>
+				</div>
+
+				<div className='field'>
+					<label>Text font size: {textFontSize}px</label>
+					<input
+						type='range'
+						className='value'
+						min='8'
+						step='1'
+						max='48'
+						value={textFontSize}
+						onChange={(e) => setTextFontSize(Number(e.target.value))}
+					/>
 				</div>
 			</fieldset>
 
@@ -153,65 +213,6 @@ const Controls = () => {
 						max='200'
 						value={iconPositionY}
 						onChange={(e) => setIconPositionY(Number(e.target.value))}
-					/>
-				</div>
-			</fieldset>
-
-			<fieldset>
-				<legend>Text settings</legend>
-
-				<div className='field'>
-					<label>Title</label>
-					<input type='text' className='value' value={title} onChange={(e) => setTitle(e.target.value)} placeholder='Your title' />
-				</div>
-
-				<div className='field'>
-					<label>Title color</label>
-					<input defaultValue={titleColor} type='color' onChange={(e) => setTitleColor(e.target.value)} />
-				</div>
-
-				<div className='field'>
-					<label>Title font family</label>
-					<input
-						type='text'
-						className='value'
-						value={titleFontFamily}
-						onChange={(e) => setTitleFontFamily(e.target.value)}
-						placeholder='Calluna'
-					/>
-				</div>
-
-				<div className='field description'>
-					<label>Text</label>
-					<textarea className='value' rows={3} value={text} onChange={(e) => setText(e.target.value)} placeholder='Enter your text here.' />
-				</div>
-
-				<div className='field'>
-					<label>Text color</label>
-					<input defaultValue={textColor} type='color' onChange={(e) => setTextColor(e.target.value)} />
-				</div>
-
-				<div className='field'>
-					<label>Text font family</label>
-					<input
-						type='text'
-						className='value'
-						value={textFontFamily}
-						onChange={(e) => setTextFontFamily(e.target.value)}
-						placeholder='Calluna'
-					/>
-				</div>
-
-				<div className='field'>
-					<label>Text font size: {textFontSize}px</label>
-					<input
-						type='range'
-						className='value'
-						min='8'
-						step='1'
-						max='48'
-						value={textFontSize}
-						onChange={(e) => setTextFontSize(Number(e.target.value))}
 					/>
 				</div>
 			</fieldset>

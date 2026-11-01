@@ -7,13 +7,13 @@
 	--p-clr: black;
 
 	position: relative;
-	height: 100%;
+	height:fit-content;
+	min-height: 100vh;
 	background-image: var(--bg-img);
 	background-color: var(--bg-clr, white);
 	color: var(--p-clr, black);
 
 	.mainContent {
-		height: 100%;
 		width: 800px;
 		margin: auto;
 		display: flex;
@@ -50,16 +50,19 @@
 	.content {
 		display: flex;
 		padding-top: 50px;
-		justify-content: space-evenly;
+		justify-content: space-between;
 		gap: 20px;
-		padding-inline: 25px;
+		padding-inline: 100px;
 	}
 
 	.credit {
 		width: fit-content;
-		margin-inline: auto;
+		position:absolute;
+		bottom:10px;
+		left:50%;
+		translate:0 -50%;
 		display: block;
-		margin-top: 50px;
+		margin: 0;
 		font-family: 'Calluna';
 		font-size: 0.8em;
 		text-align: center;
@@ -133,11 +136,5 @@
 				font-family: 'CodeBold';
 			}
 		}
-	}
-
-	.theme {
-		position: fixed;
-		top: 0;
-		right: 0;
 	}
 }
