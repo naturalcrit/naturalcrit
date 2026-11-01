@@ -65,8 +65,6 @@ const BadgeRender = () => {
 	const { title, titleColor, titleFontFamily, text, textColor, textFontSize, textFontFamily } = textSettings;
 	const { icon, rawSVG, iconWidth, iconPositionX, iconPositionY } = iconSettings;
 
-
-	console.log(titleColor);
 	const svgRef = useRef(null);
 
 	const padding = 20;
@@ -175,7 +173,7 @@ const BadgeRender = () => {
 
         <text
           x="${badgeWidth / 2}"
-          y="${badgeHeight* 0.75}"
+          y="${badgeHeight* 0.74}"
           text-anchor="middle"
           dominant-baseline="middle"
           font-family="${titleFontFamily}"

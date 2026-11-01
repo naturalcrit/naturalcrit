@@ -13,8 +13,6 @@ const BadgeProvider = ({ children }) => {
 	const [titleColor, setTitleColor] = useState('#ffffff');
 	const [titleFontFamily, setTitleFontFamily] = useState('Calluna');
 
-	console.log(titleColor);
-
 	const [text, setText] = useState('');
 	const [textColor, setTextColor] = useState('#000');
 	const [textFontSize, setTextFontSize] = useState(18);
