@@ -48,7 +48,6 @@
 		"eslint": "^9.7",
 		"eslint-plugin-react": "^7.37.5",
 		"globals": "^16.5.0",
-		"knip": "^6.44.1",
 		"less": "^4.4.2",
 		"stylelint": "^17.16.0",
 		"stylelint-config-recommended": "^18.0.0",
