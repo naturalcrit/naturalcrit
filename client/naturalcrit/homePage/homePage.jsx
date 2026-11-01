@@ -72,7 +72,7 @@ const HomePage = ({ tools = defaultTools })=>{
 	};
 
 	return (
-		<div className='homePage'>
+		<div className='page homePage'>
 			<div className='top'>
 				<NaturalCritIcon />
 				<p>Top-tier tools for the discerning DM</p>

@@ -18,7 +18,7 @@ const SuccessPage = ()=>{
 	}, []);
 
 	return (
-		<div className='loginPage'>
+		<div className='page loginPage'>
 			<NaturalCritIcon />
 
 			<div className='content'>
