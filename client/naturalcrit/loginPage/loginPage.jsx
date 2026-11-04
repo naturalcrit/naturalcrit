@@ -113,7 +113,7 @@ const LoginPage = ({ redirect = '', user = null })=>{
 	};
 
 	return (
-		<div className='loginPage'>
+		<div className='page loginPage'>
 			<NaturalCritIcon />
 
 			{renderLoggedWithGoogle()}

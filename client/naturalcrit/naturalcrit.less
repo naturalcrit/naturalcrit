@@ -2,22 +2,40 @@
 
 .naturalcrit {
 	--bg-clr: white;
+	--bg-img: url('../assets/images/fluffy_background.webp');
 	--p-clr: black;
-	height: fit-content;
+	--input-bg: #eee;
+	--input-bg-hover: #dddddd;
+	--input-text-clr: black;
+	--input-placeholder-clr: grey;
+	--accent-color:#880000;
 
-	min-height: 100%;
-	overflow:auto;
+	accent-color: var(--accent-color);
+	height: fit-content;
+	min-height: 100vh;
+	overflow: auto;
 	color: var(--p-clr, black);
 	background-color: var(--bg-clr, white);
-	//set transition
-	transition: all 0.5s ease-in-out;
+	background-image: var(--bg-img);
+	background-size: cover;
 
 	&.theme-dark {
-		--bg-clr: #333333;
+		--bg-clr: #333;
+		--bg-img: url('../assets/images/fluffy_background_dark.webp');
 		--p-clr: #eeeeee;
+		--bg-clr: #555555;
+		--label-clr: #dddddd;
+		--input-bg: #333333;
+		--input-bg-hover: #222;
+		--input-text-clr: #eeeeee;
+		--input-placeholder-clr: #aaaaaa;
+		--accent-color:#c40000;
+	}
+	.page {
+		height: fit-content;
+		min-height: 100%;
 	}
 }
-
 
 p {
 	color: inherit;
@@ -91,6 +109,22 @@ button {
 
 	&.orange {
 		background-color: @orange;
+	}
+}
+
+input[type='text'],
+textarea,
+select {
+	color: var(--input-text-clr);
+	background-color: var(--input-bg);
+	border: 1px solid var(--input-placeholder-clr);
+	&:hover,
+	:focus {
+		outline: 1px solid var(--input-placeholder-clr);
+		background-color: var(--input-bg-hover);
+	}
+	&::placeholder {
+		color: var(--input-placeholder-clr);
 	}
 }
 

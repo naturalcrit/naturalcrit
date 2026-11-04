@@ -37,7 +37,7 @@ const AccountPage = (props)=>{
 		}
 	};
 
-	return <div className='accountPage'>
+	return <div className='page accountPage'>
 		<NaturalCritIcon />
 		<div className='details'>
 			<h1>Account Page</h1>

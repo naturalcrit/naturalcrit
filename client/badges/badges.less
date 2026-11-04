@@ -1,16 +1,10 @@
 @import '../styles/core.less';
 
 .naturalcrit >.badges {
-	--bg-clr: #ffffff;
-	--bg-img:  url('../assets/images/fluffy_background.webp');
-	--p-clr: black;
 
 	position: relative;
 	height:fit-content;
 	min-height: 100vh;
-	color: var(--p-clr, black);
-	background-color: var(--bg-clr, white);
-	background-image: var(--bg-img);
 
 	.mainContent {
 		display: flex;
@@ -19,11 +13,6 @@
 		justify-content: center;
 		width: 800px;
 		margin: auto;
-	}
-
-	&.theme-dark {
-		--bg-clr: #333333;
-		--p-clr: #eeeeee;
 	}
 
 	h1 {

@@ -5,8 +5,8 @@
 	fieldset {
 		padding: 10px;
 		padding-top: 5px;
-		background: white;
-		border: 4px double;
+		background: var(--bg-clr);
+		border: 4px double var(--input-placeholder-clr);
 		border-radius: 10px;
 		corner-shape: square scoop scoop scoop;
 		break-inside: avoid;
@@ -35,7 +35,7 @@
 				width: calc(100% + 22px);
 				height: calc(100% + 22px);
 				content: '';
-				border: 4px double;
+				border: 4px double var(--input-placeholder-clr);
 				border-radius: 15px;
 				corner-shape: notch;
 				clip-path: inset(10px 15px 50% 15px);
@@ -50,7 +50,7 @@
 				width: 100%;
 				height: 100%;
 				content: '';
-				border: 4px double;
+				border: 4px double var(--input-placeholder-clr);
 				border-radius: 5px;
 				corner-shape: scoop;
 				clip-path: inset(0 0 55% 0);
@@ -70,7 +70,6 @@
 		gap: 10px;
 		align-items: center;
 		margin-bottom: 5px;
-		accent-color: #880000;
 
 		&.description {
 			align-items: start;
@@ -95,12 +94,11 @@
 			padding: 1px;
 			margin: 0;
 			cursor: pointer;
-			background: #ffffff;
-			border: 1px solid #cccccc;
+			background: var(--input-bg);
+			border: 1px solid var(--input-placeholder-clr);
 			border-radius: 6px;
-			transition:
-				border-color 1.2s,
-				background-color 1.2s;
+			transition: border-color 0.2s, background-color 0.2s;
+			
 
 			img {
 				width: 100%;
@@ -108,15 +106,17 @@
 				object-fit: contain;
 				translate: 0 5px;
 			}
+			
 
 			&:hover {
-				background-color: #f2f2f2;
-				border-color: #777777;
+				background-color: var(--input-bg-hover);
+				border-color: var(--p-clr);
+				filter:none;
 			}
 
 			&.selected {
-				background-color: #e8ecf5;
-				border: 2px solid #2b4486;
+				background-color: var(--input-bg);
+				border: 2px solid var(--accent-color);
 			}
 		}
 
@@ -201,7 +201,7 @@
 				font-family: inherit;
 				font-size: 10px;
 				font-weight: 900;
-				color: black;
+				color: var(--text-clr);
 				background: unset;
 				transition: background-color 0.2s;
 
@@ -210,13 +210,17 @@
 				}
 
 				&.selected {
-					background-color: #cccccc;
+					background-color: #aaaaaa;
 				}
 
 				&:hover {
-					background-color: #aaaaaa;
+					background-color: #666;
 				}
 			}
 		}
 	}
+}
+
+.theme-dark .iconOption img {
+	filter:invert(0.9);
 }

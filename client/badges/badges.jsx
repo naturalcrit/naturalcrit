@@ -7,15 +7,8 @@ import BadgeRender from './badgeRender/badgeRender.jsx';
 import Controls from './controls/controls.jsx';
 
 const Badges = ()=>{
-	const [theme, setTheme] = useState('light');
-
-	useEffect(()=>{
-		const storedTheme = localStorage.getItem('theme');
-		if (storedTheme) setTheme(storedTheme);
-	}, []);
-
 	return (
-		<div className={`badges theme-${theme}`}>
+		<div className={`badges`}>
 			<NaturalCritIcon />
 
 			<h1>D&D Achievement Badges</h1>
