@@ -1,0 +1,202 @@
+@import '../styles/core.less';
+
+.naturalcrit > .tokens {
+	position: relative;
+	height: fit-content;
+	min-height: 100vh;
+
+	.mainContent {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 800px;
+		margin: auto;
+	}
+
+	h1 {
+		padding-top: 30px;
+		margin: 0;
+		margin-bottom: 10px;
+		font-family: 'Calluna';
+		font-size: 2.5em;
+		font-weight: 800;
+		text-align: center;
+	}
+
+	p {
+		color: inherit;
+	}
+
+	& > p {
+		margin-bottom: 20px;
+		font-size: 0.8em;
+		text-align: center;
+	}
+
+	.credit {
+		position: absolute;
+		bottom: 10px;
+		left: 50%;
+		display: block;
+		width: fit-content;
+		margin: 0;
+		font-family: 'Calluna';
+		font-size: 0.8em;
+		line-height: 1.2em;
+		color: var(--p-clr);
+		text-align: center;
+		opacity: 80%;
+		translate: 0 -50%;
+	}
+
+	.logo {
+		position: fixed;
+		top: 10px;
+		left: 10px;
+		font-size: 2em;
+		color: var(--p-clr);
+		text-decoration: none;
+
+		svg {
+			height: 0.9em;
+			margin-right: 0.2em;
+			cursor: pointer;
+			fill: currentColor;
+		}
+
+		.name {
+			font-family: 'CodeLight';
+
+			.crit {
+				font-family: 'CodeBold';
+			}
+		}
+	}
+}
+
+/* canvas interface */
+
+.content {
+	display: flex;
+	gap: 20px;
+	justify-content: center;
+	padding-inline: 100px;
+	padding-top: 50px;
+
+	.canvasWrapper {
+		width: fit-content;
+		height: fit-content;
+		position: relative;
+
+		canvas {
+			padding: 0px;
+			text-align: center;
+			background: var(--bg-clr);
+			border: 4px double var(--input-placeholder-clr);
+			border-radius: 10px;
+			corner-shape: scoop scoop scoop scoop;
+		}
+
+		.canvasControls {
+			position: absolute;
+			inset: 4px;
+			border-radius: 10px;
+			corner-shape: scoop;
+			overflow: hidden;
+
+			.imageControls {
+				position: absolute;
+				outline: 1px dashed red;
+
+				.imageControlBox {
+					position: absolute;
+					inset: 9px;
+					border-radius: 1px;
+					filter:drop-shadow( 0 0 1px white)
+					drop-shadow( 0 0 2px white);
+					cursor: move;
+
+					button {
+						position: absolute;
+						margin:0;
+						padding:0;
+						height:10px;
+						width:10px;
+						display:none;
+						border-radius:2px;
+
+						&:nth-child(1) {
+							top: -1px;
+							left:-1px;
+							translate: -50% -50%;
+							cursor: nw-resize;
+						}
+						&:nth-child(2) {
+							top:-1px;
+							left: 50%;
+							translate: -50% -50%;
+							cursor: ns-resize;
+						}
+						&:nth-child(3) {
+							top:-1px;
+							right: -1px;
+							translate: 50% -50%;
+							cursor: ne-resize;
+						}
+
+						&:nth-child(4) {
+							top: 50%;
+							right: -1px;
+							translate: 50% -50%;
+							cursor: ew-resize;
+						}
+
+						&:nth-child(5) {
+							bottom: -1px;
+							right: -1px;
+							translate: 50% 50%;
+							cursor: nw-resize;
+						}
+						&:nth-child(6) {
+							bottom: -1px;
+							left: 50%;
+							translate: -50% 50%;
+							cursor: ns-resize;
+						}
+						&:nth-child(7) {
+							bottom: -1px;
+							left: -1px;
+							translate: -50% 50%;
+							cursor: ne-resize;
+						}
+
+						&:nth-child(8) {
+							top: 50%;
+							left: -1px;
+							translate: -50% 50%;
+							cursor: ew-resize;
+						}
+					}
+					&.visible {
+						border: 2px solid #000;
+
+						button {
+							display:block;
+						}
+					}
+
+				}
+			}
+		}
+	}
+
+	.interface {
+		display: flex;
+		flex-direction: column;
+
+		button {
+			width: 100%;
+		}
+	}
+}

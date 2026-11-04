@@ -7,6 +7,7 @@ import HomePage from './homePage/homePage.jsx';
 import LoginPage from './loginPage/loginPage.jsx';
 import SuccessPage from './successPage/successPage.jsx';
 import Badges from '../badges/badges.jsx';
+import Tokens from '../tokens/tokens.jsx';
 import AccountPage from './accountPage/accountPage.jsx';
 
 import './naturalcrit.less';
@@ -49,6 +50,7 @@ const Naturalcrit = ({ user, url, tools, environment, domain })=>{
 					<Route path='/success' element={<SuccessPage user={user} />} />
 					<Route path='/auth/google/redirect' element={<LoginWrapper user={user} />} />
 					<Route path='/badges' element={<Badges />} />
+					<Route path='/tokens' element={<Tokens />} />
 					<Route path='*' element={<HomePage configTools={tools} user={user} />} />
 				</Routes>
 			</Router>

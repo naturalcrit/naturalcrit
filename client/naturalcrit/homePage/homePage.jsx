@@ -46,6 +46,15 @@ const defaultTools = [
 		beta : true,
 	},
 	{
+		id   : 'tokens',
+		path : '/tokens',
+		name : 'Token Maker',
+		icon : <TPKIcon />,
+		desc : 'Make your own tokens!',
+		show : true,
+		beta : true,
+	},
+	{
 		id   : 'townGenerator',
 		path : 'https://5e-cleric.github.io/townGenerator/?',
 		name : 'Town Generator',
